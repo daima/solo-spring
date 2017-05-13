@@ -29,8 +29,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.TextXMLRenderer;
@@ -79,7 +79,7 @@ public class MetaWeblogAPI {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(MetaWeblogAPI.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(MetaWeblogAPI.class);
 
     /**
      * Preference query service.
@@ -211,7 +211,7 @@ public class MetaWeblogAPI {
             final JSONObject methodCall = requestJSONObject.getJSONObject(METHOD_CALL);
             final String methodName = methodCall.getString(METHOD_NAME);
 
-            LOGGER.log(Level.INFO, "MetaWeblog[methodName={0}]", methodName);
+            logger.info("MetaWeblog[methodName={0}]", methodName);
 
             final JSONArray params = methodCall.getJSONObject("params").getJSONArray("param");
 
@@ -283,7 +283,7 @@ public class MetaWeblogAPI {
                 throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<fault><value><struct>").append("<member><name>faultCode</name><value><int>500</int></value></member>").append("<member><name>faultString</name><value><string>").append(e.getMessage()).append(
                     "</string></value></member></struct></value></fault></methodResponse>");
@@ -361,7 +361,7 @@ public class MetaWeblogAPI {
                 try {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
-                    LOGGER.log(Level.WARN,
+                    logger.warn(
                             "Parses article create date failed with ISO8601, retry to parse with "
                             + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
                     date = DateUtils.parseDate(dateString, new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});

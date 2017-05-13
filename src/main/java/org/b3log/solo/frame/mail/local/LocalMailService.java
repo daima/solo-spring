@@ -15,12 +15,11 @@
  */
 package org.b3log.solo.frame.mail.local;
 
-
 import java.io.IOException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
-
+import org.b3log.solo.frame.mail.MailServiceFactory;
 
 /**
  * Implementation of the {@link MailService} interface.
@@ -29,21 +28,22 @@ import org.b3log.solo.frame.mail.MailService;
  * @version 1.0.0.3, Sep 29, 2011
  */
 public final class LocalMailService implements MailService {
+	private static Logger logger = LoggerFactory.getLogger(MailServiceFactory.class);
 
-    @Override
-    public void send(final Message message) throws IOException {
-        // TODO: zezhou jiang, throws ioexception while send fails
+	@Override
+	public void send(final Message message) throws IOException {
+		// TODO: zezhou jiang, throws ioexception while send fails
 
-        new Thread(new Runnable() {
+		new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                try {
-                    new MailSender().sendMail(message);
-                } catch (final Exception e) {
-                    Logger.getLogger(LocalMailService.class.getName()).log(Level.ERROR, "Sends mail failed", e);
-                }
-            }
-        }).start();
-    }
+			@Override
+			public void run() {
+				try {
+					new MailSender().sendMail(message);
+				} catch (final Exception e) {
+					logger.error("Sends mail failed", e);
+				}
+			}
+		}).start();
+	}
 }

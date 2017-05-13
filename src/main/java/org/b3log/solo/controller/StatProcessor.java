@@ -19,9 +19,10 @@ package org.b3log.solo.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.servlet.renderer.DoNothingRenderer;
 import org.b3log.solo.service.StatisticMgmtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class StatProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(StatProcessor.class);
 
     /**
      * Statistic management service.

@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
@@ -53,7 +53,7 @@ public class TagConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(TagConsole.class);
 
     /**
      * Tag query service.
@@ -120,7 +120,7 @@ public class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets tags failed", e);
+            logger.error("Gets tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -180,7 +180,7 @@ public class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets unused tags failed", e);
+            logger.error("Gets unused tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -221,7 +221,7 @@ public class TagConsole {
             tagMgmtService.removeUnusedTags();
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
+            logger.error("Removes unused tags failed", e);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
         renderer.render(request, response);

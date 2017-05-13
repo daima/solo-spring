@@ -29,8 +29,8 @@ import javax.servlet.ServletContext;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Option;
@@ -59,7 +59,7 @@ public class PreferenceMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PreferenceMgmtService.class);
 
     /**
      * Preference query service.
@@ -92,11 +92,11 @@ public class PreferenceMgmtService {
     public void loadSkins(final JSONObject preference) throws Exception {
         Stopwatchs.start("Load Skins");
 
-        LOGGER.debug("Loading skins....");
+        logger.debug("Loading skins....");
 
         final Set<String> skinDirNames = getSkinDirNames();
 
-        LOGGER.log(Level.DEBUG, "Loaded skins[dirNames={0}]", skinDirNames);
+        logger.debug( "Loaded skins[dirNames={0}]", skinDirNames);
         final JSONArray skinArray = new JSONArray();
 
         for (final String dirName : skinDirNames) {
@@ -104,7 +104,7 @@ public class PreferenceMgmtService {
             final String name = Latkes.getSkinName(dirName);
 
             if (null == name) {
-                LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
+                logger.warn("The directory[{0}] does not contain any skin, ignored it", dirName);
 
                 continue;
             }
@@ -118,14 +118,14 @@ public class PreferenceMgmtService {
         final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
         final String skinName = preference.optString(SKIN_NAME);
 
-        LOGGER.log(Level.DEBUG, "Current skin[name={0}]", skinName);
+        logger.debug( "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
+            logger.warn("Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
                     + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.",
                     currentSkinDirName);
             if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
-                LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
+                logger.error("Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
 
                 throw new IllegalStateException(
                         "Can not find default skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
@@ -141,7 +141,7 @@ public class PreferenceMgmtService {
         final String skinsString = skinArray.toString();
 
         if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.debug("The skins directory has been changed, persists the change into preference");
+            logger.debug("The skins directory has been changed, persists the change into preference");
             preference.put(SKINS, skinsString);
             updatePreference(preference);
         }
@@ -154,7 +154,7 @@ public class PreferenceMgmtService {
             TimeZones.setTimeZone("Asia/Shanghai");
         }
 
-        LOGGER.debug("Loaded skins....");
+        logger.debug("Loaded skins....");
 
         Stopwatchs.end();
     }
@@ -183,7 +183,7 @@ public class PreferenceMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates reply notification failed", e);
+            logger.error("Updates reply notification failed", e);
             throw new ServiceException(e);
         }
     }
@@ -242,7 +242,7 @@ public class PreferenceMgmtService {
             preference.put(Option.ID_C_VERSION, version);
 
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-            LOGGER.log(Level.DEBUG, "Current locale[string={0}]", localeString);
+            logger.debug( "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
             final JSONObject adminEmailOpt = optionRepository.get(Option.ID_C_ADMIN_EMAIL);
@@ -391,11 +391,11 @@ public class PreferenceMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates preference failed", e);
+            logger.error("Updates preference failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         }
 
-        LOGGER.log(Level.DEBUG, "Updates preference successfully");
+        logger.debug( "Updates preference successfully");
     }
 
     /**

@@ -20,8 +20,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.User;
 import org.json.JSONObject;
 
@@ -37,7 +37,7 @@ public final class Sessions {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Sessions.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Sessions.class);
 
     /**
      * Cookie expiry: one year.
@@ -70,7 +70,7 @@ public final class Sessions {
         final HttpSession session = request.getSession();
 
         if (null == session) {
-            LOGGER.warn("The session is null");
+            logger.warn("The session is null");
             return;
         }
 
@@ -89,7 +89,7 @@ public final class Sessions {
             
             response.addCookie(cookie);
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Can not write cookie", e);
+            logger.warn("Can not write cookie", e);
         }
     }
 

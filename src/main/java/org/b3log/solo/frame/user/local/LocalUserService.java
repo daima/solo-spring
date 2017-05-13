@@ -21,8 +21,8 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.user.GeneralUser;
@@ -43,7 +43,7 @@ public final class LocalUserService implements UserService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LocalUserService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(LocalUserService.class);
 
     @Override
     public GeneralUser getCurrentUser(final HttpServletRequest request) {
@@ -85,7 +85,7 @@ public final class LocalUserService implements UserService {
         try {
             to = URLEncoder.encode(to + destinationURL, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "URL encode[string={0}]", destinationURL);
+            logger.error("URL encode[string={0}]", destinationURL);
         }
 
         return Latkes.getContextPath() + "/login?goto=" + to;
@@ -98,7 +98,7 @@ public final class LocalUserService implements UserService {
         try {
             to = URLEncoder.encode(to + destinationURL, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "URL encode[string={0}]", destinationURL);
+            logger.error("URL encode[string={0}]", destinationURL);
         }
 
         return Latkes.getContextPath() + "/logout?goto=" + to;

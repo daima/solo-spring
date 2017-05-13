@@ -21,8 +21,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 /**
@@ -36,7 +36,7 @@ public final class JSONRenderer extends AbstractHTTPResponseRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(JSONRenderer.class);
+    private static Logger logger = LoggerFactory.getLogger(JSONRenderer.class);
 
     /**
      * Pretty output.
@@ -150,12 +150,12 @@ public final class JSONRenderer extends AbstractHTTPResponseRenderer {
 
             writer.close();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "FreeMarker renders error", e);
+            logger.error("FreeMarker renders error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } catch (final IOException ex) {
-                LOGGER.log(Level.ERROR, "Can not send error 500!", ex);
+                logger.error("Can not send error 500!", ex);
             }
         }
     }

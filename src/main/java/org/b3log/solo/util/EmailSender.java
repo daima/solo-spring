@@ -17,6 +17,7 @@ package org.b3log.solo.util;
 
 
 import java.util.Properties;
+
 import javax.mail.Authenticator;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -25,7 +26,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import org.b3log.solo.frame.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,6 +39,7 @@ import org.b3log.solo.frame.logging.Logger;
  * @version 1.0.0.3, Jun 15, 2010
  */
 public final class EmailSender implements Runnable {
+	private static Logger logger = LoggerFactory.getLogger(EmailSender.class);
 
     /**
      * Mail sender account host.
@@ -124,7 +128,7 @@ public final class EmailSender implements Runnable {
         try {
             sendMail();
         } catch (final MessagingException ex) {
-            Logger.getLogger(EmailSender.class.getName()).error(ex.getMessage());
+        	logger.error(ex.getMessage());
         }
     }
 

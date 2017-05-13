@@ -17,7 +17,8 @@ package org.b3log.solo.frame.thread;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Thread service factory.
@@ -30,7 +31,7 @@ public final class ThreadServiceFactory {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ThreadServiceFactory.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ThreadServiceFactory.class);
 
     /**
      * Thread service.
@@ -38,7 +39,7 @@ public final class ThreadServiceFactory {
     private static final ThreadService THREAD_SERVICE;
 
     static {
-        LOGGER.info("Constructing Thread Service....");
+        logger.info("Constructing Thread Service....");
 
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
@@ -58,7 +59,7 @@ public final class ThreadServiceFactory {
             throw new RuntimeException("Can not initialize Thread Service!", e);
         }
 
-        LOGGER.info("Constructed Thread Service");
+        logger.info("Constructed Thread Service");
     }
 
     /**

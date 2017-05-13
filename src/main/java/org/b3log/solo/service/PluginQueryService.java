@@ -19,8 +19,8 @@ package org.b3log.solo.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.repository.RepositoryException;
@@ -48,7 +48,7 @@ public class PluginQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PluginQueryService.class);
 
     /**
      * Plugin repository.
@@ -126,7 +126,7 @@ public class PluginQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets plugins failed", e);
+            logger.error("Gets plugins failed", e);
 
             throw new ServiceException(e);
         }
@@ -147,13 +147,13 @@ public class PluginQueryService {
         try {
             ret = pluginRepository.get(pluginId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "get plugin[" + pluginId + "] fail");
+            logger.error("get plugin[" + pluginId + "] fail");
             throw new ServiceException("get plugin[" + pluginId + "] fail");
 
         }
 
         if (ret == null) {
-            LOGGER.log(Level.ERROR, "can not find plugin[" + pluginId + "]");
+            logger.error("can not find plugin[" + pluginId + "]");
             throw new ServiceException("can not find plugin[" + pluginId + "]");
         }
 

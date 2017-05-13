@@ -16,7 +16,8 @@
 package org.b3log.solo.module.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.util.Strings;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
@@ -36,7 +37,7 @@ public final class Markdowns {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Markdowns.class);
 
     /**
      * Converts the specified markdown text to HTML.

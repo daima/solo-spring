@@ -30,8 +30,8 @@ import org.b3log.solo.SoloConstant;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.CompositeFilter;
 import org.b3log.solo.frame.repository.CompositeFilterOperator;
@@ -76,7 +76,7 @@ public class FeedProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(FeedProcessor.class);
 
     /**
      * Article query service.
@@ -164,7 +164,7 @@ public class FeedProcessor {
 
             renderer.setContent(feed.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
+            logger.error("Get blog article feed error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -292,7 +292,7 @@ public class FeedProcessor {
 
             renderer.setContent(feed.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get tag article feed error", e);
+            logger.error("Get tag article feed error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -393,7 +393,7 @@ public class FeedProcessor {
 
             renderer.setContent(channel.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get blog article rss error", e);
+            logger.error("Get blog article rss error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -528,7 +528,7 @@ public class FeedProcessor {
 
             renderer.setContent(channel.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get tag article rss error", e);
+            logger.error("Get tag article rss error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

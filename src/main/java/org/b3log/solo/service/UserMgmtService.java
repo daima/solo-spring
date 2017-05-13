@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.RepositoryException;
@@ -53,7 +53,7 @@ public class UserMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UserMgmtService.class);
 
     /**
      * User repository.
@@ -115,11 +115,11 @@ public class UserMgmtService {
 
                 if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
+                    logger.debug( "Logged in with cookie[email={0}]", userEmail);
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+            logger.warn("Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
             final Cookie cookie = new Cookie("b3log-latke", null);
 
@@ -205,7 +205,7 @@ public class UserMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates a user failed", e);
+            logger.error("Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -242,7 +242,7 @@ public class UserMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates a user failed", e);
+            logger.error("Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -321,7 +321,7 @@ public class UserMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Adds a user failed", e);
+            logger.error("Adds a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -344,7 +344,7 @@ public class UserMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
+            logger.error("Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }

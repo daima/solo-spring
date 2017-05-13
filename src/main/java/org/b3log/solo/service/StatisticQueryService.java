@@ -17,8 +17,8 @@ package org.b3log.solo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class StatisticQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(StatisticQueryService.class);
 
     /**
      * Statistic repository.
@@ -137,13 +137,13 @@ public class StatisticQueryService {
             final JSONObject ret = statisticDao.get(Statistic.STATISTIC);
 
             if (null == ret) {
-                LOGGER.log(Level.WARN, "Can not load statistic from repository");
+                logger.warn("Can not load statistic from repository");
                 return null;
             }
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }

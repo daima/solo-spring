@@ -16,8 +16,8 @@
 package org.b3log.solo.model;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -310,7 +310,7 @@ public final class Option {
         /**
          * Logger.
          */
-        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class.getName());
+        private static Logger logger = LoggerFactory.getLogger(DefaultPreference.class);
 
         /**
          * Default recent article display count.
@@ -496,7 +496,7 @@ public final class Option {
                         + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Creates sign error!", e);
+                logger.error("Creates sign error!", e);
                 throw new IllegalStateException(e);
             }
         }

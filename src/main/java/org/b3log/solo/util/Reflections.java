@@ -30,8 +30,8 @@ import javassist.NotFoundException;
 import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -46,7 +46,7 @@ final public class Reflections {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Reflections.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Reflections.class);
 
     /**
      * Private constructor.
@@ -92,7 +92,7 @@ final public class Reflections {
             }
             cm = cc.getDeclaredMethod(targetMethodName, ptypes);
         } catch (final NotFoundException e) {
-            LOGGER.log(Level.ERROR, "Get method variable names failed", e);
+            logger.error("Get method variable names failed", e);
         }
 
         if (null == cm) {
@@ -107,7 +107,7 @@ final public class Reflections {
         try {
             variableNames = new String[cm.getParameterTypes().length];
         } catch (final NotFoundException e) {
-            LOGGER.log(Level.ERROR, "Get method variable names failed", e);
+            logger.error("Get method variable names failed", e);
         }
 
         // final int staticIndex = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
@@ -120,7 +120,7 @@ final public class Reflections {
             variableName = attr.variableName(j);
             // to prevent heap error when there being some unknown reasons to resolve the VariableNames
             if (j > MAX_FIND_LENGTH) {
-                LOGGER.log(Level.WARN,
+                logger.warn(
                     "Maybe resolve to VariableNames error [class=" + clazz.getName() + ", targetMethodName=" + targetMethodName + ']');
                 ifkill = true;
                 break;

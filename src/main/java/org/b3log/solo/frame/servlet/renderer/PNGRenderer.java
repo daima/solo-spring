@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.frame.image.Image;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -38,7 +38,7 @@ public final class PNGRenderer extends AbstractHTTPResponseRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PNGRenderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PNGRenderer.class);
 
     /**
      * Image to render.
@@ -64,7 +64,7 @@ public final class PNGRenderer extends AbstractHTTPResponseRenderer {
             outputStream.write(image.getData());
             outputStream.close();
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Render failed", e);
+            logger.error("Render failed", e);
         }
     }
 }

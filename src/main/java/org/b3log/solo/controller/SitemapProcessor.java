@@ -30,8 +30,8 @@ import org.b3log.solo.dao.ArchiveDateDao;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
@@ -64,7 +64,7 @@ public class SitemapProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SitemapProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(SitemapProcessor.class);
 
     /**
      * Article repository.
@@ -106,13 +106,13 @@ public class SitemapProcessor {
             addTags(sitemap);
             addArchives(sitemap);
 
-            LOGGER.log(Level.INFO, "Generating sitemap....");
+            logger.info("Generating sitemap....");
             final String content = sitemap.toString();
 
-            LOGGER.log(Level.INFO, "Generated sitemap");
+            logger.info("Generated sitemap");
             renderer.setContent(content);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
+            logger.error("Get blog article feed error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

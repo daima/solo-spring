@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.Repositories;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.jdbc.JdbcFactory;
@@ -58,7 +58,7 @@ public final class JdbcRepositories {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(JdbcRepositories.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(JdbcRepositories.class);
     @Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -155,7 +155,7 @@ public final class JdbcRepositories {
             try {
                 initRepositoriesMap();
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "initRepositoriesMap mistake " + e.getMessage(), e);
+                logger.error("initRepositoriesMap mistake " + e.getMessage(), e);
             }
         }
 
@@ -172,7 +172,7 @@ public final class JdbcRepositories {
         final JSONObject jsonObject = Repositories.getRepositoriesDescription();
 
         if (jsonObject == null) {
-            LOGGER.warn("the repository description[repository.json] miss");
+            logger.warn("the repository description[repository.json] miss");
             return;
         }
 
@@ -333,7 +333,7 @@ public final class JdbcRepositories {
             try {
                 isSuccess = JdbcFactory.createJdbcFactory().createTable(tableName, map.get(tableName));
             } catch (final SQLException e) {
-                LOGGER.log(Level.ERROR, "createTable[" + tableName + "] error", e);
+                logger.error("createTable[" + tableName + "] error", e);
             }
 
             ret.add(new CreateTableResult(tableName, isSuccess));
@@ -459,7 +459,7 @@ public final class JdbcRepositories {
 
             IOUtils.write(content, writer);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Init repository.json failed", e);
+            logger.error("Init repository.json failed", e);
         } finally {
             IOUtils.closeQuietly(writer);
         }

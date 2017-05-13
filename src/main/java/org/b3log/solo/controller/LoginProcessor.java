@@ -29,8 +29,8 @@ import org.b3log.solo.SoloConstant;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailServiceFactory;
 import org.b3log.solo.frame.model.Role;
@@ -78,7 +78,7 @@ public class LoginProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(LoginProcessor.class);
 
     /**
      * User query service.
@@ -193,12 +193,12 @@ public class LoginProcessor {
                 return;
             }
 
-            LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
+            logger.info("Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
+                logger.warn("Not found user[email={0}]", userEmail);
                 renderer.render(request, response);
                 return;
             }
@@ -206,7 +206,7 @@ public class LoginProcessor {
             if (MD5.hash(userPwd).equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
 
-                LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
+                logger.info("Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
 
@@ -221,9 +221,9 @@ public class LoginProcessor {
                 return;
             }
 
-            LOGGER.log(Level.WARN, "Wrong password[{0}]", userPwd);
+            logger.warn("Wrong password[{0}]", userPwd);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         renderer.render(request, response);
     }
@@ -294,23 +294,23 @@ public class LoginProcessor {
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (Strings.isEmptyOrNull(userEmail)) {
-                LOGGER.log(Level.WARN, "Why user's email is empty");
+                logger.warn("Why user's email is empty");
                 return;
             }
 
-            LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
+            logger.info("Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
+                logger.warn("Not found user[email={0}]", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
                 return;
             }
 
             sendResetUrl(userEmail, jsonObject);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         renderer.render(request, response);
     }
@@ -345,13 +345,13 @@ public class LoginProcessor {
 
             user.put(User.USER_PASSWORD, newPwd);
             userMgmtService.updateUser(user);
-            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", userEmail);
+            logger.debug( "[{0}]'s password updated successfully.", userEmail);
 
             jsonObject.put("succeed", true);
             jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
             jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         renderer.render(request, response);
     }
@@ -407,7 +407,7 @@ public class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
 
-        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody, userEmail);
+        logger.debug( "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody, userEmail);
     }
 
     /**

@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.service.LangPropsService;
@@ -63,7 +63,7 @@ public class TopBars {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TopBars.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(TopBars.class);
 
     /**
      * User service.
@@ -144,13 +144,13 @@ public class TopBars {
 
             return stringWriter.toString();
         } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
+            logger.error("Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
+            logger.error("Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final TemplateException e) {
-            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
+            logger.error("Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();

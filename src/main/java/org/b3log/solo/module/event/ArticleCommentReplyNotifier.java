@@ -19,8 +19,8 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailService.Message;
 import org.b3log.solo.frame.mail.MailServiceFactory;
@@ -51,7 +51,7 @@ public final class ArticleCommentReplyNotifier {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleCommentReplyNotifier.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ArticleCommentReplyNotifier.class);
 
     /**
      * Mail service.
@@ -64,19 +64,19 @@ public final class ArticleCommentReplyNotifier {
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
 
-        LOGGER.log(Level.DEBUG,
+        logger.debug(
                 "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), eventData, ArticleCommentReplyNotifier.class.getName());
+                event.getType(), eventData, ArticleCommentReplyNotifier.class);
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
         if (Strings.isEmptyOrNull(originalCommentId)) {
-            LOGGER.log(Level.DEBUG, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
+            logger.debug( "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
 
             return;
         }
 
         if (Latkes.getServePath().contains("localhost")) {
-            LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
+            logger.info("Solo runs on local server, so should not send mail");
 
             return;
         }
@@ -139,12 +139,12 @@ public final class ArticleCommentReplyNotifier {
                     .replace("${replyContent}", commentContent);
 
             message.setHtmlBody(mailBody);
-            LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
+            logger.debug( "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
                     mailSubject, mailBody, originalCommentEmail);
             mailService.send(message);
 
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw new EventException("Reply notifier error!");
         }
     }

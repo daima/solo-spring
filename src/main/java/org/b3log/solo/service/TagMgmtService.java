@@ -19,8 +19,8 @@ package org.b3log.solo.service;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
@@ -46,7 +46,7 @@ public class TagMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(TagMgmtService.class);
 
     /**
      * Tag query service.
@@ -118,7 +118,7 @@ public class TagMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
+            logger.error("Removes unused tags failed", e);
 
             throw new ServiceException(e);
         }

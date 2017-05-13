@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.core.TemplateElement;
 import freemarker.template.Configuration;
@@ -41,7 +41,7 @@ public final class Templates {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Templates.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Templates.class);
 
     /**
      * Main template {@link Configuration configuration}.
@@ -99,7 +99,7 @@ public final class Templates {
         final String canonicalForm = templateElement.getCanonicalForm();
 
         if (canonicalForm.startsWith(expression)) {
-            LOGGER.log(Level.TRACE, "Template has expression[nodeName={0}, expression={1}]",
+            logger.trace("Template has expression[nodeName={0}, expression={1}]",
                 new Object[] {templateElement.getNodeName(), expression});
 
             return true;
@@ -134,14 +134,14 @@ public final class Templates {
                     return MOBILE_CFG.getTemplate(templateName);
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Can not load mobile template[templateDirName={0}, templateName={1}]",
+                logger.error("Can not load mobile template[templateDirName={0}, templateName={1}]",
                     new Object[] {templateDirName, templateName});
                 return null;
             }
 
             return MAIN_CFG.getTemplate(templateName);
         } catch (final IOException e) {
-            LOGGER.log(Level.WARN, "Gets template[name={0}] failed: [{1}]", new Object[] {templateName, e.getMessage()});
+            logger.warn("Gets template[name={0}] failed: [{1}]", new Object[] {templateName, e.getMessage()});
 
             return null;
         }

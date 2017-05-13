@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Option;
@@ -56,7 +56,7 @@ public class PreferenceConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PreferenceConsole.class);
 
     /**
      * Preference query service.
@@ -137,7 +137,7 @@ public class PreferenceConsole {
             ret.put("replyNotificationTemplate", replyNotificationTemplate);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
@@ -185,7 +185,7 @@ public class PreferenceConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -246,7 +246,7 @@ public class PreferenceConsole {
             ret.put(Sign.SIGNS, signs);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -343,7 +343,7 @@ public class PreferenceConsole {
             ret.put(Option.CATEGORY_C_PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -430,7 +430,7 @@ public class PreferenceConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -485,7 +485,7 @@ public class PreferenceConsole {
             ret.put(Option.CATEGORY_C_QINIU, qiniu);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -561,7 +561,7 @@ public class PreferenceConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

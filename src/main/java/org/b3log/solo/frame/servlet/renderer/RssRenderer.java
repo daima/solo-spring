@@ -22,8 +22,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -37,7 +37,7 @@ public final class RssRenderer extends AbstractHTTPResponseRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RssRenderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(RssRenderer.class);
 
     /**
      * Content to render.
@@ -64,7 +64,7 @@ public final class RssRenderer extends AbstractHTTPResponseRenderer {
             writer.write(content);
             writer.close();
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Render failed", e);
+            logger.error("Render failed", e);
         }
     }
 }

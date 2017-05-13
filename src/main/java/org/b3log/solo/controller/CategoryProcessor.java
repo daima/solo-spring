@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -65,7 +65,7 @@ public class CategoryProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryProcessor.class);
+    private static Logger logger = LoggerFactory.getLogger(CategoryProcessor.class);
 
     @Autowired
     private Skins skins;
@@ -164,7 +164,7 @@ public class CategoryProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
+            logger.debug( "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
 
             categoryURI = URLDecoder.decode(categoryURI, "UTF-8");
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
@@ -212,12 +212,12 @@ public class CategoryProcessor {
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException | JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);

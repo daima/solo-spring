@@ -20,8 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.util.Strings;
 import org.b3log.solo.dao.ArticleDao;
@@ -43,7 +43,7 @@ public class PermalinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PermalinkQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PermalinkQueryService.class);
 
     /**
      * Page repository.
@@ -214,7 +214,7 @@ public class PermalinkQueryService {
             return isReservedLink(permalink) || null != articleDao.getByPermalink(permalink)
                 || null != pageDao.getByPermalink(permalink) || permalink.endsWith(".ftl");
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
+            logger.error("Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
 
             return true;
         }

@@ -18,8 +18,8 @@ package org.b3log.solo.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,7 +33,7 @@ public final class MD5 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(MD5.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(MD5.class);
 
     /**
      * Message digest.
@@ -59,7 +59,7 @@ public final class MD5 {
         try {
             messageDigest = MessageDigest.getInstance("MD5");
         } catch (final NoSuchAlgorithmException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

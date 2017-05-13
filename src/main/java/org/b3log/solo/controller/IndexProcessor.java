@@ -28,8 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -66,7 +66,7 @@ public class IndexProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(IndexProcessor.class);
 
     @Autowired
     private Skins skins;
@@ -151,12 +151,12 @@ public class IndexProcessor {
             response.addCookie(cookie);
             renderer.render(request, response);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
     }
@@ -185,12 +185,12 @@ public class IndexProcessor {
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);
@@ -220,12 +220,12 @@ public class IndexProcessor {
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillMinified(dataModel);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);
@@ -255,7 +255,7 @@ public class IndexProcessor {
         /**
          * Logger.
          */
-        private static final Logger LOGGER = Logger.getLogger(KillBrowserRenderer.class.getName());
+        private static Logger logger = LoggerFactory.getLogger(KillBrowserRenderer.class);
 
         @Override
         public void render(final HttpServletRequest request, final HttpServletResponse response) {
@@ -281,7 +281,7 @@ public class IndexProcessor {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 } catch (final IOException ex) {
-                    LOGGER.log(Level.ERROR, "Can not sned error 500!", ex);
+                    logger.error("Can not sned error 500!", ex);
                 }
             }
         }

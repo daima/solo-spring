@@ -21,8 +21,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,7 +36,7 @@ public final class HTTP500Renderer extends AbstractHTTPResponseRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(HTTP500Renderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(HTTP500Renderer.class);
 
     /**
      * the internal exception.
@@ -59,7 +59,7 @@ public final class HTTP500Renderer extends AbstractHTTPResponseRenderer {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Renders 505 error", e);
+            logger.error("Renders 505 error", e);
         }
     }
 }

@@ -39,8 +39,8 @@ import org.b3log.solo.dao.StatisticDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.RepositoryException;
@@ -88,7 +88,7 @@ public class InitService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(InitService.class);
 
     /**
      * Statistic repository.
@@ -184,7 +184,7 @@ public class InitService {
 
             return null != admin;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Solo has not been initialized");
+            logger.warn("Solo has not been initialized");
             return false;
         }
     }
@@ -227,19 +227,19 @@ public class InitService {
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
         if (RuntimeEnv.LOCAL == runtimeEnv) {
-            LOGGER.log(Level.INFO, "Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates "
+            logger.info("Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates "
                     + "all tables", Latkes.getRuntimeDatabase());
 
             if (RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
                 String dataDir = PropsUtil.getString("jdbc.URL");
                 dataDir = dataDir.replace("~", System.getProperty("user.home"));
-                LOGGER.log(Level.INFO, "YOUR DATA will be stored in directory [" + dataDir + "], "
+                logger.info("YOUR DATA will be stored in directory [" + dataDir + "], "
                         + "please pay more attention to it~");
             }
 
 //            final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
 //            for (final CreateTableResult createTableResult : createTableResults) {
-//                LOGGER.log(Level.DEBUG, "Create table result[tableName={0}, isSuccess={1}]",
+//                logger.debug( "Create table result[tableName={0}, isSuccess={1}]",
 //                        createTableResult.getName(), createTableResult.isSuccess());
 //            }
         }
@@ -265,13 +265,13 @@ public class InitService {
                 break;
             } catch (final Exception e) {
                 if (0 == retries) {
-                    LOGGER.log(Level.ERROR, "Initialize Solo error", e);
+                    logger.error("Initialize Solo error", e);
                     throw new ServiceException("Initailize Solo error: " + e.getMessage());
                 }
 
                 // Allow retry to occur
                 --retries;
-                LOGGER.log(Level.WARN, "Retrying to init Solo[retries={0}]", retries);
+                logger.warn("Retrying to init Solo[retries={0}]", retries);
             } finally {
 //                if (transaction.isActive()) {
 //                    transaction.rollback();
@@ -289,7 +289,7 @@ public class InitService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Hello World error?!", e);
+            logger.error("Hello World error?!", e);
         }
 
         try {
@@ -299,7 +299,7 @@ public class InitService {
             req.setURL(new URL(Latkes.getServePath() + "/blog/symphony/user"));
             urlFetchService.fetch(req);
         } catch (final Exception e) {
-            LOGGER.log(Level.TRACE, "Sync account failed");
+            logger.trace("Sync account failed");
         }
 
 //        pluginManager.load();
@@ -363,7 +363,7 @@ public class InitService {
 
         commentDao.add(comment);
 
-        LOGGER.info("Hello World!");
+        logger.info("Hello World!");
     }
 
     /**
@@ -405,7 +405,7 @@ public class InitService {
             admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 1);
             userDao.update(admin.optString(Keys.OBJECT_ID), admin);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Adds an article failed", e);
+            logger.error("Adds an article failed", e);
 
             throw new RepositoryException(e);
         }
@@ -439,7 +439,7 @@ public class InitService {
 
             archiveDateDao.add(archiveDate);
         } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw new RepositoryException(e);
         }
 
@@ -485,7 +485,7 @@ public class InitService {
             final String tagTitle = tagTitles[i].trim();
             final JSONObject tag = new JSONObject();
 
-            LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
+            logger.trace("Found a new tag[title={0}] in article[title={1}]",
                     tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
@@ -515,7 +515,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initAdmin(final JSONObject requestJSONObject) throws Exception {
-        LOGGER.debug("Initializing admin....");
+        logger.debug("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
@@ -529,7 +529,7 @@ public class InitService {
 
         userDao.add(admin);
 
-        LOGGER.debug("Initialized admin");
+        logger.debug("Initialized admin");
     }
 
     /**
@@ -557,7 +557,7 @@ public class InitService {
      * @throws JSONException json exception
      */
     private void initStatistic() throws RepositoryException, JSONException {
-        LOGGER.debug("Initializing statistic....");
+        logger.debug("Initializing statistic....");
         final JSONObject statistic = new JSONObject();
 
         statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
@@ -568,7 +568,7 @@ public class InitService {
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
         statisticDao.add(statistic);
 
-        LOGGER.debug("Initialized statistic");
+        logger.debug("Initialized statistic");
     }
 
     /**
@@ -577,7 +577,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initReplyNotificationTemplate() throws Exception {
-        LOGGER.debug("Initializing reply notification template");
+        logger.debug("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate = new JSONObject(DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
@@ -595,7 +595,7 @@ public class InitService {
         bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
         optionRepository.add(bodyOpt);
 
-        LOGGER.debug("Initialized reply notification template");
+        logger.debug("Initialized reply notification template");
     }
 
     /**
@@ -605,7 +605,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
-        LOGGER.debug("Initializing preference....");
+        logger.debug("Initializing preference....");
 
         final JSONObject noticeBoardOpt = new JSONObject();
         noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);
@@ -830,7 +830,7 @@ public class InitService {
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
-        LOGGER.debug("Initialized preference");
+        logger.debug("Initialized preference");
     }
 
     /**

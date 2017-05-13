@@ -23,8 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -43,7 +44,7 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ConsoleRenderer.class);
 
     /**
      * FreeMarker configuration.

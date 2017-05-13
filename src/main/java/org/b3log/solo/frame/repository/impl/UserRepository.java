@@ -16,8 +16,8 @@
 package org.b3log.solo.frame.repository.impl;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.AbstractRepository;
@@ -40,7 +40,7 @@ public class UserRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     /**
      * Public constructor.
@@ -70,7 +70,7 @@ public class UserRepository extends AbstractRepository {
 
             return array.getJSONObject(0);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             return null;
         }
@@ -96,7 +96,7 @@ public class UserRepository extends AbstractRepository {
 
             return array.getJSONObject(0);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             return null;
         }
@@ -119,7 +119,7 @@ public class UserRepository extends AbstractRepository {
         try {
             return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
         } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             throw new RepositoryException(e);
         }

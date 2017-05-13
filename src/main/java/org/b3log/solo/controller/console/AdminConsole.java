@@ -39,8 +39,8 @@ import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.plugin.ViewLoadEventData;
@@ -83,7 +83,7 @@ public class AdminConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(AdminConsole.class);
 
     /**
      * Language service.
@@ -173,7 +173,7 @@ public class AdminConsole {
                     dataModel.put("qiniuUploadToken", uploadToken);
                     dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
                 } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Qiniu settings error", e);
+                    logger.error("Qiniu settings error", e);
                 }
             }
 
@@ -194,7 +194,7 @@ public class AdminConsole {
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Admin index render failed", e);
+            logger.error("Admin index render failed", e);
         }
 
         fireFreeMarkerActionEvent(templateName, dataModel);
@@ -227,7 +227,7 @@ public class AdminConsole {
         final String requestURI = request.getRequestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
 
-        LOGGER.log(Level.TRACE, "Admin function[templateName={0}]", templateName);
+        logger.trace("Admin function[templateName={0}]", templateName);
         renderer.setTemplateName(templateName);
 
         final Locale locale = Latkes.getLocale();
@@ -268,7 +268,7 @@ public class AdminConsole {
         try {
             preference = preferenceQueryService.getPreference();
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Loads preference failed", e);
+            logger.error("Loads preference failed", e);
         }
 
         final StringBuilder timeZoneIdOptions = new StringBuilder();
@@ -328,14 +328,14 @@ public class AdminConsole {
                 sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db);
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Export failed", e);
+            logger.error("Export failed", e);
             renderJSON("Export failed, please check log").render(request, response);
             return;
         }
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         String localFilePath = tmpDir + "/b3_solo_" + UUID.randomUUID().toString() + ".sql";
-        LOGGER.info(localFilePath);
+        logger.info(localFilePath);
         final File localFile = new File(localFilePath);
 
         try {
@@ -359,7 +359,7 @@ public class AdminConsole {
             outputStream.flush();
             outputStream.close();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Export failed", e);
+            logger.error("Export failed", e);
             renderJSON("Export failed, please check log").render(request, response);
             return;
         }
@@ -384,7 +384,7 @@ public class AdminConsole {
                 dataModel.put(Plugin.PLUGINS, "");
             }
         } catch (final EventException e) {
-            LOGGER.log(Level.WARN, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+            logger.warn("Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
         }
     }
     

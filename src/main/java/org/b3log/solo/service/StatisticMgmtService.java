@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.StatisticDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Statistic;
@@ -54,7 +54,7 @@ public class StatisticMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(StatisticMgmtService.class);
 
     /**
      * Statistic repository.
@@ -122,7 +122,7 @@ public class StatisticMgmtService {
                 return;
             }
 
-            LOGGER.log(Level.TRACE, "Before inc blog view count[statistic={0}]", statistic);
+            logger.trace("Before inc blog view count[statistic={0}]", statistic);
 
             int blogViewCnt = statistic.optInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
 
@@ -137,12 +137,12 @@ public class StatisticMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
+            logger.error("Updates blog view count failed", e);
             
             return;
         }
 
-        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={0}]", statistic);
+        logger.trace("Inced blog view count[statistic={0}]", statistic);
     }
 
     /**
@@ -323,10 +323,10 @@ public class StatisticMgmtService {
     public void onlineVisitorCount(final HttpServletRequest request) {
         final String remoteAddr = Requests.getRemoteAddr(request);
 
-        LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
+        logger.debug( "Current request [IP={0}]", remoteAddr);
 
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
-        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        logger.debug( "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -342,11 +342,11 @@ public class StatisticMgmtService {
 
             if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
                 iterator.remove();
-                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+                logger.trace("Removed online visitor[ip={0}]", onlineVisitor.getKey());
             }
         }
 
-        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        logger.debug( "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -365,10 +365,10 @@ public class StatisticMgmtService {
 //            if (transaction.isActive()) {
 //                transaction.rollback();
 //            }
-            LOGGER.log(Level.ERROR, "Updates statistic failed", e);
+            logger.error("Updates statistic failed", e);
         }
 
-        LOGGER.log(Level.DEBUG, "Updates statistic successfully");
+        logger.debug( "Updates statistic successfully");
     }
 
     /**

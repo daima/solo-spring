@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.module.util.QueryResults;
@@ -54,7 +54,7 @@ public class PluginConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PluginConsole.class);
 
     /**
      * Plugin query service.
@@ -160,7 +160,7 @@ public class PluginConsole {
 
             result.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -195,7 +195,7 @@ public class PluginConsole {
             dataModel.put(Plugin.PLUGIN_SETTING, setting);
             dataModel.put(Keys.OBJECT_ID, pluginId);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             final JSONRenderer jsonRenderer = new JSONRenderer();

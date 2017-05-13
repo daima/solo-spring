@@ -17,8 +17,8 @@ package org.b3log.solo.util;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,7 +32,7 @@ public final class Callstacks {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Callstacks.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Callstacks.class);
 
     /**
      * Checks the current method is whether invoked by a caller specified by the given class name and method name.
@@ -46,7 +46,7 @@ public final class Callstacks {
         final StackTraceElement[] stackElements = throwable.getStackTrace();
 
         if (null == stackElements) {
-            LOGGER.log(Level.WARN, "Empty call stack");
+            logger.warn("Empty call stack");
 
             return false;
         }
@@ -71,18 +71,12 @@ public final class Callstacks {
      * @param exceptablePackages the specified packages to skip, for example, ["com.sun", "java.io", "org.b3log.solo.filter"], 
      * {@code null} to skip nothing
      */
-    public static void printCallstack(final Level logLevel, final String[] carePackages, final String[] exceptablePackages) {
-        if (null == logLevel) {
-            LOGGER.log(Level.WARN, "Requires parameter [logLevel]");
-
-            return;
-        }
-
+    public static void printCallstack(final String[] carePackages, final String[] exceptablePackages) {
         final Throwable throwable = new Throwable();
         final StackTraceElement[] stackElements = throwable.getStackTrace();
 
         if (null == stackElements) {
-            LOGGER.log(Level.WARN, "Empty call stack");
+            logger.warn("Empty call stack");
 
             return;
         }
@@ -102,7 +96,7 @@ public final class Callstacks {
         }
         stackBuilder.append("], full depth [").append(stackElements.length).append("]");
 
-        LOGGER.log(logLevel, stackBuilder.toString());
+        logger.info(stackBuilder.toString());
     }
 
     /**

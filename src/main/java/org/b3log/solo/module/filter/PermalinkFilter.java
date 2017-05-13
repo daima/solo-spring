@@ -31,8 +31,8 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Article;
@@ -72,7 +72,7 @@ public final class PermalinkFilter implements Filter {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(PermalinkFilter.class);
 
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
@@ -117,13 +117,13 @@ public final class PermalinkFilter implements Filter {
 
 		final String requestURI = httpServletRequest.getRequestURI();
 
-		LOGGER.log(Level.DEBUG, "Request URI[{0}]", requestURI);
+		logger.debug( "Request URI[{0}]", requestURI);
 
 		final String contextPath = Latkes.getContextPath();
 		final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 
 		if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
-			LOGGER.log(Level.DEBUG, "Skip filter request[URI={0}]", permalink);
+			logger.debug( "Skip filter request[URI={0}]", permalink);
 			chain.doFilter(request, response);
 
 			return;
@@ -141,13 +141,13 @@ public final class PermalinkFilter implements Filter {
 			}
 
 			if (null == page && null == article) {
-				LOGGER.log(Level.DEBUG, "Not found article/page with permalink[{0}]", permalink);
+				logger.debug( "Not found article/page with permalink[{0}]", permalink);
 				chain.doFilter(request, response);
 
 				return;
 			}
 		} catch (final RepositoryException e) {
-			LOGGER.log(Level.ERROR, "Processes article permalink filter failed", e);
+			logger.error("Processes article permalink filter failed", e);
 			httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
 
 			return;

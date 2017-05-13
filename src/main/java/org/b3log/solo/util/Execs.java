@@ -23,8 +23,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import org.apache.commons.io.IOUtils;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Command execution utilities.
@@ -43,7 +43,7 @@ public final class Execs {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Execs.class);
+    private static Logger logger = LoggerFactory.getLogger(Execs.class);
 
     /**
      * Private constructor.
@@ -76,7 +76,7 @@ public final class Execs {
 
             return result;
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Executes command [" + cmd + "] failed", e);
+            logger.error("Executes command [" + cmd + "] failed", e);
 
             return null;
         } finally {
@@ -109,7 +109,7 @@ public final class Execs {
 
             return result;
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Executes commands [" + Arrays.toString(cmds) + "] failed", e);
+            logger.error("Executes commands [" + Arrays.toString(cmds) + "] failed", e);
 
             return null;
         } finally {

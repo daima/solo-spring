@@ -37,8 +37,8 @@ import org.b3log.solo.SoloConstant;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.service.ServiceException;
@@ -96,7 +96,7 @@ public class ArticleController {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ArticleController.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
 	@Autowired
 	private Skins skins;
@@ -264,7 +264,7 @@ public class ArticleController {
 			response.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId="
 					+ article.optString(Keys.OBJECT_ID) + "&msg=1");
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "Processes article view password form submits failed", e);
+			logger.error("Processes article view password form submits failed", e);
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
@@ -386,7 +386,7 @@ public class ArticleController {
 		try {
 			content = articleQueryService.getArticleContent(request, articleId);
 		} catch (final ServiceException e) {
-			LOGGER.log(Level.ERROR, "Can not get article content", e);
+			logger.error("Can not get article content", e);
 			renderer.render(request, response);
 			return;
 		}
@@ -447,7 +447,7 @@ public class ArticleController {
 			jsonObject.put(Keys.RESULTS, result);
 		} catch (final Exception e) {
 			jsonObject.put(Keys.STATUS_CODE, false);
-			LOGGER.log(Level.ERROR, "Gets article paged failed", e);
+			logger.error("Gets article paged failed", e);
 		} finally {
 			Stopwatchs.end();
 		}
@@ -474,7 +474,7 @@ public class ArticleController {
 		try {
 			tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
 		} catch (final UnsupportedEncodingException e) {
-			LOGGER.log(Level.ERROR, "Gets tag title failed[requestURI=" + request.getRequestURI() + ']', e);
+			logger.error("Gets tag title failed[requestURI=" + request.getRequestURI() + ']', e);
 			tagTitle = "";
 		}
 
@@ -524,7 +524,7 @@ public class ArticleController {
 			jsonObject.put(Keys.RESULTS, result);
 		} catch (final Exception e) {
 			jsonObject.put(Keys.STATUS_CODE, false);
-			LOGGER.log(Level.ERROR, "Gets article paged failed", e);
+			logger.error("Gets article paged failed", e);
 		} finally {
 			Stopwatchs.end();
 		}
@@ -595,7 +595,7 @@ public class ArticleController {
 			jsonObject.put(Keys.RESULTS, result);
 		} catch (final Exception e) {
 			jsonObject.put(Keys.STATUS_CODE, false);
-			LOGGER.log(Level.ERROR, "Gets article paged failed", e);
+			logger.error("Gets article paged failed", e);
 		} finally {
 			Stopwatchs.end();
 		}
@@ -659,7 +659,7 @@ public class ArticleController {
 			jsonObject.put(Keys.RESULTS, result);
 		} catch (final Exception e) {
 			jsonObject.put(Keys.STATUS_CODE, false);
-			LOGGER.log(Level.ERROR, "Gets article paged failed", e);
+			logger.error("Gets article paged failed", e);
 		} finally {
 			Stopwatchs.end();
 		}
@@ -696,7 +696,7 @@ public class ArticleController {
 			}
 
 			final String authorId = getAuthorId(requestURI);
-			LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
+			logger.debug( "Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
 
 			final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
 
@@ -705,7 +705,7 @@ public class ArticleController {
 				return;
 			}
 
-			LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", authorId,
+			logger.debug( "Request author articles[authorId={0}, currentPageNum={1}]", authorId,
 					currentPageNum);
 
 			final JSONObject preference = preferenceQueryService.getPreference();
@@ -735,7 +735,7 @@ public class ArticleController {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 					return;
 				} catch (final IOException ex) {
-					LOGGER.error(ex.getMessage());
+					logger.error(ex.getMessage());
 				}
 			}
 
@@ -763,11 +763,11 @@ public class ArticleController {
 
 			statisticMgmtService.incBlogViewCount(request, response);
 		} catch (final ServiceException e) {
-			LOGGER.log(Level.ERROR, e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			try {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			} catch (final IOException ex) {
-				LOGGER.error(ex.getMessage());
+				logger.error(ex.getMessage());
 			}
 		}
 		renderer.render(request, response);
@@ -802,12 +802,12 @@ public class ArticleController {
 				return;
 			}
 
-			LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", archiveDateString,
+			logger.debug( "Request archive date[string={0}, currentPageNum={1}]", archiveDateString,
 					currentPageNum);
 			final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
 			if (null == result) {
-				LOGGER.log(Level.WARN, "Can not find articles for the specified archive date[string={0}]",
+				logger.warn("Can not find articles for the specified archive date[string={0}]",
 						archiveDateString);
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
@@ -830,7 +830,7 @@ public class ArticleController {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 					return;
 				} catch (final IOException ex) {
-					LOGGER.error(ex.getMessage());
+					logger.error(ex.getMessage());
 				}
 			}
 
@@ -859,12 +859,12 @@ public class ArticleController {
 
 			statisticMgmtService.incBlogViewCount(request, response);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 
 			try {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			} catch (final IOException ex) {
-				LOGGER.error(ex.getMessage());
+				logger.error(ex.getMessage());
 			}
 		}
 		renderer.render(request, response);
@@ -885,13 +885,13 @@ public class ArticleController {
 		try {
 			updateCnt = Integer.valueOf(request.getParameter("cnt"));
 		} catch (final NumberFormatException e) {
-			LOGGER.log(Level.WARN, e.getMessage(), e);
+			logger.warn(e.getMessage(), e);
 		}
 
 		try {
 			articleMgmtService.updateArticlesRandomValue(updateCnt);
 		} catch (final ServiceException e) {
-			LOGGER.log(Level.ERROR, "Updates articles random values failed", e);
+			logger.error("Updates articles random values failed", e);
 		}
 	}
 
@@ -919,7 +919,7 @@ public class ArticleController {
 
 		final String articleId = article.optString(Keys.OBJECT_ID);
 
-		LOGGER.log(Level.DEBUG, "Article[id={0}]", articleId);
+		logger.debug( "Article[id={0}]", articleId);
 		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
 		renderer.setTemplateName("article.ftl");
@@ -936,7 +936,7 @@ public class ArticleController {
 				return;
 			}
 
-			LOGGER.log(Level.TRACE, "Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
+			logger.trace("Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
 
 			articleQueryService.markdown(article);
 
@@ -993,17 +993,17 @@ public class ArticleController {
 			/*
 			 * try { eventManager.fireEventSynchronously(new
 			 * Event<JSONObject>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
-			 * } catch (final EventException e) { LOGGER.log(Level.ERROR,
+			 * } catch (final EventException e) { logger.error(
 			 * "Fires [" + EventTypes.BEFORE_RENDER_ARTICLE + "] event failed",
 			 * e); }
 			 */
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 
 			try {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			} catch (final IOException ex) {
-				LOGGER.error(ex.getMessage());
+				logger.error(ex.getMessage());
 			}
 		}
 		renderer.render(request, response);
@@ -1240,7 +1240,7 @@ public class ArticleController {
 
 			return ret;
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 
 			return Collections.emptyList();
 		}
@@ -1392,38 +1392,38 @@ public class ArticleController {
 		final String articleId = article.getString(Keys.OBJECT_ID);
 
 		Stopwatchs.start("Get Article Sign");
-		LOGGER.debug("Getting article sign....");
+		logger.debug("Getting article sign....");
 		article.put(Common.ARTICLE_SIGN,
 				articleQueryService.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference));
-		LOGGER.debug("Got article sign");
+		logger.debug("Got article sign");
 		Stopwatchs.end();
 
 		Stopwatchs.start("Get Next Article");
-		LOGGER.debug("Getting the next article....");
+		logger.debug("Getting the next article....");
 		final JSONObject nextArticle = articleQueryService.getNextArticle(articleId);
 
 		if (null != nextArticle) {
 			dataModel.put(Common.NEXT_ARTICLE_PERMALINK, nextArticle.getString(Article.ARTICLE_PERMALINK));
 			dataModel.put(Common.NEXT_ARTICLE_TITLE, nextArticle.getString(Article.ARTICLE_TITLE));
 			dataModel.put(Common.NEXT_ARTICLE_ABSTRACT, nextArticle.getString(Article.ARTICLE_ABSTRACT));
-			LOGGER.debug("Got the next article");
+			logger.debug("Got the next article");
 		}
 		Stopwatchs.end();
 
 		Stopwatchs.start("Get Previous Article");
-		LOGGER.debug("Getting the previous article....");
+		logger.debug("Getting the previous article....");
 		final JSONObject previousArticle = articleQueryService.getPreviousArticle(articleId);
 
 		if (null != previousArticle) {
 			dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK, previousArticle.getString(Article.ARTICLE_PERMALINK));
 			dataModel.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticle.getString(Article.ARTICLE_TITLE));
 			dataModel.put(Common.PREVIOUS_ARTICLE_ABSTRACT, previousArticle.getString(Article.ARTICLE_ABSTRACT));
-			LOGGER.debug("Got the previous article");
+			logger.debug("Got the previous article");
 		}
 		Stopwatchs.end();
 
 		Stopwatchs.start("Get Article CMTs");
-		LOGGER.debug("Getting article's comments....");
+		logger.debug("Getting article's comments....");
 		final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
 
 		if (0 != cmtCount) {
@@ -1433,7 +1433,7 @@ public class ArticleController {
 		} else {
 			dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
 		}
-		LOGGER.debug("Got article's comments");
+		logger.debug("Got article's comments");
 		Stopwatchs.end();
 
 		dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,

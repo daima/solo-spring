@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.dao.PluginDao;
 import org.b3log.solo.module.plugin.PluginManager;
@@ -46,13 +46,13 @@ public final class PluginRefresher {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PluginRefresher.class);
 
     public void action(final Event<List<AbstractPlugin>> event) throws EventException {
         final List<AbstractPlugin> plugins = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), plugins, PluginRefresher.class.getName());
+        logger.debug( "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                event.getType(), plugins, PluginRefresher.class);
 //        final Transaction transaction = pluginDao.beginTransaction();
         
         try {
@@ -63,7 +63,7 @@ public final class PluginRefresher {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Processing plugin loaded event error", e);
+            logger.error("Processing plugin loaded event error", e);
             throw new EventException(e);
         }
     }

@@ -15,8 +15,8 @@
  */
 package org.b3log.solo.frame.urlfetch.local;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.b3log.solo.frame.thread.ThreadService;
 import org.b3log.solo.frame.thread.ThreadServiceFactory;
@@ -41,7 +41,7 @@ public final class LocalURLFetchService implements URLFetchService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LocalURLFetchService.class);
+    private static Logger logger = LoggerFactory.getLogger(LocalURLFetchService.class);
 
     /**
      * Timeout for async fetch.
@@ -69,7 +69,7 @@ public final class LocalURLFetchService implements URLFetchService {
         final FutureTask<HTTPResponse> futureTask = new FetchTask(new Callable<HTTPResponse>() {
             @Override
             public HTTPResponse call() throws Exception {
-                LOGGER.log(Level.DEBUG, "Fetch async, request=[" + request.toString() + "]");
+                logger.debug( "Fetch async, request=[" + request.toString() + "]");
 
                 return fetch(request);
             }

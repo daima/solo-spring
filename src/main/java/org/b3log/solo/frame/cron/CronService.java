@@ -23,8 +23,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,7 +44,7 @@ public final class CronService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CronService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CronService.class);
 
     /**
      * Cron jobs.
@@ -60,7 +60,7 @@ public final class CronService {
      * Constructs cron jobs and schedules them.
      */
     public static void start() {
-        LOGGER.info("Constructing Cron Service....");
+        logger.info("Constructing Cron Service....");
 
         shutdown();
 
@@ -80,22 +80,22 @@ public final class CronService {
 
                         timer.scheduleAtFixedRate(cron, Cron.TEN * Cron.THOUSAND, cron.getPeriod());
 
-                        LOGGER.log(Level.DEBUG, "Scheduled a cron job[url={0}]", cron.getURL());
+                        logger.debug( "Scheduled a cron job[url={0}]", cron.getURL());
                     }
 
-                    LOGGER.log(Level.DEBUG, "[{0}] cron jobs totally", CRONS.size());
+                    logger.debug( "[{0}] cron jobs totally", CRONS.size());
 
                     break;
                 default:
                     throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can not initialize Cron Service!", e);
+            logger.error("Can not initialize Cron Service!", e);
 
             throw new IllegalStateException(e);
         }
 
-        LOGGER.info("Constructed Cron Service");
+        logger.info("Constructed Cron Service");
     }
 
     /**
@@ -118,7 +118,7 @@ public final class CronService {
         final File cronXML = Latkes.getWebFile("/WEB-INF/cron.xml");
 
         if (null == cronXML || !cronXML.exists()) {
-            LOGGER.log(Level.INFO, "Not found cron.xml, no cron jobs need to schedule");
+            logger.info("Not found cron.xml, no cron jobs need to schedule");
 
             return;
         }
@@ -147,7 +147,7 @@ public final class CronService {
                 CRONS.add(new Cron(url, description, schedule));
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Reads cron.xml failed", e);
+            logger.error("Reads cron.xml failed", e);
             throw new RuntimeException(e);
         }
     }

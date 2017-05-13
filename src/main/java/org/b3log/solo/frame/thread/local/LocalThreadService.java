@@ -19,8 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.thread.ThreadService;
 
 /**
@@ -34,7 +34,7 @@ public final class LocalThreadService implements ThreadService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LocalThreadService.class);
+    private static Logger logger = LoggerFactory.getLogger(LocalThreadService.class);
 
     /**
      * Executor service.
@@ -57,7 +57,7 @@ public final class LocalThreadService implements ThreadService {
             try {
                 monitor.wait();
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Wait failed", e);
+                logger.error("Wait failed", e);
             }
         }
 
@@ -119,7 +119,7 @@ public final class LocalThreadService implements ThreadService {
 
                     future.get(timeout, TimeUnit.MILLISECONDS);
                 } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Task executes failed [runnable=" + runnable.toString() + "]", e);
+                    logger.warn("Task executes failed [runnable=" + runnable.toString() + "]", e);
 
                     future = null;
                 }

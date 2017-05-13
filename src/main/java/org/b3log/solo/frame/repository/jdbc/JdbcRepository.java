@@ -30,8 +30,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.CompositeFilter;
 import org.b3log.solo.frame.repository.DBKeyGenerator;
@@ -71,7 +71,7 @@ public abstract class JdbcRepository implements Repository {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(JdbcRepository.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(JdbcRepository.class);
 
 	/**
 	 * Writable?
@@ -153,10 +153,10 @@ public abstract class JdbcRepository implements Repository {
 			id = buildAddSql(jsonObject, paramList, sql);
 			JdbcUtil.executeSql(sql.toString(), paramList, connection);
 		} catch (final SQLException se) {
-			LOGGER.log(Level.ERROR, "add:" + se.getMessage(), se);
+			logger.error("add:" + se.getMessage(), se);
 			throw new JDBCRepositoryException(se);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "add:" + e.getMessage(), e);
+			logger.error("add:" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 
@@ -270,10 +270,10 @@ public abstract class JdbcRepository implements Repository {
 
 			JdbcUtil.executeSql(sql, paramList, connection);
 		} catch (final SQLException se) {
-			LOGGER.log(Level.ERROR, "update:" + se.getMessage(), se);
+			logger.error("update:" + se.getMessage(), se);
 			throw new JDBCRepositoryException(se);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "update:" + e.getMessage(), e);
+			logger.error("update:" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 	}
@@ -300,7 +300,7 @@ public abstract class JdbcRepository implements Repository {
 		final JSONObject needUpdateJsonObject = getNeedUpdateJsonObject(oldJsonObject, jsonObject);
 
 		if (needUpdateJsonObject.length() == 0) {
-			LOGGER.log(Level.INFO, "nothing to update [{0}] for repository [{1}]", new Object[] { id, getTableName() });
+			logger.info("nothing to update [{0}] for repository [{1}]", new Object[] { id, getTableName() });
 			return;
 		}
 
@@ -403,10 +403,10 @@ public abstract class JdbcRepository implements Repository {
 			remove(id, sql);
 			JdbcUtil.executeSql(sql.toString(), connection);
 		} catch (final SQLException se) {
-			LOGGER.log(Level.ERROR, "remove:" + se.getMessage(), se);
+			logger.error("remove:" + se.getMessage(), se);
 			throw new JDBCRepositoryException(se);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "remove:" + e.getMessage(), e);
+			logger.error("remove:" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 	}
@@ -440,7 +440,7 @@ public abstract class JdbcRepository implements Repository {
 		} catch (final SQLException e) {
 			throw new JDBCRepositoryException(e);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "get:" + e.getMessage(), e);
+			logger.error("get:" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 
@@ -523,7 +523,7 @@ public abstract class JdbcRepository implements Repository {
 		} catch (final SQLException e) {
 			throw new JDBCRepositoryException(e);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "query: " + e.getMessage(), e);
+			logger.error("query: " + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 
@@ -546,7 +546,7 @@ public abstract class JdbcRepository implements Repository {
 		} catch (final SQLException e) {
 			throw new JDBCRepositoryException(e);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "query: " + e.getMessage(), e);
+			logger.error("query: " + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 	}
@@ -613,7 +613,7 @@ public abstract class JdbcRepository implements Repository {
 		ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
 
 		// if (currentPageNum > pageCnt) {
-		// LOGGER.log(Level.WARN, "Current page num [{0}] > page count [{1}]",
+		// logger.warn("Current page num [{0}] > page count [{1}]",
 		// new Object[] {currentPageNum, pageCnt});
 		// }
 		getQuerySql(currentPageNum, pageSize, selectSql, filterSql, orderBySql, sql);
@@ -764,10 +764,10 @@ public abstract class JdbcRepository implements Repository {
 				jsonObjects.add(jsonArray.getJSONObject(i));
 			}
 		} catch (final SQLException se) {
-			LOGGER.log(Level.ERROR, "getRandomly:" + se.getMessage(), se);
+			logger.error("getRandomly:" + se.getMessage(), se);
 			throw new JDBCRepositoryException(se);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "getRandomly:" + e.getMessage(), e);
+			logger.error("getRandomly:" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 
@@ -832,10 +832,10 @@ public abstract class JdbcRepository implements Repository {
 			jsonObject = JdbcUtil.queryJsonObject(sql.toString(), paramList, connection, getTableName());
 			count = jsonObject.getLong(jsonObject.keys().next().toString());
 		} catch (final SQLException se) {
-			LOGGER.log(Level.ERROR, "count:" + se.getMessage(), se);
+			logger.error("count:" + se.getMessage(), se);
 			throw new JDBCRepositoryException(se);
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "count :" + e.getMessage(), e);
+			logger.error("count :" + e.getMessage(), e);
 			throw new RepositoryException(e);
 		}
 
@@ -863,7 +863,7 @@ public abstract class JdbcRepository implements Repository {
 		final JdbcTransaction ret = TX.get();
 
 		if (null != ret) {
-			LOGGER.log(Level.DEBUG, "There is a transaction[isActive={0}] in current thread", ret.isActive());
+			logger.debug( "There is a transaction[isActive={0}] in current thread", ret.isActive());
 			if (ret.isActive()) {
 				return TX.get(); // Using 'the current transaction'
 			}
@@ -874,7 +874,7 @@ public abstract class JdbcRepository implements Repository {
 		try {
 			jdbcTransaction = new JdbcTransaction();
 		} catch (final Exception e) {
-			LOGGER.log(Level.ERROR, "Failed to initialize JDBC transaction", e);
+			logger.error("Failed to initialize JDBC transaction", e);
 
 			throw new IllegalStateException("Failed to initialize JDBC transaction");
 		}
@@ -938,7 +938,7 @@ public abstract class JdbcRepository implements Repository {
 		try {
 			ret = jdbcTemplate.getDataSource().getConnection();
 		} catch (final SQLException e) {
-			LOGGER.log(Level.ERROR, "Gets connection failed", e);
+			logger.error("Gets connection failed", e);
 		}
 
 		return ret;

@@ -15,7 +15,8 @@
  */
 package org.b3log.solo.frame.user;
 
-import freemarker.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User service factory.
@@ -29,7 +30,7 @@ public final class UserServiceFactory {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserServiceFactory.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UserServiceFactory.class);
 
     /**
      * User service.
@@ -37,7 +38,7 @@ public final class UserServiceFactory {
     private static final UserService USER_SERVICE;
 
     static {
-        LOGGER.info("Constructing User Service....");
+        logger.info("Constructing User Service....");
 
         try {
             Class<UserService> serviceClass = null;
@@ -48,7 +49,7 @@ public final class UserServiceFactory {
             throw new RuntimeException("Can not initialize User Service!", e);
         }
 
-        LOGGER.info("Constructed User Service");
+        logger.info("Constructed User Service");
     }
 
     /**

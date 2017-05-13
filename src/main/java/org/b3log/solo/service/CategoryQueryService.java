@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.CompositeFilterOperator;
 import org.b3log.solo.frame.repository.FilterOperator;
@@ -55,7 +55,7 @@ public class CategoryQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryQueryService.class);
+    private static Logger logger = LoggerFactory.getLogger(CategoryQueryService.class);
 
     /**
      * Category repository.
@@ -96,7 +96,7 @@ public class CategoryQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets most tag category error", e);
+            logger.error("Gets most tag category error", e);
 
             return Collections.emptyList();
         }
@@ -124,7 +124,7 @@ public class CategoryQueryService {
                 ret.add(tag);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets category [id=" + categoryId + "] tags error", e);
+            logger.error("Gets category [id=" + categoryId + "] tags error", e);
         }
 
         return ret;
@@ -146,7 +146,7 @@ public class CategoryQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets category [URI=" + categoryURI + "] failed", e);
+            logger.error("Gets category [URI=" + categoryURI + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -165,7 +165,7 @@ public class CategoryQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets category [title=" + categoryTitle + "] failed", e);
+            logger.error("Gets category [title=" + categoryTitle + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -218,7 +218,7 @@ public class CategoryQueryService {
         try {
             result = categoryDao.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets categories failed", e);
+            logger.error("Gets categories failed", e);
 
             throw new ServiceException(e);
         }
@@ -258,7 +258,7 @@ public class CategoryQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets a category [categoryId=" + categoryId + "] failed", e);
+            logger.error("Gets a category [categoryId=" + categoryId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -290,7 +290,7 @@ public class CategoryQueryService {
 
             return categoryTagDao.count(query) > 0;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Check category tag [tagTitle=" + tagTitle + ", categoryId=" + categoryId + "] failed", e);
+            logger.error("Check category tag [tagTitle=" + tagTitle + ", categoryId=" + categoryId + "] failed", e);
 
             return true;
         }

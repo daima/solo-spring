@@ -18,8 +18,8 @@ package org.b3log.solo.service;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
@@ -49,7 +49,7 @@ public class PageMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PageMgmtService.class);
 
     /**
      * Page repository.
@@ -176,9 +176,9 @@ public class PageMgmtService {
 
 //            transaction.commit();
 
-            LOGGER.log(Level.DEBUG, "Updated a page[id={0}]", pageId);
+            logger.debug( "Updated a page[id={0}]", pageId);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 //            if (transaction.isActive()) {
 //                transaction.rollback();
 //            }
@@ -197,7 +197,7 @@ public class PageMgmtService {
 //        final Transaction transaction = pageDao.beginTransaction();
 
         try {
-            LOGGER.log(Level.DEBUG, "Removing a page[id={0}]", pageId);
+            logger.debug( "Removing a page[id={0}]", pageId);
             removePageComments(pageId);
             pageDao.remove(pageId);
 
@@ -208,7 +208,7 @@ public class PageMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes a page[id=" + pageId + "] failed", e);
+            logger.error("Removes a page[id=" + pageId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -287,14 +287,14 @@ public class PageMgmtService {
 
             return ret;
         } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 //            if (transaction.isActive()) {
 //                transaction.rollback();
 //            }
 
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 //            if (transaction.isActive()) {
 //                transaction.rollback();
 //            }
@@ -331,7 +331,7 @@ public class PageMgmtService {
 //                    transaction.rollback();
 //                }
 
-                LOGGER.log(Level.WARN, "Cant not find the target page of source page[order={0}]", srcPageOrder);
+                logger.warn("Cant not find the target page of source page[order={0}]", srcPageOrder);
                 return;
             }
 
@@ -348,7 +348,7 @@ public class PageMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Changes page's order failed", e);
+            logger.error("Changes page's order failed", e);
 
             throw new ServiceException(e);
         }

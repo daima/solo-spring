@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.TagQueryService;
@@ -47,7 +47,7 @@ public class FillTagArticles implements TemplateMethodModelEx {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FillTagArticles.class);
+    private static Logger logger = LoggerFactory.getLogger(FillTagArticles.class);
     /**
      * Arg size.
      */
@@ -66,7 +66,7 @@ public class FillTagArticles implements TemplateMethodModelEx {
     @Override
     public Object exec(final List arguments) throws TemplateModelException {
         if (arguments.size() != ARG_SIZE) {
-            LOGGER.debug("FillTagArticles with wrong arguments!");
+            logger.debug("FillTagArticles with wrong arguments!");
 
             throw new TemplateModelException("Wrong arguments!");
         }
@@ -88,7 +88,7 @@ public class FillTagArticles implements TemplateMethodModelEx {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Fill tag articles failed", e);
+            logger.error("Fill tag articles failed", e);
         }
 
         return null;

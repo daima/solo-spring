@@ -39,8 +39,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
@@ -86,7 +86,7 @@ public class ArticleMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ArticleMgmtService.class);
 
     /**
      * Article query service.
@@ -233,7 +233,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Cancels publish article failed", e);
+            logger.error("Cancels publish article failed", e);
 
             throw new ServiceException(e);
         }
@@ -263,7 +263,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Can't put the article[oId{0}] to top", articleId);
+            logger.error("Can't put the article[oId{0}] to top", articleId);
             throw new ServiceException(e);
         }
     }
@@ -390,7 +390,7 @@ public class ArticleMgmtService {
                 try {
                 	rhythmArticleSender.action(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
+                    logger.error(e.getMessage(), e);
                 }
             } else {
                 // Fire update article event
@@ -402,7 +402,7 @@ public class ArticleMgmtService {
                 	rhythmArticleUpdater.action(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
 //                    eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
+                    logger.error(e.getMessage(), e);
                 }
             }
 
@@ -412,7 +412,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates an article failed", e);
+            logger.error("Updates an article failed", e);
 
             throw e;
         } catch (final Exception e) {
@@ -420,7 +420,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Updates an article failed", e);
+            logger.error("Updates an article failed", e);
 
             throw new ServiceException(e.getMessage());
         }
@@ -567,11 +567,11 @@ public class ArticleMgmtService {
 
             article.remove(Common.POST_TO_COMMUNITY);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Adds an article failed", e);
+            logger.error("Adds an article failed", e);
 
             throw new ServiceException(e);
         } catch (final EventException e) {
-            LOGGER.log(Level.WARN, "Adds an article event process failed", e);
+            logger.warn("Adds an article event process failed", e);
         }
 
         return ret;
@@ -584,7 +584,7 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void removeArticle(final String articleId) throws ServiceException {
-        LOGGER.log(Level.DEBUG, "Removing an article[id={0}]", articleId);
+        logger.debug( "Removing an article[id={0}]", articleId);
 
 //        final Transaction transaction = articleDao.beginTransaction();
 
@@ -615,11 +615,11 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes an article[id=" + articleId + "] failed", e);
+            logger.error("Removes an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.DEBUG, "Removed an article[id={0}]", articleId);
+        logger.debug( "Removed an article[id={0}]", articleId);
     }
 
     /**
@@ -648,7 +648,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.WARN, "Updates article random value failed");
+            logger.warn("Updates article random value failed");
 
             throw new ServiceException(e);
         }
@@ -670,7 +670,7 @@ public class ArticleMgmtService {
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
+            logger.error("Gets article [id=" + articleId + "] failed", e);
 
             return;
         }
@@ -688,7 +688,7 @@ public class ArticleMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.WARN, "Updates article view count failed");
+            logger.warn("Updates article view count failed");
 
             throw new ServiceException(e);
         }
@@ -719,16 +719,16 @@ public class ArticleMgmtService {
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
                 }
                 tagDao.update(tagId, tag);
-                LOGGER.log(Level.TRACE, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
+                logger.trace("Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
                         tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                         articleId);
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Decs tag references count of article[id" + articleId + "] failed", e);
+            logger.error("Decs tag references count of article[id" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.DEBUG, "Deced all tag reference count of article[id={0}]", articleId);
+        logger.debug( "Deced all tag reference count of article[id={0}]", articleId);
     }
 
     /**
@@ -765,7 +765,7 @@ public class ArticleMgmtService {
 
             archiveDateArticleDao.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Unarchive date for article[id=" + articleId + "] failed", e);
+            logger.error("Unarchive date for article[id=" + articleId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -838,7 +838,7 @@ public class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.DEBUG, "Tag need to add[title={0}]", newTagTitle);
+                logger.debug( "Tag need to add[title={0}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             } else {
                 tagsUnchanged.add(newTag);
@@ -848,14 +848,14 @@ public class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.DEBUG, "Tag dropped[title={0}]", oldTag);
+                logger.debug( "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
             } else {
                 tagsUnchanged.remove(oldTag);
             }
         }
 
-        LOGGER.log(Level.DEBUG, "Tags unchanged[{0}]", tagsUnchanged);
+        logger.debug( "Tags unchanged[{0}]", tagsUnchanged);
         for (final JSONObject tagUnchanged : tagsUnchanged) {
             final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
 
@@ -983,7 +983,7 @@ public class ArticleMgmtService {
             String tagId;
 
             if (null == tag) {
-                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
+                logger.trace("Found a new tag[title={0}] in article[title={1}]",
                         tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -998,7 +998,7 @@ public class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                logger.trace("Found a existing tag[title={0}, id={1}] in article[title={2}]",
                         tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
 
@@ -1095,7 +1095,7 @@ public class ArticleMgmtService {
 
                 archiveDateDao.add(archiveDate);
             } catch (final ParseException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
+                logger.error(e.getMessage(), e);
                 throw new RepositoryException(e);
             }
         }

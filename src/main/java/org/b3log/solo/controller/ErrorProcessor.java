@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.user.UserService;
 import org.b3log.solo.frame.user.UserServiceFactory;
 import org.b3log.solo.model.Common;
@@ -51,7 +51,7 @@ public class ErrorProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleController.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     /**
      * Filler.
@@ -91,7 +91,7 @@ public class ErrorProcessor {
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
+        logger.debug( "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
         final ConsoleRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("error/" + templateName);
@@ -109,12 +109,12 @@ public class ErrorProcessor {
 
             dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);

@@ -18,8 +18,8 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class LinkMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(LinkMgmtService.class);
 
     /**
      * Link repository.
@@ -68,7 +68,7 @@ public class LinkMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes a link[id=" + linkId + "] failed", e);
+            logger.error("Removes a link[id=" + linkId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -107,7 +107,7 @@ public class LinkMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             throw new ServiceException(e);
         }
@@ -142,7 +142,7 @@ public class LinkMgmtService {
 //                    transaction.rollback();
 //                }
 
-                LOGGER.log(Level.WARN, "Cant not find the target link of source link[order={0}]", srcLinkOrder);
+                logger.warn("Cant not find the target link of source link[order={0}]", srcLinkOrder);
                 return;
             }
 
@@ -159,7 +159,7 @@ public class LinkMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Changes link's order failed", e);
+            logger.error("Changes link's order failed", e);
 
             throw new ServiceException(e);
         }
@@ -200,7 +200,7 @@ public class LinkMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Adds a link failed", e);
+            logger.error("Adds a link failed", e);
             throw new ServiceException(e);
         }
     }

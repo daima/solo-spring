@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
@@ -44,7 +44,7 @@ public final class InitCheckFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(InitCheckFilter.class);
 
     /**
      * Whether initialization info reported.
@@ -70,7 +70,7 @@ public final class InitCheckFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
 
-        LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
+        logger.trace("Request[URI={0}]", requestURI);
 
         // If requests Latke Remote APIs, skips this filter 
         if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
@@ -93,7 +93,7 @@ public final class InitCheckFilter implements Filter {
         }
 
 //        if (!initReported) {
-//            LOGGER.log(Level.DEBUG, "Solo has not been initialized, so redirects to /init");
+//            logger.debug( "Solo has not been initialized, so redirects to /init");
 //            initReported = true;
 //        }
 

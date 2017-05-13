@@ -17,7 +17,8 @@ package org.b3log.solo.frame.mail;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Mail service factory.
@@ -31,7 +32,7 @@ public final class MailServiceFactory {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(MailServiceFactory.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(MailServiceFactory.class);
 
     /**
      * Mail service.
@@ -39,7 +40,7 @@ public final class MailServiceFactory {
     private static final MailService MAIL_SERVICE;
 
     static {
-        LOGGER.info("Constructing Mail Service....");
+        logger.info("Constructing Mail Service....");
 
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
@@ -59,7 +60,7 @@ public final class MailServiceFactory {
             throw new RuntimeException("Can not initialize Mail Service!", e);
         }
 
-        LOGGER.info("Constructed Mail Service");
+        logger.info("Constructed Mail Service");
     }
 
     /**

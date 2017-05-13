@@ -17,7 +17,8 @@ package org.b3log.solo.frame.urlfetch;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * URL fetch service factory.
@@ -31,7 +32,7 @@ public final class URLFetchServiceFactory {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(URLFetchServiceFactory.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(URLFetchServiceFactory.class);
 
     /**
      * URL fetch service.
@@ -39,7 +40,7 @@ public final class URLFetchServiceFactory {
     private static final URLFetchService URL_FETCH_SERVICE;
 
     static {
-        LOGGER.info("Constructing URL Fetch Service....");
+        logger.info("Constructing URL Fetch Service....");
 
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
@@ -59,7 +60,7 @@ public final class URLFetchServiceFactory {
             throw new RuntimeException("Can not initialize URL Fetch Service!", e);
         }
 
-        LOGGER.info("Constructed URL Fetch Service");
+        logger.info("Constructed URL Fetch Service");
     }
 
     /**

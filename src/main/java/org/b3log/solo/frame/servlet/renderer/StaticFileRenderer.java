@@ -20,8 +20,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,7 +35,7 @@ public class StaticFileRenderer extends AbstractHTTPResponseRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StaticFileRenderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(StaticFileRenderer.class);
     
     /**
      * Request dispatcher.
@@ -56,7 +56,7 @@ public class StaticFileRenderer extends AbstractHTTPResponseRenderer {
         try {
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "servlet forward error", e);
+            logger.error("servlet forward error", e);
             throw new RuntimeException(e);
         }
 

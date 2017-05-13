@@ -18,8 +18,8 @@ package org.b3log.solo.frame.cron;
 import java.net.URL;
 import java.util.TimerTask;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
@@ -36,7 +36,7 @@ public final class Cron extends TimerTask {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Cron.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Cron.class);
 
     /**
      * Time unit constant - 10.
@@ -99,7 +99,7 @@ public final class Cron extends TimerTask {
 
     @Override
     public void run() {
-        LOGGER.debug("Executing scheduled task....");
+        logger.debug("Executing scheduled task....");
 
         final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
@@ -110,9 +110,9 @@ public final class Cron extends TimerTask {
             request.setRequestMethod(RequestMethod.GET);
             urlFetchService.fetchAsync(request);
 
-            LOGGER.log(Level.DEBUG, "Executed scheduled task[url={0}]", url);
+            logger.debug( "Executed scheduled task[url={0}]", url);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Scheduled task execute failed", e);
+            logger.error("Scheduled task execute failed", e);
 
         }
     }
@@ -126,7 +126,7 @@ public final class Cron extends TimerTask {
         final int num = Integer.valueOf(StringUtils.substringBetween(schedule, " ", " "));
         final String timeUnit = StringUtils.substringAfterLast(schedule, " ");
 
-        LOGGER.log(Level.TRACE, "Parsed a cron job [schedule={0}]: [num={1}, timeUnit={2}, description={3}], ",
+        logger.trace("Parsed a cron job [schedule={0}]: [num={1}, timeUnit={2}, description={3}], ",
                 new Object[]{schedule, num, timeUnit, description});
 
         if ("hours".equals(timeUnit)) {

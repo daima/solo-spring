@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeDatabase;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
 
 
@@ -39,7 +39,7 @@ public final class JdbcFactory implements JdbcDatabase {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(JdbcRepository.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(JdbcRepository.class);
 
     /**
      * the holder of the databaseSolution.
@@ -99,7 +99,7 @@ public final class JdbcFactory implements JdbcDatabase {
         try {
             databaseSolution = (AbstractJdbcDatabaseSolution) Class.forName(databaseSolutionClassName).newInstance();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "init the [" + databaseSolutionClassName + "]JdbcDatabaseSolution instance wrong", e);
+            logger.error("init the [" + databaseSolutionClassName + "]JdbcDatabaseSolution instance wrong", e);
         }
     }
 

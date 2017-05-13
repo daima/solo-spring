@@ -30,8 +30,8 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 import org.b3log.solo.frame.cron.CronService;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.thread.local.LocalThreadService;
 import org.b3log.solo.util.PropsUtil;
 import org.b3log.solo.util.Strings;
@@ -53,7 +53,7 @@ public final class Latkes {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Latkes.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Latkes.class);
 
     /**
      * Locale. Initializes this by {@link #setLocale(java.util.Locale)}.
@@ -455,7 +455,7 @@ public final class Latkes {
         final String value = PropsUtil.getProperty(serviceName);
 
         if (null == value) {
-            LOGGER.log(Level.WARN, "Rutnime service[name={0}] is undefined, please configure it in latkes.properties", serviceName);
+            logger.warn("Rutnime service[name={0}] is undefined, please configure it in latkes.properties", serviceName);
             return null;
         }
 
@@ -476,7 +476,7 @@ public final class Latkes {
 //            return;
 //        }
 //
-//        LOGGER.log(Level.TRACE, "Initializes runtime environment from configuration file");
+//        logger.trace("Initializes runtime environment from configuration file");
 //        final String runtimeEnvValue = PropsUtil.getProperty("runtimeEnv");
 //
 //        if (null != runtimeEnvValue) {
@@ -491,24 +491,24 @@ public final class Latkes {
 //            if (null != runtimeModeValue) {
 //                runtimeMode = RuntimeMode.valueOf(runtimeModeValue);
 //            } else {
-//                LOGGER.log(Level.TRACE, "Can't parse runtime mode in latke.properties, default to [PRODUCTION]");
+//                logger.trace("Can't parse runtime mode in latke.properties, default to [PRODUCTION]");
 //                runtimeMode = RuntimeMode.PRODUCTION;
 //            }
 //        }
 //
-//        LOGGER.log(Level.INFO, "Latke is running on [{0}] with mode [{1}]", new Object[]{Latkes.getRuntimeEnv(), Latkes.getRuntimeMode()});
+//        logger.info("Latke is running on [{0}] with mode [{1}]", new Object[]{Latkes.getRuntimeEnv(), Latkes.getRuntimeMode()});
 //
 //        if (RuntimeEnv.LOCAL == runtimeEnv) {
 //            // Read local database configurations
 //            final RuntimeDatabase runtimeDatabase = getRuntimeDatabase();
 //
-//            LOGGER.log(Level.INFO, "Runtime database is [{0}]", runtimeDatabase);
+//            logger.info("Runtime database is [{0}]", runtimeDatabase);
 //
 //            if (RuntimeDatabase.H2 == runtimeDatabase) {
 //                final String newTCPServer = Latkes.getLocalProperty("newTCPServer");
 //
 //                if ("true".equals(newTCPServer)) {
-//                    LOGGER.log(Level.INFO, "Starting H2 TCP server");
+//                    logger.info("Starting H2 TCP server");
 //
 //                    final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
 //
@@ -526,18 +526,18 @@ public final class Latkes {
 //
 //                    port = StringUtils.substringBefore(port, "/");
 //
-//                    LOGGER.log(Level.TRACE, "H2 TCP port [{0}]", port);
+//                    logger.trace("H2 TCP port [{0}]", port);
 //
 //                    try {
 //                        h2 = org.h2.tools.Server.createTcpServer(new String[]{"-tcpPort", port, "-tcpAllowOthers"}).start();
 //                    } catch (final SQLException e) {
 //                        final String msg = "H2 TCP server create failed";
 //
-//                        LOGGER.log(Level.ERROR, msg, e);
+//                        logger.error(msg, e);
 //                        throw new IllegalStateException(msg);
 //                    }
 //
-//                    LOGGER.info("Started H2 TCP server");
+//                    logger.info("Started H2 TCP server");
 //                }
 //            }
 //        }
@@ -690,7 +690,7 @@ public final class Latkes {
                         h2.stop();
                         h2.shutdown();
 
-                        LOGGER.log(Level.INFO, "Closed H2 TCP server");
+                        logger.info("Closed H2 TCP server");
                     }
                     break;
 
@@ -701,7 +701,7 @@ public final class Latkes {
             CronService.shutdown();
             LocalThreadService.EXECUTOR_SERVICE.shutdown();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Shutdowns Latke failed", e);
+            logger.error("Shutdowns Latke failed", e);
         }
 
         // This manually deregisters JDBC driver, which prevents Tomcat from complaining about memory leaks
@@ -711,9 +711,9 @@ public final class Latkes {
 
             try {
                 DriverManager.deregisterDriver(driver);
-                LOGGER.log(Level.TRACE, "Deregistered JDBC driver [" + driver + "]");
+                logger.trace("Deregistered JDBC driver [" + driver + "]");
             } catch (final SQLException e) {
-                LOGGER.log(Level.ERROR, "Deregister JDBC driver [" + driver + "] failed", e);
+                logger.error("Deregister JDBC driver [" + driver + "] failed", e);
             }
         }
     }
@@ -736,7 +736,7 @@ public final class Latkes {
      * @param skinDirName the specified directory name
      */
     public static void loadSkin(final String skinDirName) {
-        LOGGER.debug("Loading skin [dirName=" + skinDirName + ']');
+        logger.debug("Loading skin [dirName=" + skinDirName + ']');
 
         final ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
 
@@ -744,7 +744,7 @@ public final class Latkes {
 
         Latkes.setTimeZone("Asia/Shanghai");
 
-        LOGGER.info("Loaded skins....");
+        logger.info("Loaded skins....");
     }
 
     /**
@@ -764,7 +764,7 @@ public final class Latkes {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Read skin configuration error[msg={0}]", e.getMessage());
+            logger.error("Read skin configuration error[msg={0}]", e.getMessage());
 
             return null;
         }
@@ -804,7 +804,7 @@ public final class Latkes {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Reads file [path=" + path + "] failed", e);
+            logger.error("Reads file [path=" + path + "] failed", e);
 
             return null;
         }

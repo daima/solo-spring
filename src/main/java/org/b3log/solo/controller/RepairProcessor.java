@@ -29,8 +29,8 @@ import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.BlogDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailService.Message;
 import org.b3log.solo.frame.mail.MailServiceFactory;
@@ -69,7 +69,7 @@ public class RepairProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(RepairProcessor.class);
 
     /**
      * Bean manager.
@@ -131,7 +131,7 @@ public class RepairProcessor {
      */
     @RequestMapping(value = "/fix/normalization/articles/properties", method=RequestMethod.POST)
     public void removeUnusedArticleProperties(final HttpServletRequest request, final HttpServletResponse response) {
-        LOGGER.log(Level.INFO, "Processes remove unused article properties");
+        logger.info("Processes remove unused article properties");
 
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
 //        Transaction transaction = null;
@@ -161,7 +161,7 @@ public class RepairProcessor {
                     }
 
                     articleDao.update(article.getString(Keys.OBJECT_ID), article);
-                    LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]",
+                    logger.info("Found an article[id={0}] exists unused properties[{1}]",
                             article.getString(Keys.OBJECT_ID), nameSet);
                 }
             }
@@ -172,7 +172,7 @@ public class RepairProcessor {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
         }
         renderer.render(request, response);
@@ -199,7 +199,7 @@ public class RepairProcessor {
             final JSONObject statistic = statisticQueryService.getStatistic();
 
             if (statistic.has(Statistic.STATISTIC_BLOG_COMMENT_COUNT) && statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
-                LOGGER.info("No need for repairing statistic");
+                logger.info("No need for repairing statistic");
                 renderer.setContent("No need for repairing statistic.");
                 renderer.render(request, response);
                 return;
@@ -217,7 +217,7 @@ public class RepairProcessor {
 
             renderer.setContent("Restores statistic succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             renderer.setContent("Restores statistics failed, error msg[" + e.getMessage() + "]");
         }
         renderer.render(request, response);
@@ -250,7 +250,7 @@ public class RepairProcessor {
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
         }
         renderer.render(request, response);
@@ -296,13 +296,13 @@ public class RepairProcessor {
 
                 tagDao.update(tagId, tag);
 
-                LOGGER.log(Level.INFO, "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
+                logger.info("Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
                         tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt);
             }
 
             renderer.setContent("Repair sucessfully!");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
         }
         renderer.render(request, response);
@@ -334,7 +334,7 @@ public class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -352,7 +352,7 @@ public class RepairProcessor {
      */
     @RequestMapping(value = "/rm-all-data.do", method=RequestMethod.POST)
     public void removeAllDataPOST(final HttpServletRequest request, final HttpServletResponse response) {
-        LOGGER.info("Removing all data....");
+        logger.info("Removing all data....");
 
         boolean succeed = false;
 
@@ -372,7 +372,7 @@ public class RepairProcessor {
 
             succeed = true;
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Removed partial data only", e);
+            logger.warn("Removed partial data only", e);
         }
 
         final StringBuilder htmlBuilder = new StringBuilder();
@@ -392,14 +392,14 @@ public class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             try {
                 response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        LOGGER.info("Removed all data....");
+        logger.info("Removed all data....");
         renderer.render(request, response);
     }
 
@@ -436,7 +436,7 @@ public class RepairProcessor {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes all data in repository[name=" + "--" + "] failed", e);
+            logger.error("Removes all data in repository[name=" + "--" + "] failed", e);
         }
     }
 }

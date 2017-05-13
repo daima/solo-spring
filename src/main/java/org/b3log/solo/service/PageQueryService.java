@@ -18,8 +18,8 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.SortDirection;
@@ -47,7 +47,7 @@ public class PageQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PageQueryService.class);
 
     /**
      * Page repository.
@@ -91,7 +91,7 @@ public class PageQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             throw new ServiceException(e);
         }
@@ -162,7 +162,7 @@ public class PageQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets pages failed", e);
+            logger.error("Gets pages failed", e);
 
             throw new ServiceException(e);
         }

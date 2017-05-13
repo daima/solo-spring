@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.module.util.QueryResults;
@@ -53,7 +53,7 @@ public class CommentConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CommentConsole.class);
 
     /**
      * User query service.
@@ -124,7 +124,7 @@ public class CommentConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -177,7 +177,7 @@ public class CommentConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -245,7 +245,7 @@ public class CommentConsole {
 
             renderer.setJSONObject(result);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -305,7 +305,7 @@ public class CommentConsole {
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -365,7 +365,7 @@ public class CommentConsole {
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

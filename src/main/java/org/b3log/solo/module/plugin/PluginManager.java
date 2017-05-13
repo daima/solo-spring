@@ -38,8 +38,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.plugin.PluginType;
 import org.b3log.solo.module.event.AbstractPlugin;
@@ -66,7 +66,7 @@ public class PluginManager {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginManager.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PluginManager.class);
 
     /**
      * Type of loaded event.
@@ -104,7 +104,7 @@ public class PluginManager {
      */
     public List<AbstractPlugin> getPlugins() {
         if (pluginCache.isEmpty()) {
-            LOGGER.info("Plugin cache miss, reload");
+            logger.info("Plugin cache miss, reload");
 
 //            load();
         }
@@ -126,7 +126,7 @@ public class PluginManager {
      */
     public Set<AbstractPlugin> getPlugins(final String viewName) {
         if (pluginCache.isEmpty()) {
-            LOGGER.info("Plugin cache miss, reload");
+            logger.info("Plugin cache miss, reload");
 
 //            load();
         }
@@ -157,7 +157,7 @@ public class PluginManager {
         if (null != pluginDirPaths) {
             for (final String pluginDirPath : pluginDirPaths) {
                 try {
-                    LOGGER.log(Level.INFO, "Loading plugin under directory[{0}]", pluginDirPath);
+                    logger.info("Loading plugin under directory[{0}]", pluginDirPath);
 
                     final AbstractPlugin plugin = load(pluginDirPath, pluginCache);
 
@@ -165,7 +165,7 @@ public class PluginManager {
                         plugins.add(plugin);
                     }
                 } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Load plugin under directory[" + pluginDirPath + "] failed", e);
+                    logger.warn("Load plugin under directory[" + pluginDirPath + "] failed", e);
                 }
             }
         }
@@ -207,7 +207,7 @@ public class PluginManager {
         try {
             classesFileDirURL = servletContext.getResource(props.getProperty("classesDirPath"));
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.ERROR, "Reads [" + props.getProperty("classesDirPath") + "] failed", e);
+            logger.error("Reads [" + props.getProperty("classesDirPath") + "] failed", e);
         }
 
         final URLClassLoader classLoader = new URLClassLoader(new URL[] {
@@ -224,13 +224,13 @@ public class PluginManager {
         final String rendererId = props.getProperty(Plugin.PLUGIN_RENDERER_ID);
 
         if (StringUtils.isBlank(rendererId)) {
-            LOGGER.log(Level.WARN, "no renderer defined by this plugin[" + plugin + "]，this plugin will be ignore!");
+            logger.warn("no renderer defined by this plugin[" + plugin + "]，this plugin will be ignore!");
             return null;
         }
 
         final Class<?> pluginClass = classLoader.loadClass(pluginClassName);
 
-        LOGGER.log(Level.TRACE, "Loading plugin class[name={0}]", pluginClassName);
+        logger.trace("Loading plugin class[name={0}]", pluginClassName);
         final AbstractPlugin ret = (AbstractPlugin) pluginClass.newInstance();
 
         ret.setRendererId(rendererId);
@@ -273,7 +273,7 @@ public class PluginManager {
             set.add(plugin);
         }
 
-        LOGGER.log(Level.DEBUG, "Registered plugin[name={0}, version={1}] for rendererId[name={2}], [{3}] plugins totally",
+        logger.debug( "Registered plugin[name={0}, version={1}] for rendererId[name={2}], [{3}] plugins totally",
             new Object[] {plugin.getName(), plugin.getVersion(), rendererId, holder.size()});
     }
 
@@ -291,7 +291,7 @@ public class PluginManager {
         final String version = props.getProperty(Plugin.PLUGIN_VERSION);
         final String types = props.getProperty(Plugin.PLUGIN_TYPES);
 
-        LOGGER.log(Level.TRACE, "Plugin[name={0}, author={1}, version={2}, types={3}]", new Object[] {name, author, version, types});
+        logger.trace("Plugin[name={0}, author={1}, version={2}, types={3}]", new Object[] {name, author, version, types});
 
         plugin.setAuthor(author);
         plugin.setName(name);
@@ -310,9 +310,9 @@ public class PluginManager {
 
                 plugin.setSetting(jsonObject);
             } catch (final IOException ie) {
-                LOGGER.log(Level.ERROR, "reading the config of the plugin[" + name + "]  failed", ie);
+                logger.error("reading the config of the plugin[" + name + "]  failed", ie);
             } catch (final JSONException e) {
-                LOGGER.log(Level.ERROR, "convert the  config of the plugin[" + name + "] to json failed", e);
+                logger.error("convert the  config of the plugin[" + name + "] to json failed", e);
             }
         }
 
@@ -342,11 +342,11 @@ public class PluginManager {
             final String eventListenerClassName = eventListenerClassArray[i];
 
             if (Strings.isEmptyOrNull(eventListenerClassName)) {
-                LOGGER.log(Level.INFO, "No event listener to load for plugin[name={0}]", plugin.getName());
+                logger.info("No event listener to load for plugin[name={0}]", plugin.getName());
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Loading event listener[className={0}]", eventListenerClassName);
+            logger.debug( "Loading event listener[className={0}]", eventListenerClassName);
 
             final Class<?> eventListenerClass = classLoader.loadClass(eventListenerClassName);
 
@@ -354,7 +354,7 @@ public class PluginManager {
 
             plugin.addEventListener(eventListener);
 
-            LOGGER.log(Level.DEBUG, "Registered event listener[class={0}, eventType={1}] for plugin[name={2}]",
+            logger.debug( "Registered event listener[class={0}, eventType={1}] for plugin[name={2}]",
                 new Object[] {eventListener.getClass(), eventListener.getEventType(), plugin.getName()});
         }
     }*/

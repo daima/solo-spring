@@ -5,17 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.Repositories;
 import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.repository.jdbc.JdbcRepository;
 import org.b3log.solo.util.Callstacks;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 @Component
 public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao {
@@ -23,7 +22,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AbstractBlogDao.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(AbstractBlogDao.class);
 
 	@Override
 	public String add(final JSONObject jsonObject) throws RepositoryException {
@@ -61,7 +60,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.get(id);
 		} catch (final RepositoryException e) {
-			LOGGER.log(Level.WARN, "SQL exception[msg={0}]", e.getMessage());
+			logger.warn("SQL exception[msg={0}]", e.getMessage());
 			return null;
 		}
 	}
@@ -81,7 +80,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.get(query);
 		} catch (final RepositoryException e) {
-			LOGGER.log(Level.WARN, "SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(),
+			logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(),
 					super.getTableName(), query.toString());
 
 			final JSONObject ret = new JSONObject();
@@ -102,7 +101,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.select(statement, params);
 		} catch (final RepositoryException e) {
-			LOGGER.log(Level.WARN, "SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(),
+			logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(),
 					super.getTableName(), statement);
 
 			return Collections.emptyList();

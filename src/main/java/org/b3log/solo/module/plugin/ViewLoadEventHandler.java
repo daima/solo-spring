@@ -22,8 +22,8 @@ import java.util.Set;
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.plugin.ViewLoadEventData;
 import org.b3log.solo.module.event.AbstractPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public final class ViewLoadEventHandler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ViewLoadEventHandler.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ViewLoadEventHandler.class);
 
     public String getEventType() {
         return Keys.FREEMARKER_ACTION;
@@ -57,17 +57,17 @@ public final class ViewLoadEventHandler {
         
         final Set<AbstractPlugin> plugins = pluginManager.getPlugins(viewName);
 
-        LOGGER.log(Level.DEBUG, "Plugin count[{0}] of view[name={1}]", new Object[] {plugins.size(), viewName});
+        logger.debug( "Plugin count[{0}] of view[name={1}]", new Object[] {plugins.size(), viewName});
         for (final AbstractPlugin plugin : plugins) {
             switch (plugin.getStatus()) {
             case ENABLED:
                 plugin.plug(dataModel);
-                LOGGER.log(Level.DEBUG, "Plugged[name={0}]", plugin.getName());
+                logger.debug( "Plugged[name={0}]", plugin.getName());
                 break;
 
             case DISABLED:
                 plugin.unplug();
-                LOGGER.log(Level.DEBUG, "Unplugged[name={0}]", plugin.getName());
+                logger.debug( "Unplugged[name={0}]", plugin.getName());
                 break;
 
             default:

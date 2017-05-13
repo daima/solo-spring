@@ -27,8 +27,8 @@ import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
@@ -62,7 +62,7 @@ public class InitProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(InitProcessor.class);
 
     /**
      * Initialization service.
@@ -190,7 +190,7 @@ public class InitProcessor {
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             ret.put(Keys.MSG, e.getMessage());
         }
         renderer.render(request, response);

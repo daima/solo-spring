@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.AbstractHTTPResponseRenderer;
 import org.b3log.solo.util.freemarker.Templates;
 
@@ -44,7 +44,7 @@ public abstract class AbstractFreeMarkerRenderer extends AbstractHTTPResponseRen
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractFreeMarkerRenderer.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(AbstractFreeMarkerRenderer.class);
 
     /**
      * Template name.
@@ -96,7 +96,7 @@ public abstract class AbstractFreeMarkerRenderer extends AbstractHTTPResponseRen
             try {
                 writer = new PrintWriter(response.getOutputStream());
             } catch (final IOException ex) {
-                LOGGER.log(Level.ERROR, "Can not get response writer", ex);
+                logger.error("Can not get response writer", ex);
                 return;
             }
         }
@@ -111,12 +111,12 @@ public abstract class AbstractFreeMarkerRenderer extends AbstractHTTPResponseRen
         final Template template = getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
 
         if (null == template) {
-            LOGGER.log(Level.ERROR, "Not found template[{0}]", templateName);
+            logger.error("Not found template[{0}]", templateName);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.log(Level.ERROR, "Can not send error 404!", ex);
+                logger.error("Can not send error 404!", ex);
             }
 
             return;
@@ -133,12 +133,12 @@ public abstract class AbstractFreeMarkerRenderer extends AbstractHTTPResponseRen
 
             afterRender(request, response);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "FreeMarker renders error", e);
+            logger.error("FreeMarker renders error", e);
 
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } catch (final IOException ex) {
-                LOGGER.log(Level.ERROR, "Can not send error 500!", ex);
+                logger.error("Can not send error 500!", ex);
             }
         }
     }

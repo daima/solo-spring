@@ -18,8 +18,8 @@ package org.b3log.solo.service;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.CategoryDao;
 import org.b3log.solo.dao.CategoryTagDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.CompositeFilterOperator;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
@@ -46,7 +46,7 @@ public class CategoryMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryMgmtService.class);
+    private static Logger logger = LoggerFactory.getLogger(CategoryMgmtService.class);
 
     /**
      * Category repository.
@@ -88,7 +88,7 @@ public class CategoryMgmtService {
 //                    transaction.rollback();
 //                }
 
-                LOGGER.log(Level.WARN, "Cant not find the target category of source category [order={0}]", srcCategoryOrder);
+                logger.warn("Cant not find the target category of source category [order={0}]", srcCategoryOrder);
 
                 return;
             }
@@ -106,7 +106,7 @@ public class CategoryMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Changes category's order failed", e);
+            logger.error("Changes category's order failed", e);
 
             throw new ServiceException(e);
         }
@@ -140,7 +140,7 @@ public class CategoryMgmtService {
             final JSONObject relation = relations.optJSONObject(0);
             categoryTagDao.remove(relation.optString(Keys.OBJECT_ID));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Adds a category-tag relation failed", e);
+            logger.error("Adds a category-tag relation failed", e);
 
             throw new ServiceException(e);
         }
@@ -166,7 +166,7 @@ public class CategoryMgmtService {
 
             categoryDao.update(categoryId, category);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Adds a category-tag relation failed", e);
+            logger.error("Adds a category-tag relation failed", e);
 
             throw new ServiceException(e);
         }
@@ -197,7 +197,7 @@ public class CategoryMgmtService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Adds a category failed", e);
+            logger.error("Adds a category failed", e);
 
             throw new ServiceException(e);
         }
@@ -219,7 +219,7 @@ public class CategoryMgmtService {
 
             categoryDao.update(categoryId, category);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Updates a category [id=" + categoryId + "] failed", e);
+            logger.error("Updates a category [id=" + categoryId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -237,7 +237,7 @@ public class CategoryMgmtService {
             categoryTagDao.removeByCategoryId(categoryId);
             categoryDao.remove(categoryId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Remove a category [id=" + categoryId + "] failed", e);
+            logger.error("Remove a category [id=" + categoryId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -254,7 +254,7 @@ public class CategoryMgmtService {
         try {
             categoryTagDao.removeByCategoryId(categoryId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Remove category-tag [categoryId=" + categoryId + "] failed", e);
+            logger.error("Remove category-tag [categoryId=" + categoryId + "] failed", e);
 
             throw new ServiceException(e);
         }

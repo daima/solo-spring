@@ -24,8 +24,8 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeDatabase;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.util.Callstacks;
 import org.json.JSONArray;
@@ -48,7 +48,7 @@ public abstract class AbstractRepository implements Repository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractRepository.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(AbstractRepository.class);
 
     /**
      * Repository.
@@ -103,7 +103,7 @@ public abstract class AbstractRepository implements Repository {
         }
 
         Repositories.addRepository(repository);
-        LOGGER.log(Level.INFO, "Constructed repository[name={0}]", name);
+        logger.info("Constructed repository[name={0}]", name);
     }
 
     @Override
@@ -142,7 +142,7 @@ public abstract class AbstractRepository implements Repository {
         try {
             return repository.get(id);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "SQL exception[msg={0}]", e.getMessage());
+            logger.warn("SQL exception[msg={0}]", e.getMessage());
             return null;
         }
     }
@@ -162,7 +162,7 @@ public abstract class AbstractRepository implements Repository {
         try {
             return repository.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(), repository.getTableName(),
+            logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(), repository.getTableName(),
                     query.toString());
 
             final JSONObject ret = new JSONObject();
@@ -183,7 +183,7 @@ public abstract class AbstractRepository implements Repository {
         try {
             return repository.select(statement, params);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(), repository.getTableName(),
+            logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(), repository.getTableName(),
                     statement);
 
             return Collections.emptyList();

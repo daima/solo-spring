@@ -21,16 +21,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.model.Pagination;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -46,7 +47,7 @@ public final class Requests {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Requests.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Requests.class);
 
     /**
      * The pagination path pattern.
@@ -93,34 +94,6 @@ public final class Requests {
      * Cookie expiry of "visited".
      */
     private static final int COOKIE_EXPIRY = 60 * 60 * 24; // 24 hours
-
-    /**
-     * Logs the specified request with the specified level and logger.
-     * <p>
-     * Logging information of the specified request includes:
-     * <p>
-     * <ul>
-     * <li>method</li>
-     * <li>URL</li>
-     * <li>content type</li>
-     * <li>character encoding</li>
-     * <li>local (address, port, name)</li>
-     * <li>remote (address, port, host)</li>
-     * <li>headers</li>
-     * </ul>
-     * </p>
-     *
-     * @param httpServletRequest the specified HTTP servlet request
-     * @param level              the specified logging level
-     * @param logger             the specified logger
-     */
-    public static void log(final HttpServletRequest httpServletRequest, final Level level, final Logger logger) {
-        if (!logger.isLoggable(level)) {
-            return;
-        }
-
-        logger.log(level, getLog(httpServletRequest));
-    }
 
     /**
      * Gets log of the specified request.
@@ -220,7 +193,7 @@ public final class Requests {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Parses cookie failed", e);
+            logger.error("Parses cookie failed", e);
         }
 
         return ret;
@@ -315,7 +288,7 @@ public final class Requests {
                 response.addCookie(c);
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=visited]", e);
+            logger.warn("Parses cookie failed, clears the cookie[name=visited]", e);
 
             final Cookie c = new Cookie("visited", null);
 
@@ -382,7 +355,7 @@ public final class Requests {
      * @see #PAGINATION_PATH_PATTERN
      */
     public static int getCurrentPageNum(final String path) {
-        LOGGER.log(Level.TRACE, "Getting current page number[path={0}]", path);
+        logger.trace("Getting current page number[path={0}]", path);
 
         if (Strings.isEmptyOrNull(path) || path.equals("/")) {
             return 1;
@@ -405,7 +378,7 @@ public final class Requests {
      * @see #PAGINATION_PATH_PATTERN
      */
     public static int getPageSize(final String path) {
-        LOGGER.log(Level.TRACE, "Page number[string={0}]", path);
+        logger.trace("Page number[string={0}]", path);
 
         if (Strings.isEmptyOrNull(path)) {
             return DEFAULT_PAGE_SIZE;
@@ -434,7 +407,7 @@ public final class Requests {
      * @see #PAGINATION_PATH_PATTERN
      */
     public static int getWindowSize(final String path) {
-        LOGGER.log(Level.TRACE, "Page number[string={0}]", path);
+        logger.trace("Page number[string={0}]", path);
 
         if (Strings.isEmptyOrNull(path)) {
             return DEFAULT_WINDOW_SIZE;
@@ -497,7 +470,7 @@ public final class Requests {
 
             return new JSONObject(tmp);
         } catch (final Exception ex) {
-            LOGGER.log(Level.ERROR, errMsg, ex);
+            logger.error(errMsg, ex);
 
             return new JSONObject();
         }

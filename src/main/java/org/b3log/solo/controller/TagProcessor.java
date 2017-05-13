@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -68,7 +68,7 @@ public class TagProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(TagProcessor.class);
 
     @Autowired
     private Skins skins;
@@ -135,7 +135,7 @@ public class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
+            logger.debug( "Tag[title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -162,7 +162,7 @@ public class TagProcessor {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 } catch (final IOException ex) {
-                    LOGGER.error(ex.getMessage());
+                    logger.error(ex.getMessage());
                 }
             }
 
@@ -180,11 +180,11 @@ public class TagProcessor {
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
-            LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+            logger.trace("Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                     currentPageNum, pageSize, pageCount, windowSize);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
-            LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
+            logger.trace("tag-articles[pageNums={0}]", pageNums);
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 
@@ -199,20 +199,20 @@ public class TagProcessor {
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);

@@ -26,8 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.util.CollectionUtils;
 import org.b3log.solo.util.PropsUtil;
 import org.b3log.solo.util.Strings;
@@ -46,7 +46,7 @@ public final class Repositories {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Repositories.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Repositories.class);
 
     /**
      * Repository holder.
@@ -88,7 +88,7 @@ public final class Repositories {
 
             repository.setWritable(writable);
 
-            LOGGER.log(Level.INFO, "Sets repository[name={0}] writable[{1}]", new Object[] {repositoryName, writable});
+            logger.info("Sets repository[name={0}] writable[{1}]", new Object[] {repositoryName, writable});
         }
 
         repositoryiesWritable = writable;
@@ -108,7 +108,7 @@ public final class Repositories {
         final JSONArray ret = new JSONArray();
 
         if (null == repositoriesDescription) {
-            LOGGER.log(Level.INFO, "Not found repository description[repository.json] file under classpath");
+            logger.info("Not found repository description[repository.json] file under classpath");
 
             return ret;
         }
@@ -322,21 +322,21 @@ public final class Repositories {
      * Loads repository description.
      */
     private static void loadRepositoryDescription() {
-        LOGGER.log(Level.INFO, "Loading repository description....");
+        logger.info("Loading repository description....");
 
         final InputStream inputStream = AbstractRepository.class.getResourceAsStream("/repository.json");
 
         if (null == inputStream) {
-            LOGGER.log(Level.INFO, "Not found repository description[repository.json] file under classpath");
+            logger.info("Not found repository description[repository.json] file under classpath");
             return;
         }
 
-        LOGGER.log(Level.INFO, "Parsing repository description....");
+        logger.info("Parsing repository description....");
 
         try {
             final String description = IOUtils.toString(inputStream);
 
-            LOGGER.log(Level.DEBUG, "{0}{1}", new Object[] {Strings.LINE_SEPARATOR, description});
+            logger.debug( "{0}{1}", new Object[] {Strings.LINE_SEPARATOR, description});
 
             repositoriesDescription = new JSONObject(description);
 
@@ -353,12 +353,12 @@ public final class Repositories {
                 repository.put("name", tableNamePrefix + repository.optString("name"));
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Parses repository description failed", e);
+            logger.error("Parses repository description failed", e);
         } finally {
             try {
                 inputStream.close();
             } catch (final IOException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
+                logger.error(e.getMessage(), e);
                 throw new RuntimeException(e);
             }
         }

@@ -26,8 +26,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.CommentDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
@@ -60,7 +60,7 @@ public class CommentReceiver {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CommentReceiver.class);
 
     /**
      * Comment management service.
@@ -173,7 +173,7 @@ public class CommentReceiver {
             try {
                 new URL(commentURL);
             } catch (final MalformedURLException e) {
-                LOGGER.log(Level.WARN, "The comment URL is invalid [{0}]", commentURL);
+                logger.warn("The comment URL is invalid [{0}]", commentURL);
                 commentURL = "";
             }
             final String commentThumbnailURL = symphonyCmt.getString("commentAuthorThumbnailURL");
@@ -210,7 +210,7 @@ public class CommentReceiver {
                 } else {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                             originalCommentId, commentName, commentContent);
                 }
             } else {
@@ -237,7 +237,7 @@ public class CommentReceiver {
             try {
                 commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
+                logger.warn("Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -257,7 +257,7 @@ public class CommentReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

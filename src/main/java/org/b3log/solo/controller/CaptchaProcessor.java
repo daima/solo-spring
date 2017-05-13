@@ -37,8 +37,8 @@ import org.b3log.solo.RuntimeEnv;
 import org.b3log.solo.frame.image.Image;
 import org.b3log.solo.frame.image.ImageService;
 import org.b3log.solo.frame.image.ImageServiceFactory;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.PNGRenderer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,7 +63,7 @@ public class CaptchaProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CaptchaProcessor.class);
 
     /**
      * Images service.
@@ -107,7 +107,7 @@ public class CaptchaProcessor {
             final HttpSession httpSession = request.getSession(false);
 
             if (null != httpSession) {
-                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", captcha, httpSession.getId());
+                logger.debug( "Captcha[{0}] for session[id={1}]", captcha, httpSession.getId());
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
 
@@ -117,7 +117,7 @@ public class CaptchaProcessor {
 
             renderer.setImage(captchaImg);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         renderer.render(request, response);
     }
@@ -126,7 +126,7 @@ public class CaptchaProcessor {
      * Loads captcha.
      */
     private synchronized void loadCaptchas() {
-        LOGGER.debug("Loading captchas....");
+        logger.debug("Loading captchas....");
 
         try {
             captchas = new Image[CAPTCHA_COUNT];
@@ -173,11 +173,11 @@ public class CaptchaProcessor {
 
             zipFile.close();
         } catch (final Exception e) {
-            LOGGER.error("Can not load captchs!");
+            logger.error("Can not load captchs!");
 
             throw new IllegalStateException(e);
         }
 
-        LOGGER.debug("Loaded captch images");
+        logger.debug("Loaded captch images");
     }
 }

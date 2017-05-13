@@ -19,8 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.SortDirection;
@@ -47,7 +47,7 @@ public class TagQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(TagQueryService.class);
 
     /**
      * Tag repository.
@@ -84,11 +84,11 @@ public class TagQueryService {
 
             ret.put(Tag.TAG, tag);
 
-            LOGGER.log(Level.DEBUG, "Got an tag[title={0}]", tagTitle);
+            logger.debug( "Got an tag[title={0}]", tagTitle);
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets an article failed", e);
+            logger.error("Gets an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -103,7 +103,7 @@ public class TagQueryService {
         try {
             return tagDao.count();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tags failed", e);
+            logger.error("Gets tags failed", e);
 
             throw new ServiceException(e);
         }
@@ -130,7 +130,7 @@ public class TagQueryService {
 
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tags failed", e);
+            logger.error("Gets tags failed", e);
 
             throw new ServiceException(e);
         }
@@ -159,7 +159,7 @@ public class TagQueryService {
 
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top tags failed", e);
+            logger.error("Gets top tags failed", e);
 
             throw new ServiceException(e);
         }
@@ -188,7 +188,7 @@ public class TagQueryService {
 
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets bottom tags failed", e);
+            logger.error("Gets bottom tags failed", e);
 
             throw new ServiceException(e);
         }

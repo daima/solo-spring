@@ -26,13 +26,13 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.util.Strings;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.
@@ -47,7 +47,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @since 1.2.0
  */
 public final class Starter {
-
+	private static Logger logger = LoggerFactory.getLogger(Starter.class);
     static {
         try {
             Log.setLog(new Slf4jLog());
@@ -63,7 +63,6 @@ public final class Starter {
      * @throws java.lang.Exception if start failed
      */
     public static void main(final String[] args) throws Exception {
-        final Logger logger = Logger.getLogger(Starter.class);
 
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
@@ -164,7 +163,7 @@ public final class Starter {
         try {
             server.start();
         } catch (final Exception e) {
-            logger.log(Level.ERROR, "Server start failed", e);
+            logger.error("Server start failed", e);
 
             System.exit(-1);
         }

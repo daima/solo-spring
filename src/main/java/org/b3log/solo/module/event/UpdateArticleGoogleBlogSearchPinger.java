@@ -22,8 +22,8 @@ import java.net.URLEncoder;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
@@ -58,7 +58,7 @@ public final class UpdateArticleGoogleBlogSearchPinger {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpdateArticleGoogleBlogSearchPinger.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UpdateArticleGoogleBlogSearchPinger.class);
 
     /**
      * URL fetch service.
@@ -89,7 +89,7 @@ public final class UpdateArticleGoogleBlogSearchPinger {
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.TRACE,
+                logger.trace(
                     "Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
                         article.getString(Article.ARTICLE_TITLE));
                 return;
@@ -99,14 +99,14 @@ public final class UpdateArticleGoogleBlogSearchPinger {
             final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") + "&url="
                 + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
 
-            LOGGER.log(Level.DEBUG,
+            logger.debug(
                 "Request Google Blog Search Service API[{0}] while updateing " + "an article[title=" + articleTitle + "]", spec);
             final HTTPRequest request = new HTTPRequest();
 
             request.setURL(new URL(spec));
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while updating an " + "article[title=" + articleTitle + "]", e);
+            logger.error("Ping Google Blog Search Service fail while updating an " + "article[title=" + articleTitle + "]", e);
         }
     }
 }

@@ -30,8 +30,8 @@ import org.apache.commons.io.IOUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeDatabase;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +49,7 @@ public final class JdbcUtil {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(JdbcUtil.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(JdbcUtil.class);
 
     /**
      * executeSql.
@@ -60,7 +60,7 @@ public final class JdbcUtil {
      * @throws SQLException SQLException
      */
     public static boolean executeSql(final String sql, final Connection connection) throws SQLException {
-        LOGGER.log(Level.TRACE, "executeSql: {0}", sql);
+        logger.trace("executeSql: {0}", sql);
 
         final Statement statement = connection.createStatement();
         final boolean isSuccess = !statement.execute(sql);
@@ -80,7 +80,7 @@ public final class JdbcUtil {
      * @throws SQLException SQLException
      */
     public static boolean executeSql(final String sql, final List<Object> paramList, final Connection connection) throws SQLException {
-        LOGGER.log(Level.TRACE, "Execute SQL [{0}]", sql);
+        logger.trace("Execute SQL [{0}]", sql);
 
         final PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -148,7 +148,7 @@ public final class JdbcUtil {
      */
     private static JSONObject queryJson(final String sql, final List<Object> paramList, final Connection connection,
             final boolean ifOnlyOne, final String tableName) throws SQLException, JSONException, RepositoryException {
-        LOGGER.log(Level.TRACE, "Query SQL [{0}]", sql);
+        logger.trace("Query SQL [{0}]", sql);
 
         final PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -186,7 +186,7 @@ public final class JdbcUtil {
         final List<FieldDefinition> definitionList = JdbcRepositories.getRepositoriesMap().get(tableName);
 
         if (definitionList == null) {
-            LOGGER.log(Level.ERROR, "resultSetToJsonObject: null definitionList finded for table  {0}", tableName);
+            logger.error("resultSetToJsonObject: null definitionList finded for table  {0}", tableName);
             throw new RepositoryException("resultSetToJsonObject: null definitionList finded for table  " + tableName);
         }
 
@@ -229,13 +229,13 @@ public final class JdbcUtil {
                         try {
                             str = IOUtils.toString(clob.getCharacterStream());
                         } catch (final IOException e) {
-                            LOGGER.log(Level.ERROR,
+                            logger.error(
                                     "Cant not read column[name=" + columnName + "] in table[name=" + tableName + "] on H2", e);
                         } finally {
                             try {
                                 clob.free();
                             } catch (final Exception e) { // Some drivers dose not implement free(), for example, jtds
-                                LOGGER.log(Level.ERROR, "clob.free error", e);
+                                logger.error("clob.free error", e);
                             }
                         }
 

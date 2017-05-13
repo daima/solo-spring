@@ -21,21 +21,21 @@ import java.util.Date;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
+import org.b3log.solo.SoloConstant;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
-import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Strings;
-import org.b3log.solo.SoloConstant;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.PropsUtil;
+import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,10 +56,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public final class RhythmArticleSender {
 	@Autowired
 	private PreferenceQueryService preferenceQueryService ;
-    /**
-     * Logger.
-     */
-    private static final org.b3log.solo.frame.logging.Logger LOGGER = Logger.getLogger(RhythmArticleSender.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(RhythmArticleSender.class);
 
     /**
      * URL fetch service.
@@ -75,7 +72,7 @@ public final class RhythmArticleSender {
         try {
             ADD_ARTICLE_URL = new URL(PropsUtil.getString("rhythm.servePath") + "/article");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm add article] error!");
+            logger.error("Creates remote service address[rhythm add article] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -84,13 +81,13 @@ public final class RhythmArticleSender {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, RhythmArticleSender.class.getName());
+        logger.debug( "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                event.getType(), data, RhythmArticleSender.class);
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.DEBUG, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
+                logger.debug( "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
 
                 return;
             }
@@ -106,7 +103,7 @@ public final class RhythmArticleSender {
             }
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.INFO, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+                logger.info("Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                         originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
                 return;
             }
@@ -143,10 +140,10 @@ public final class RhythmArticleSender {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
+            logger.error("Sends an article to Rhythm error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.DEBUG, "Sent an article to Rhythm");
+        logger.debug( "Sent an article to Rhythm");
     }
 
     /**

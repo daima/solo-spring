@@ -17,7 +17,8 @@ package org.b3log.solo.frame.image;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Image service factory.
@@ -30,7 +31,7 @@ public final class ImageServiceFactory {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ImageServiceFactory.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ImageServiceFactory.class);
 
     /**
      * Image service.
@@ -38,7 +39,7 @@ public final class ImageServiceFactory {
     private static final ImageService IMAGE_SERVICE;
 
     static {
-        LOGGER.info("Constructing Image Service....");
+        logger.info("Constructing Image Service....");
 
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
@@ -58,7 +59,7 @@ public final class ImageServiceFactory {
             throw new RuntimeException("Can not initialize Image Service!", e);
         }
 
-        LOGGER.info("Constructed Image Service");
+        logger.info("Constructed Image Service");
     }
 
     /**

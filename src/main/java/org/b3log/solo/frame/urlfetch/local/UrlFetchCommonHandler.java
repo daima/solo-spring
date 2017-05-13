@@ -28,8 +28,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.urlfetch.HTTPHeader;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.HTTPResponse;
@@ -50,7 +50,7 @@ class UrlFetchCommonHandler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UrlFetchCommonHandler.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UrlFetchCommonHandler.class);
 
     /**
      * Default trust manager.
@@ -77,7 +77,7 @@ class UrlFetchCommonHandler {
             ctx.init(new KeyManager[0], new TrustManager[]{new DefaultTrustManager()}, new SecureRandom());
             SSLContext.setDefault(ctx);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Init SSL context failed", e);
+            logger.error("Init SSL context failed", e);
         }
     }
 

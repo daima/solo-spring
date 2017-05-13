@@ -25,8 +25,8 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.util.Locales;
 
 /**
@@ -40,7 +40,7 @@ public class LangPropsServiceImpl implements LangPropsService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LangPropsServiceImpl.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(LangPropsServiceImpl.class);
 
     /**
      * Language properties.
@@ -58,12 +58,12 @@ public class LangPropsServiceImpl implements LangPropsService {
             try {
                 langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
             } catch (final MissingResourceException e) {
-                LOGGER.log(Level.WARN, "{0}, using default locale[{1}] instead", new Object[]{e.getMessage(), Latkes.getLocale()});
+                logger.warn("{0}, using default locale[{1}] instead", new Object[]{e.getMessage(), Latkes.getLocale()});
 
                 try {
                     langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, Latkes.getLocale());
                 } catch (final MissingResourceException ex) {
-                    LOGGER.log(Level.WARN, "{0}, using default lang.properties instead", new Object[]{e.getMessage()});
+                    logger.warn("{0}, using default lang.properties instead", new Object[]{e.getMessage()});
                     langBundle = ResourceBundle.getBundle(Keys.LANGUAGE);
                 }
             }
@@ -108,7 +108,7 @@ public class LangPropsServiceImpl implements LangPropsService {
         if (!Keys.LANGUAGE.equals(baseName)) {
             final RuntimeException e = new RuntimeException("i18n resource[baseName=" + baseName + "] not found");
 
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             throw e;
         }
@@ -116,7 +116,7 @@ public class LangPropsServiceImpl implements LangPropsService {
         try {
             return replaceVars(ResourceBundle.getBundle(baseName, locale).getString(key));
         } catch (final MissingResourceException e) {
-            LOGGER.log(Level.WARN, "{0}, get it from default locale[{1}]", new Object[]{e.getMessage(), Latkes.getLocale()});
+            logger.warn("{0}, get it from default locale[{1}]", new Object[]{e.getMessage(), Latkes.getLocale()});
 
             return ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key);
         }

@@ -23,8 +23,8 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
@@ -54,7 +54,7 @@ public final class SymphonyCommentSender {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SymphonyCommentSender.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(SymphonyCommentSender.class);
 
     /**
      * URL fetch service.
@@ -70,7 +70,7 @@ public final class SymphonyCommentSender {
         try {
             ADD_COMMENT_URL = new URL(PropsUtil.getString("symphony.servePath") + "/solo/comment");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.ERROR, "Creates remote service address[symphony add comment] error!");
+            logger.error("Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -79,8 +79,8 @@ public final class SymphonyCommentSender {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, RhythmArticleSender.class.getName());
+        logger.debug( "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                event.getType(), data, RhythmArticleSender.class);
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
@@ -91,7 +91,7 @@ public final class SymphonyCommentSender {
             }
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+                logger.trace("Solo runs on local server, so should not send this comment[id={0}] to Symphony",
                         originalComment.getString(Keys.OBJECT_ID));
                 return;
             }
@@ -121,10 +121,10 @@ public final class SymphonyCommentSender {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends a comment to Symphony error: {0}", e.getMessage());
+            logger.error("Sends a comment to Symphony error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.DEBUG, "Sent a comment to Symphony");
+        logger.debug( "Sent a comment to Symphony");
     }
 
     /**

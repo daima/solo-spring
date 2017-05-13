@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
@@ -67,7 +67,7 @@ public class CommentProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CommentProcessor.class);
 
     @Autowired
     private Skins skins;
@@ -141,7 +141,7 @@ public class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            logger.warn("Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             renderer.render(request, response);
             return;
         }
@@ -199,7 +199,7 @@ public class CommentProcessor {
 
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can not add comment on page", e);
+            logger.error("Can not add comment on page", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -248,7 +248,7 @@ public class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            logger.warn("Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             renderer.render(request, response);
             return;
         }
@@ -304,7 +304,7 @@ public class CommentProcessor {
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
 
-            LOGGER.log(Level.ERROR, "Can not add comment on article", e);
+            logger.error("Can not add comment on article", e);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }

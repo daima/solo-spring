@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.frame.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.model.Common;
@@ -58,7 +58,7 @@ public class PageProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(PageProcessor.class);
 
     @Autowired
     private Skins skins;
@@ -148,12 +148,12 @@ public class PageProcessor {
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
+                logger.error(ex.getMessage());
             }
         }
         renderer.render(request, response);

@@ -25,8 +25,8 @@ import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.dao.OptionDao;
 import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailServiceFactory;
 import org.b3log.solo.frame.model.User;
@@ -60,7 +60,7 @@ public class UpgradeService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpgradeService.class);
+    private static Logger logger = LoggerFactory.getLogger(UpgradeService.class);
     /**
      * Step for article updating.
      */
@@ -137,7 +137,7 @@ public class UpgradeService {
 //                return;
 //            }
 //
-//            LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
+//            logger.warn("Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
 //
 //            if (!sent) {
 //                notifyUserByEmail();
@@ -145,8 +145,8 @@ public class UpgradeService {
 //                sent = true;
 //            }
 //        } catch (final Exception e) {
-//            LOGGER.log(Level.ERROR, e.getMessage(), e);
-//            LOGGER.log(Level.ERROR,
+//            logger.error(e.getMessage(), e);
+//            logger.error(
 //                    "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
 //                            + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
 //                            + "https://github.com/b3log/solo/issues/new</a>) ");
@@ -159,7 +159,7 @@ public class UpgradeService {
      * @throws Exception upgrade fails
      */
     private void perform() throws Exception {
-        LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
+        logger.info("Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
 //        Transaction transaction = null;
 
@@ -195,17 +195,17 @@ public class UpgradeService {
 
 //            transaction.commit();
 
-            LOGGER.log(Level.INFO, "Updated preference");
+            logger.info("Updated preference");
         } catch (final Exception e) {
 //            if (null != transaction && transaction.isActive()) {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Upgrade failed!", e);
+            logger.error("Upgrade failed!", e);
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
         }
 
-        LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
+        logger.info("Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
     }
 
     /**
@@ -227,7 +227,7 @@ public class UpgradeService {
 
             userDao.update(user.optString(Keys.OBJECT_ID), user);
 
-            LOGGER.log(Level.INFO, "Updated user[email={0}]", email);
+            logger.info("Updated user[email={0}]", email);
         }
     }
 
@@ -237,12 +237,12 @@ public class UpgradeService {
      * @throws Exception exception
      */
     private void upgradeArticles() throws Exception {
-        LOGGER.log(Level.INFO, "Adds a property [articleEditorType] to each of articles");
+        logger.info("Adds a property [articleEditorType] to each of articles");
 
         final JSONArray articles = articleDao.get(new Query()).getJSONArray(Keys.RESULTS);
 
         if (articles.length() <= 0) {
-            LOGGER.log(Level.TRACE, "No articles");
+            logger.trace("No articles");
             return;
         }
 
@@ -258,14 +258,14 @@ public class UpgradeService {
 
                 final String articleId = article.optString(Keys.OBJECT_ID);
 
-                LOGGER.log(Level.INFO, "Found an article[id={0}]", articleId);
+                logger.info("Found an article[id={0}]", articleId);
                 article.put(Article.ARTICLE_EDITOR_TYPE, "tinyMCE");
 
                 articleDao.update(article.getString(Keys.OBJECT_ID), article);
 
                 if (0 == i % STEP) {
 //                    transaction.commit();
-                    LOGGER.log(Level.TRACE, "Updated some articles");
+                    logger.trace("Updated some articles");
                 }
             }
 
@@ -273,7 +273,7 @@ public class UpgradeService {
 //                transaction.commit();
 //            }
 
-            LOGGER.log(Level.TRACE, "Updated all articles");
+            logger.trace("Updated all articles");
         } catch (final Exception e) {
 //            if (transaction.isActive()) {
 //                transaction.rollback();
@@ -301,6 +301,6 @@ public class UpgradeService {
 
         MAIL_SVC.send(message);
 
-        LOGGER.info("Send an email to the user who upgrades Solo with a discontinuous version.");
+        logger.info("Send an email to the user who upgrades Solo with a discontinuous version.");
     }
 }

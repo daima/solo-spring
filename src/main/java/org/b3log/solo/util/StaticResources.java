@@ -24,8 +24,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,7 +41,7 @@ public final class StaticResources {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StaticResources.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(StaticResources.class);
 
     /**
      * Static resource path patterns.
@@ -95,7 +95,7 @@ public final class StaticResources {
      * Initializes the static resource path patterns.
      */
     private static synchronized void init() {
-        LOGGER.trace("Reads static resources definition from [static-resources.xml]");
+        logger.trace("Reads static resources definition from [static-resources.xml]");
 
         final File staticResources = Latkes.getWebFile("/WEB-INF/static-resources.xml");
         if (null == staticResources || !staticResources.exists()) {
@@ -130,11 +130,11 @@ public final class StaticResources {
 
             logBuilder.append("]");
 
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.debug(logBuilder.toString());
+            if (logger.isTraceEnabled()) {
+                logger.debug(logBuilder.toString());
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Reads [" + staticResources.getName() + "] failed", e);
+            logger.error("Reads [" + staticResources.getName() + "] failed", e);
             throw new RuntimeException(e);
         }
 
@@ -152,8 +152,8 @@ public final class StaticResources {
         }
         logBuilder.append("], ").append('[').append(STATIC_RESOURCE_PATHS.size()).append("] path patterns");
 
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace(logBuilder.toString());
+        if (logger.isTraceEnabled()) {
+            logger.trace(logBuilder.toString());
         }
 
         inited = true;

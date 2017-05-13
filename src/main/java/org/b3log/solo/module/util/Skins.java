@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.LangPropsService;
@@ -61,7 +61,7 @@ public final class Skins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Skins.class);
 
     /**
      * Properties map.
@@ -97,7 +97,7 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
+                logger.debug( "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
                 langs = new HashMap<String, String>();
 
                 final String language = Locales.getLanguage(localeString);
@@ -118,7 +118,7 @@ public final class Skins {
                 }
 
                 LANG_MAP.put(langName, langs);
-                LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
+                logger.debug( "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
                         currentSkinDirName, localeString, langs.size());
             }
 
@@ -130,7 +130,7 @@ public final class Skins {
 
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
+            logger.error("Fills skin langs failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();

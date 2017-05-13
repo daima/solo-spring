@@ -26,8 +26,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailServiceFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
@@ -77,7 +77,7 @@ public class CommentMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CommentMgmtService.class);
 
     /**
      * Article management service.
@@ -201,13 +201,13 @@ public class CommentMgmtService {
         final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
+            logger.debug( "Do not send comment notification mail to admin itself[{0}]", adminEmail);
 
             return;
         }
 
         if (Latkes.getServePath().contains("localhost")) {
-            LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
+            logger.info("Solo runs on local server, so should not send mail");
 
             return;
         }
@@ -216,7 +216,7 @@ public class CommentMgmtService {
             final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
 
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
+                logger.debug( "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
                         commentId);
                 return;
             }
@@ -265,7 +265,7 @@ public class CommentMgmtService {
                 "{commenter}", commenter);
         message.setHtmlBody(mailBody);
 
-        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
+        logger.debug( "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
                 mailSubject, mailBody, adminEmail);
 
         mailService.send(message);
@@ -333,7 +333,7 @@ public class CommentMgmtService {
             String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
 
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-                LOGGER.log(Level.WARN, "Comment name is too long[{0}]", commentName);
+                logger.warn("Comment name is too long[{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
@@ -342,7 +342,7 @@ public class CommentMgmtService {
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
 
             if (!Strings.isEmail(commentEmail)) {
-                LOGGER.log(Level.WARN, "Comment email is invalid[{0}]", commentEmail);
+                logger.warn("Comment email is invalid[{0}]", commentEmail);
                 ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
                 return ret;
@@ -351,7 +351,7 @@ public class CommentMgmtService {
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
             if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
-                LOGGER.log(Level.WARN, "Comment URL is invalid[{0}]", commentURL);
+                logger.warn("Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
                 return ret;
@@ -360,7 +360,7 @@ public class CommentMgmtService {
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
-                LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
+                logger.warn("Comment conent length is invalid[{0}]", commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
 
                 return ret;
@@ -383,7 +383,7 @@ public class CommentMgmtService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
+            logger.warn("Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
 
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -476,7 +476,7 @@ public class CommentMgmtService {
 
                     ret.put(Common.IS_REPLY, true);
                 } else {
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
+                    logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
                             commentName, commentContent);
                 }
             }
@@ -508,7 +508,7 @@ public class CommentMgmtService {
             try {
                 sendNotificationMail(page, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
+                logger.warn("Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -619,7 +619,7 @@ public class CommentMgmtService {
 
                     ret.put(Common.IS_REPLY, true);
                 } else {
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                             originalCommentId, commentName, commentContent);
                 }
             }
@@ -647,7 +647,7 @@ public class CommentMgmtService {
             try {
                 sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
+                logger.warn("Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -694,7 +694,7 @@ public class CommentMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes a comment of a page failed", e);
+            logger.error("Removes a comment of a page failed", e);
             throw new ServiceException(e);
         }
     }
@@ -727,7 +727,7 @@ public class CommentMgmtService {
 //                transaction.rollback();
 //            }
 
-            LOGGER.log(Level.ERROR, "Removes a comment of an article failed", e);
+            logger.error("Removes a comment of an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -826,7 +826,7 @@ public class CommentMgmtService {
 
             statusCode = response.getResponseCode();
         } catch (final IOException e) {
-            LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+            logger.warn("Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         } finally {
             if (HttpServletResponse.SC_OK != statusCode) {
                 thumbnailURL = Latkes.getStaticServePath() + "/images/" + DEFAULT_USER_THUMBNAIL;

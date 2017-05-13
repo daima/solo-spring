@@ -22,8 +22,8 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Locale utilities.
@@ -36,7 +36,7 @@ public final class Locales {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Locales.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Locales.class);
 
     /**
      * Thread local holder for locale.
@@ -96,7 +96,7 @@ public final class Locales {
             // Gets from request header
             final String languageHeader = request.getHeader("Accept-Language");
 
-            LOGGER.log(Level.DEBUG, "[Accept-Language={0}]", languageHeader);
+            logger.debug( "[Accept-Language={0}]", languageHeader);
 
             String language = "zh";
             String country = "CN";
@@ -111,12 +111,12 @@ public final class Locales {
             if (!hasLocale(locale)) {
                 // Uses default
                 locale = Latkes.getLocale();
-                LOGGER.log(Level.DEBUG, "Using the default locale[{0}]", locale.toString());
+                logger.debug( "Using the default locale[{0}]", locale.toString());
             } else {
-                LOGGER.log(Level.DEBUG, "Got locale[{0}] from request.", locale.toString());
+                logger.debug( "Got locale[{0}] from request.", locale.toString());
             }
         } else {
-            LOGGER.log(Level.DEBUG, "Got locale[{0}] from session.", locale.toString());
+            logger.debug( "Got locale[{0}] from session.", locale.toString());
         }
 
         return locale;
@@ -152,13 +152,13 @@ public final class Locales {
         final HttpSession session = request.getSession(false);
 
         if (null == session) {
-            LOGGER.warn("Ignores set locale caused by no session");
+            logger.warn("Ignores set locale caused by no session");
 
             return;
         }
 
         session.setAttribute(Keys.LOCALE, locale);
-        LOGGER.log(Level.DEBUG, "Client[sessionId={0}] sets locale to [{1}]", new Object[]{session.getId(), locale.toString()});
+        logger.debug( "Client[sessionId={0}] sets locale to [{1}]", new Object[]{session.getId(), locale.toString()});
     }
 
     /**

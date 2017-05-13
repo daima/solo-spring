@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
@@ -50,7 +50,7 @@ public class CommentDao extends AbstractBlogDao {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentDao.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CommentDao.class);
 
     /**
      * Article repository.
@@ -73,7 +73,7 @@ public class CommentDao extends AbstractBlogDao {
             remove(commentId);
         }
 
-        LOGGER.log(Level.DEBUG, "Removed comments[onId={0}, removedCnt={1}]", onId, comments.size());
+        logger.debug( "Removed comments[onId={0}, removedCnt={1}]", onId, comments.size());
 
         return comments.size();
     }
@@ -116,7 +116,7 @@ public class CommentDao extends AbstractBlogDao {
      * @throws RepositoryException repository exception
      */
     private void removeForUnpublishedArticles(final List<JSONObject> comments) throws RepositoryException {
-        LOGGER.debug("Removing unpublished articles' comments....");
+        logger.debug("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
 
         while (iterator.hasNext()) {
@@ -132,7 +132,7 @@ public class CommentDao extends AbstractBlogDao {
             }
         }
 
-        LOGGER.debug("Removed unpublished articles' comments....");
+        logger.debug("Removed unpublished articles' comments....");
     }
 
     /**

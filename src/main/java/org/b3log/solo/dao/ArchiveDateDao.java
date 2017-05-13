@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
@@ -49,7 +49,7 @@ public class ArchiveDateDao extends AbstractBlogDao{
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArchiveDateDao.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ArchiveDateDao.class);
 
     public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
         long time = 0L;
@@ -57,11 +57,11 @@ public class ArchiveDateDao extends AbstractBlogDao{
         try {
             time = DateUtils.parseDate(archiveDate, new String[] {"yyyy/MM"}).getTime();
         } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, "Can not parse archive date [" + archiveDate + "]", e);
+            logger.error("Can not parse archive date [" + archiveDate + "]", e);
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
 
-        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", archiveDate, time);
+        logger.trace("Archive date [{0}] parsed to time [{1}]", archiveDate, time);
 
         final Query query = new Query();
 

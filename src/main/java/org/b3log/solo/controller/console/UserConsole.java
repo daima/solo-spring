@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.service.ServiceException;
@@ -53,7 +53,7 @@ public class UserConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserConsole.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UserConsole.class);
 
     /**
      * User query service.
@@ -122,7 +122,7 @@ public class UserConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -190,7 +190,7 @@ public class UserConsole {
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -236,7 +236,7 @@ public class UserConsole {
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -294,7 +294,7 @@ public class UserConsole {
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
@@ -349,7 +349,7 @@ public class UserConsole {
             renderer.setJSONObject(result);
             result.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
@@ -393,7 +393,7 @@ public class UserConsole {
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));

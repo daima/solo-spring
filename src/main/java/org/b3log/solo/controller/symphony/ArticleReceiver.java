@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
@@ -55,7 +55,7 @@ public class ArticleReceiver {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleReceiver.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ArticleReceiver.class);
     /**
      * Article abstract length.
      */
@@ -120,7 +120,7 @@ public class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
+                logger.warn("B3 key not match, ignored add article");
                 renderer.render(request, response);
                 return;
             }
@@ -155,7 +155,7 @@ public class ArticleReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -204,7 +204,7 @@ public class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
+                logger.warn("B3 key not match, ignored update article");
                 renderer.render(request, response);
                 return;
             }
@@ -241,7 +241,7 @@ public class ArticleReceiver {
             ret.put(Keys.MSG, "update article succ");
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            logger.error(e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

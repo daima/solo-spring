@@ -18,8 +18,8 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.Query;
@@ -53,7 +53,7 @@ public class UserQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(UserQueryService.class);
 
     /**
      * User service.
@@ -86,11 +86,11 @@ public class UserQueryService {
 
             return 1 != users.length();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines multiple users failed", e);
+            logger.error("Determines multiple users failed", e);
 
             throw new ServiceException(e);
         } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, "Determines multiple users failed", e);
+            logger.error("Determines multiple users failed", e);
 
             throw new ServiceException(e);
         }
@@ -146,7 +146,7 @@ public class UserQueryService {
         try {
             return userDao.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets current user by request failed, returns null", e);
+            logger.error("Gets current user by request failed, returns null", e);
 
             return null;
         }
@@ -162,7 +162,7 @@ public class UserQueryService {
         try {
             return userDao.getAdmin();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets admin failed", e);
+            logger.error("Gets admin failed", e);
             throw new ServiceException(e);
         }
     }
@@ -178,7 +178,7 @@ public class UserQueryService {
         try {
             return userDao.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets user by email[" + email + "] failed", e);
+            logger.error("Gets user by email[" + email + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -226,7 +226,7 @@ public class UserQueryService {
         try {
             result = userDao.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets users failed", e);
+            logger.error("Gets users failed", e);
 
             throw new ServiceException(e);
         }
@@ -273,7 +273,7 @@ public class UserQueryService {
         try {
             user = userDao.get(userId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets a user failed", e);
+            logger.error("Gets a user failed", e);
             throw new ServiceException(e);
         }
 

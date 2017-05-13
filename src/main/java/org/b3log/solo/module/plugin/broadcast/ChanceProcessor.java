@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.HTTPResponse;
@@ -62,7 +62,7 @@ public class ChanceProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChanceProcessor.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ChanceProcessor.class);
 
     /**
      * Option management service.
@@ -102,7 +102,7 @@ public class ChanceProcessor {
         try {
             ADD_BROADCAST_URL = new URL(PropsUtil.getString("rhythm.servePath") + "/broadcast");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm add broadcast] error!");
+            logger.error("Creates remote service address[rhythm add broadcast] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -159,7 +159,7 @@ public class ChanceProcessor {
         } catch (final Exception e) {
             final String msg = "Broadcast plugin exception";
 
-            LOGGER.log(Level.ERROR, msg, e);
+            logger.error(msg, e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -225,7 +225,7 @@ public class ChanceProcessor {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Broadcast plugin exception", e);
+            logger.error("Broadcast plugin exception", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -315,14 +315,14 @@ public class ChanceProcessor {
 
                 optionMgmtService.removeOption(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
 
-                LOGGER.info("Submits broadcast successfully");
+                logger.info("Submits broadcast successfully");
 
                 return;
             }
 
             ret.put(Keys.STATUS_CODE, false);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Submits broadcast failed", e);
+            logger.error("Submits broadcast failed", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
