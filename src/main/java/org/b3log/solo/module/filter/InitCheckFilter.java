@@ -24,17 +24,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.logging.Level;
 import org.b3log.solo.frame.logging.Logger;
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
-import org.b3log.solo.frame.servlet.HttpControl;
-import org.b3log.solo.frame.servlet.renderer.HTTP500Renderer;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.DispatcherServlet;
 
 /**
  * Checks initialization filter.

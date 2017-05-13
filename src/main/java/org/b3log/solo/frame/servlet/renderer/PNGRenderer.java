@@ -16,15 +16,15 @@
 package org.b3log.solo.frame.servlet.renderer;
 
 
-import org.b3log.solo.frame.image.Image;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+
+import org.b3log.solo.frame.image.Image;
+import org.b3log.solo.frame.logging.Level;
+import org.b3log.solo.frame.logging.Logger;
 
 
 /**

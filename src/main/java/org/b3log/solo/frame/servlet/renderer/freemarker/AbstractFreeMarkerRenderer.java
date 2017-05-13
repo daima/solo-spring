@@ -15,21 +15,23 @@
  */
 package org.b3log.solo.frame.servlet.renderer.freemarker;
 
-import freemarker.template.Template;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.logging.Level;
 import org.b3log.solo.frame.logging.Logger;
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
 import org.b3log.solo.frame.servlet.renderer.AbstractHTTPResponseRenderer;
 import org.b3log.solo.util.freemarker.Templates;
+
+import freemarker.template.Template;
 
 /**
  * Abstract <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer.

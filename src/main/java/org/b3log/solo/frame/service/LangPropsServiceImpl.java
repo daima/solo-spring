@@ -21,11 +21,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.ioc.inject.Named;
-import org.b3log.solo.frame.ioc.inject.Singleton;
 import org.b3log.solo.frame.logging.Level;
 import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.util.Locales;
@@ -36,8 +35,6 @@ import org.b3log.solo.util.Locales;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.2.1.1, Oct 27, 2016
  */
-@Named
-@Singleton
 public class LangPropsServiceImpl implements LangPropsService {
 
     /**

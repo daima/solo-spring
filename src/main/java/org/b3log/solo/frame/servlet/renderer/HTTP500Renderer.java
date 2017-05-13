@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.frame.logging.Level;
 import org.b3log.solo.frame.logging.Logger;
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
 
 
 /**

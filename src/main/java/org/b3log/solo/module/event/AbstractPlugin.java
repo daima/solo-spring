@@ -40,7 +40,6 @@ import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.plugin.PluginStatus;
 import org.b3log.solo.frame.plugin.PluginType;
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
 import org.b3log.solo.module.plugin.PluginManager;
 import org.b3log.solo.util.Strings;
 import org.json.JSONException;

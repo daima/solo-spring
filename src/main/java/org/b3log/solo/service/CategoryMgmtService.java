@@ -16,19 +16,22 @@
 package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.logging.Level;
-import org.b3log.solo.frame.logging.Logger;
-import org.b3log.solo.frame.repository.*;
-import org.b3log.solo.frame.repository.annotation.Transactional;
-import org.b3log.solo.frame.service.ServiceException;
-import org.springframework.stereotype.Service;
 import org.b3log.solo.dao.CategoryDao;
 import org.b3log.solo.dao.CategoryTagDao;
+import org.b3log.solo.frame.logging.Level;
+import org.b3log.solo.frame.logging.Logger;
+import org.b3log.solo.frame.repository.CompositeFilterOperator;
+import org.b3log.solo.frame.repository.FilterOperator;
+import org.b3log.solo.frame.repository.PropertyFilter;
+import org.b3log.solo.frame.repository.Query;
+import org.b3log.solo.frame.repository.RepositoryException;
+import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Category management service.
@@ -116,7 +119,7 @@ public class CategoryMgmtService {
      * @param tagId      the specified tag id
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public void removeCategoryTag(final String categoryId, final String tagId) throws ServiceException {
         try {
             final JSONObject category = categoryDao.get(categoryId);
@@ -149,7 +152,7 @@ public class CategoryMgmtService {
      * @param categoryTag the specified category-tag relation
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public void addCategoryTag(final JSONObject categoryTag) throws ServiceException {
         try {
             categoryTagDao.add(categoryTag);
@@ -176,7 +179,7 @@ public class CategoryMgmtService {
      * @return category id
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public String addCategory(final JSONObject category) throws ServiceException {
         try {
             final JSONObject record = new JSONObject();
@@ -207,7 +210,7 @@ public class CategoryMgmtService {
      * @param category   the specified category
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public void updateCategory(final String categoryId, final JSONObject category) throws ServiceException {
         try {
             final JSONObject oldCategory = categoryDao.get(categoryId);
@@ -228,7 +231,7 @@ public class CategoryMgmtService {
      * @param categoryId the given category id
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public void removeCategory(final String categoryId) throws ServiceException {
         try {
             categoryTagDao.removeByCategoryId(categoryId);
@@ -246,7 +249,7 @@ public class CategoryMgmtService {
      * @param categoryId the given category id
      * @throws ServiceException service exception
      */
-    @Transactional
+    
     public void removeCategoryTags(final String categoryId) throws ServiceException {
         try {
             categoryTagDao.removeByCategoryId(categoryId);

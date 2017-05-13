@@ -16,13 +16,15 @@
 package org.b3log.solo.frame.repository.impl;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.ioc.inject.Named;
-import org.b3log.solo.frame.ioc.inject.Singleton;
 import org.b3log.solo.frame.logging.Level;
 import org.b3log.solo.frame.logging.Logger;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.*;
+import org.b3log.solo.frame.repository.AbstractRepository;
+import org.b3log.solo.frame.repository.FilterOperator;
+import org.b3log.solo.frame.repository.PropertyFilter;
+import org.b3log.solo.frame.repository.Query;
+import org.b3log.solo.frame.repository.RepositoryException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,8 +35,6 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Jun 27, 2012
  */
-@Named("LakteBuiltInUserRepository")
-@Singleton
 public class UserRepository extends AbstractRepository {
 
     /**

@@ -36,7 +36,6 @@ import org.b3log.solo.frame.mail.MailService.Message;
 import org.b3log.solo.frame.mail.MailServiceFactory;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.Repositories;
-import org.b3log.solo.frame.repository.annotation.Transactional;
 import org.b3log.solo.frame.servlet.renderer.TextHTMLRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
@@ -263,7 +262,6 @@ public class RepairProcessor {
      * @param context the specified context
      */
     @RequestMapping(value = "/fix/tag-article-counter-repair.do", method=RequestMethod.GET)
-    @Transactional
     public void repairTagArticleCounter(final HttpServletRequest request, final HttpServletResponse response) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         try {

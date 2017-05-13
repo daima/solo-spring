@@ -16,8 +16,6 @@
 package org.b3log.solo.frame.servlet.renderer;
 
 
-import org.b3log.solo.frame.servlet.HTTPRequestContext;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
