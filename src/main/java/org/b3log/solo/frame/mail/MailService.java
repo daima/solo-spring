@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.frame.mail;
 
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 
 /**
  * Mail service.
@@ -30,112 +28,118 @@ import java.util.Set;
  */
 public interface MailService {
 
-    /**
-     * Sends the specified message as a mail asynchronously.
-     * 
-     * @param message the specified message
-     * @throws IOException if internal errors 
-     */
-    void send(final Message message) throws IOException;
+	/**
+	 * Sends the specified message as a mail asynchronously.
+	 * 
+	 * @param message
+	 *            the specified message
+	 * @throws IOException
+	 *             if internal errors
+	 */
+	void send(final Message message) throws IOException;
 
-    /**
-     * Mail message.
-     * 
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Aug 8, 2011
-     */
-    class Message {
+	/**
+	 * Mail message.
+	 * 
+	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @version 1.0.0.0, Aug 8, 2011
+	 */
+	class Message {
 
-        /**
-         * From.
-         */
-        private String from;
+		/**
+		 * From.
+		 */
+		private String from;
 
-        /**
-         * Recipients.
-         */
-        private Set<String> recipients = new HashSet<String>();
+		/**
+		 * Recipients.
+		 */
+		private Set<String> recipients = new HashSet<>();
 
-        /**
-         * HTML body. 
-         */
-        private String htmlBody;
+		/**
+		 * HTML body.
+		 */
+		private String htmlBody;
 
-        /**
-         * Subject.
-         */
-        private String subject;
+		/**
+		 * Subject.
+		 */
+		private String subject;
 
-        /**
-         * Gets the recipients.
-         * 
-         * @return recipients
-         */
-        public Set<String> getRecipients() {
-            return Collections.unmodifiableSet(recipients);
-        }
+		/**
+		 * Gets the recipients.
+		 * 
+		 * @return recipients
+		 */
+		public Set<String> getRecipients() {
+			return Collections.unmodifiableSet(recipients);
+		}
 
-        /**
-         * Adds the specified recipient.
-         * 
-         * @param recipient the specified recipient
-         */
-        public void addRecipient(final String recipient) {
-            recipients.add(recipient);
-        }
+		/**
+		 * Adds the specified recipient.
+		 * 
+		 * @param recipient
+		 *            the specified recipient
+		 */
+		public void addRecipient(final String recipient) {
+			recipients.add(recipient);
+		}
 
-        /**
-         * Gets the HTML body.
-         * 
-         * @return HTML body
-         */
-        public String getHtmlBody() {
-            return htmlBody;
-        }
+		/**
+		 * Gets the HTML body.
+		 * 
+		 * @return HTML body
+		 */
+		public String getHtmlBody() {
+			return htmlBody;
+		}
 
-        /**
-         * Sets the HTML body with the specified HTML body.
-         * 
-         * @param htmlBody the specified HTML body
-         */
-        public void setHtmlBody(final String htmlBody) {
-            this.htmlBody = htmlBody;
-        }
+		/**
+		 * Sets the HTML body with the specified HTML body.
+		 * 
+		 * @param htmlBody
+		 *            the specified HTML body
+		 */
+		public void setHtmlBody(final String htmlBody) {
+			this.htmlBody = htmlBody;
+		}
 
-        /**
-         * Gets the from.
-         * 
-         * @return from
-         */
-        public String getFrom() {
-            return from;
-        }
+		/**
+		 * Gets the from.
+		 * 
+		 * @return from
+		 */
+		public String getFrom() {
+			return from;
+		}
 
-        /**
-         * Sets the from with the specified from.
-         * 
-         * @param from the specified from
-         */
-        public void setFrom(final String from) {
-            this.from = from;
-        }
+		/**
+		 * Sets the from with the specified from.
+		 * 
+		 * @param from
+		 *            the specified from
+		 */
+		public void setFrom(final String from) {
+			this.from = from;
+		}
 
-        /**
-         * Gets the subject.
-         * 
-         * @return subject
-         */
-        public String getSubject() {
-            return subject;
-        }
+		/**
+		 * Gets the subject.
+		 * 
+		 * @return subject
+		 */
+		public String getSubject() {
+			return subject;
+		}
 
-        /**
-         * Sets the subject with the specified subject.
-         * 
-         * @param subject the specified subject
-         */
-        public void setSubject(final String subject) {
-            this.subject = subject;
-        }
-    }
+		/**
+		 * Sets the subject with the specified subject.
+		 * 
+		 * @param subject
+		 *            the specified subject
+		 */
+		public void setSubject(final String subject) {
+			this.subject = subject;
+		}
+	}
 }

@@ -15,18 +15,15 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.solo.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.b3log.solo.frame.repository.Transaction;
-import org.b3log.solo.frame.service.ServiceException;
-import org.springframework.stereotype.Service;
 import org.b3log.solo.dao.LinkDao;
+import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Link;
 import org.json.JSONObject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Link management service.
@@ -38,179 +35,189 @@ import org.json.JSONObject;
 @Service
 public class LinkMgmtService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(LinkMgmtService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(LinkMgmtService.class);
 
-    /**
-     * Link repository.
-     */
-    @Autowired
-    private LinkDao linkDao;
+	/**
+	 * Link repository.
+	 */
+	@Autowired
+	private LinkDao linkDao;
 
-    /**
-     * Removes a link specified by the given link id.
-     *
-     * @param linkId the given link id
-     * @throws ServiceException service exception
-     */
-    public void removeLink(final String linkId)
-        throws ServiceException {
-//        final Transaction transaction = linkDao.beginTransaction();
+	/**
+	 * Removes a link specified by the given link id.
+	 *
+	 * @param linkId
+	 *            the given link id
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void removeLink(final String linkId) throws ServiceException {
+		// final Transaction transaction = linkDao.beginTransaction();
 
-        try {
-            linkDao.remove(linkId);
+		try {
+			linkDao.remove(linkId);
 
-//            transaction.commit();
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			// transaction.commit();
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            logger.error("Removes a link[id=" + linkId + "] failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			logger.error("Removes a link[id=" + linkId + "] failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Updates a link by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "link": {
-     *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": ""
-     *     }
-     * }, see {@link Link} for more details
-     * </pre>
-     * @throws ServiceException service exception
-     */
-    public void updateLink(final JSONObject requestJSONObject)
-        throws ServiceException {
-//        final Transaction transaction = linkDao.beginTransaction();
+	/**
+	 * Updates a link by the specified request json object.
+	 *
+	 * @param requestJSONObject
+	 *            the specified request json object, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "link": {
+	 *         "oId": "",
+	 *         "linkTitle": "",
+	 *         "linkAddress": ""
+	 *     }
+	 * }, see {@link Link} for more details
+	 *            </pre>
+	 * 
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void updateLink(final JSONObject requestJSONObject) throws ServiceException {
+		// final Transaction transaction = linkDao.beginTransaction();
 
-        try {
-            final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
-            final String linkId = link.getString(Keys.OBJECT_ID);
-            final JSONObject oldLink = linkDao.get(linkId);
+		try {
+			final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
+			final String linkId = link.getString(Keys.OBJECT_ID);
+			final JSONObject oldLink = linkDao.get(linkId);
 
-            link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
+			link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
-            linkDao.update(linkId, link);
+			linkDao.update(linkId, link);
 
-//            transaction.commit();
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			// transaction.commit();
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            logger.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Changes the order of a link specified by the given link id with the 
-     * specified direction.
-     *
-     * @param linkId the given link id
-     * @param direction the specified direction, "up"/"down"
-     * @throws ServiceException service exception
-     */
-    public void changeOrder(final String linkId, final String direction)
-        throws ServiceException {
-//        final Transaction transaction = linkDao.beginTransaction();
+	/**
+	 * Changes the order of a link specified by the given link id with the
+	 * specified direction.
+	 *
+	 * @param linkId
+	 *            the given link id
+	 * @param direction
+	 *            the specified direction, "up"/"down"
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void changeOrder(final String linkId, final String direction) throws ServiceException {
+		// final Transaction transaction = linkDao.beginTransaction();
 
-        try {
-            final JSONObject srcLink = linkDao.get(linkId);
-            final int srcLinkOrder = srcLink.getInt(Link.LINK_ORDER);
+		try {
+			final JSONObject srcLink = linkDao.get(linkId);
+			final int srcLinkOrder = srcLink.getInt(Link.LINK_ORDER);
 
-            JSONObject targetLink = null;
+			JSONObject targetLink = null;
 
-            if ("up".equals(direction)) {
-                targetLink = linkDao.getUpper(linkId);
-            } else { // Down
-                targetLink = linkDao.getUnder(linkId);
-            }
+			if ("up".equals(direction)) {
+				targetLink = linkDao.getUpper(linkId);
+			} else { // Down
+				targetLink = linkDao.getUnder(linkId);
+			}
 
-            if (null == targetLink) {
-//                if (transaction.isActive()) {
-//                    transaction.rollback();
-//                }
+			if (null == targetLink) {
+				// if (transaction.isActive()) {
+				// transaction.rollback();
+				// }
 
-                logger.warn("Cant not find the target link of source link[order={0}]", srcLinkOrder);
-                return;
-            }
+				logger.warn("Cant not find the target link of source link[order={0}]", srcLinkOrder);
+				return;
+			}
 
-            // Swaps
-            srcLink.put(Link.LINK_ORDER, targetLink.getInt(Link.LINK_ORDER));
-            targetLink.put(Link.LINK_ORDER, srcLinkOrder);
+			// Swaps
+			srcLink.put(Link.LINK_ORDER, targetLink.getInt(Link.LINK_ORDER));
+			targetLink.put(Link.LINK_ORDER, srcLinkOrder);
 
-            linkDao.update(srcLink.getString(Keys.OBJECT_ID), srcLink);
-            linkDao.update(targetLink.getString(Keys.OBJECT_ID), targetLink);
+			linkDao.update(srcLink.getString(Keys.OBJECT_ID), srcLink);
+			linkDao.update(targetLink.getString(Keys.OBJECT_ID), targetLink);
 
-//            transaction.commit();
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			// transaction.commit();
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            logger.error("Changes link's order failed", e);
+			logger.error("Changes link's order failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Adds a link with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "link": {
-     *         "linkTitle": "",
-     *         "linkAddress": "",
-     *         "linkDescription": "" // optional
-     *     }
-     * }, see {@link Link} for more details
-     * </pre>
-     * @return generated link id
-     * @throws ServiceException service exception
-     */
-    public String addLink(final JSONObject requestJSONObject)
-        throws ServiceException {
-//        final Transaction transaction = linkDao.beginTransaction();
+	/**
+	 * Adds a link with the specified request json object.
+	 * 
+	 * @param requestJSONObject
+	 *            the specified request json object, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "link": {
+	 *         "linkTitle": "",
+	 *         "linkAddress": "",
+	 *         "linkDescription": "" // optional
+	 *     }
+	 * }, see {@link Link} for more details
+	 *            </pre>
+	 * 
+	 * @return generated link id
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public String addLink(final JSONObject requestJSONObject) throws ServiceException {
+		// final Transaction transaction = linkDao.beginTransaction();
 
-        try {
-            final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
-            final int maxOrder = linkDao.getMaxOrder();
+		try {
+			final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
+			final int maxOrder = linkDao.getMaxOrder();
 
-            link.put(Link.LINK_ORDER, maxOrder + 1);
-            final String ret = linkDao.add(link);
+			link.put(Link.LINK_ORDER, maxOrder + 1);
+			final String ret = linkDao.add(link);
 
-//            transaction.commit();
+			// transaction.commit();
 
-            return ret;
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			return ret;
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            logger.error("Adds a link failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			logger.error("Adds a link failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Sets the link repository with the specified link repository.
-     * 
-     * @param linkDao the specified link repository
-     */
-    public void setLinkRepository(final LinkDao linkDao) {
-        this.linkDao = linkDao;
-    }
+	/**
+	 * Sets the link repository with the specified link repository.
+	 * 
+	 * @param linkDao
+	 *            the specified link repository
+	 */
+	public void setLinkRepository(final LinkDao linkDao) {
+		this.linkDao = linkDao;
+	}
 }

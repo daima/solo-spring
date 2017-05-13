@@ -19,7 +19,8 @@ package org.b3log.solo;
  * Latke runtime JDBC database.
  *
  * <p>
- * If Latke runs on local environment, Latke will read database configurations from file "local.properties".
+ * If Latke runs on local environment, Latke will read database configurations
+ * from file "local.properties".
  * </p>
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
@@ -29,36 +30,36 @@ package org.b3log.solo;
  */
 public enum RuntimeDatabase {
 
-    /**
-     * None.
-     */
-    NONE,
-    /**
-     * Oracle.
-     */
-    ORACLE,
-    /**
-     * MySQL.
-     */
-    MYSQL,
-    /**
-     * H2.
-     */
-    H2,
-    /**
-     * SYBASE.
-     */
-    SYBASE,
-    /**
-     * MSSQL.
-     */
-    MSSQL,
-    /**
-     * DB2.
-     */
-    DB2,
-    /**
-     * Redis.
-     */
-    REDIS,
+	/**
+	 * None.
+	 */
+	NONE,
+	/**
+	 * Oracle.
+	 */
+	ORACLE,
+	/**
+	 * MySQL.
+	 */
+	MYSQL,
+	/**
+	 * H2.
+	 */
+	H2,
+	/**
+	 * SYBASE.
+	 */
+	SYBASE,
+	/**
+	 * MSSQL.
+	 */
+	MSSQL,
+	/**
+	 * DB2.
+	 */
+	DB2,
+	/**
+	 * Redis.
+	 */
+	REDIS,
 }

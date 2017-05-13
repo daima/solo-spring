@@ -15,20 +15,18 @@
  */
 package org.b3log.solo.module.plugin;
 
-
 import java.util.Map;
 import java.util.Set;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.plugin.ViewLoadEventData;
 import org.b3log.solo.module.event.AbstractPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 /**
  * FreeMarker view load event handler.
@@ -38,42 +36,42 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public final class ViewLoadEventHandler {
-	
+
 	@Autowired
 	private PluginManager pluginManager;
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ViewLoadEventHandler.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ViewLoadEventHandler.class);
 
-    public String getEventType() {
-        return Keys.FREEMARKER_ACTION;
-    }
+	public String getEventType() {
+		return Keys.FREEMARKER_ACTION;
+	}
 
-    public void action(final Event<ViewLoadEventData> event) throws EventException {
-        final ViewLoadEventData data = event.getData();
-        final String viewName = data.getViewName();
-        final Map<String, Object> dataModel = data.getDataModel();
-        
-        final Set<AbstractPlugin> plugins = pluginManager.getPlugins(viewName);
+	public void action(final Event<ViewLoadEventData> event) throws EventException {
+		final ViewLoadEventData data = event.getData();
+		final String viewName = data.getViewName();
+		final Map<String, Object> dataModel = data.getDataModel();
 
-        logger.debug( "Plugin count[{0}] of view[name={1}]", new Object[] {plugins.size(), viewName});
-        for (final AbstractPlugin plugin : plugins) {
-            switch (plugin.getStatus()) {
-            case ENABLED:
-                plugin.plug(dataModel);
-                logger.debug( "Plugged[name={0}]", plugin.getName());
-                break;
+		final Set<AbstractPlugin> plugins = pluginManager.getPlugins(viewName);
 
-            case DISABLED:
-                plugin.unplug();
-                logger.debug( "Unplugged[name={0}]", plugin.getName());
-                break;
+		logger.debug("Plugin count[{0}] of view[name={1}]", new Object[] { plugins.size(), viewName });
+		for (final AbstractPlugin plugin : plugins) {
+			switch (plugin.getStatus()) {
+			case ENABLED:
+				plugin.plug(dataModel);
+				logger.debug("Plugged[name={0}]", plugin.getName());
+				break;
 
-            default:
-                throw new AssertionError(
-                    "Plugin state error, this is a bug! Please report " + "this bug (https://github.com/b3log/b3log-solo/issues/new)!");
-            }
-        }
-    }
+			case DISABLED:
+				plugin.unplug();
+				logger.debug("Unplugged[name={0}]", plugin.getName());
+				break;
+
+			default:
+				throw new AssertionError("Plugin state error, this is a bug! Please report "
+						+ "this bug (https://github.com/b3log/b3log-solo/issues/new)!");
+			}
+		}
+	}
 }

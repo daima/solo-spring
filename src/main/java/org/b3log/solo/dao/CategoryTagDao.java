@@ -34,52 +34,49 @@ import org.springframework.stereotype.Repository;
  * @since 2.0.0
  */
 @Repository
-public class CategoryTagDao extends AbstractBlogDao{
+public class CategoryTagDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return Category.CATEGORY + "_" + Tag.TAG;
-    }
+		return Category.CATEGORY + "_" + Tag.TAG;
+	}
 
-    
-    public JSONObject getByCategoryId(final String categoryId, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId)).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+	public JSONObject getByCategoryId(final String categoryId, final int currentPageNum, final int pageSize)
+			throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(
+						new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId))
+				.setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
-        return get(query);
-    }
+		return get(query);
+	}
 
-    
-    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+	public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
+			throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId))
+				.setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
-        return get(query);
-    }
+		return get(query);
+	}
 
-    
-    public void removeByCategoryId(final String categoryId) throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
-        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < relations.length(); i++) {
-            final JSONObject rel = relations.optJSONObject(i);
-            remove(rel.optString(Keys.OBJECT_ID));
-        }
-    }
+	public void removeByCategoryId(final String categoryId) throws RepositoryException {
+		final Query query = new Query().setFilter(
+				new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
+		final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+		for (int i = 0; i < relations.length(); i++) {
+			final JSONObject rel = relations.optJSONObject(i);
+			remove(rel.optString(Keys.OBJECT_ID));
+		}
+	}
 
-    
-    public void removeByTagId(final String tagId) throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < relations.length(); i++) {
-            final JSONObject rel = relations.optJSONObject(i);
-            remove(rel.optString(Keys.OBJECT_ID));
-        }
-    }
+	public void removeByTagId(final String tagId) throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+		final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+		for (int i = 0; i < relations.length(); i++) {
+			final JSONObject rel = relations.optJSONObject(i);
+			remove(rel.optString(Keys.OBJECT_ID));
+		}
+	}
 }

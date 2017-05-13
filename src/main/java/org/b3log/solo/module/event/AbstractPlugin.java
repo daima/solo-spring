@@ -126,12 +126,12 @@ public abstract class AbstractPlugin implements Serializable {
 	/**
 	 * Types of this plugin.
 	 */
-	private Set<PluginType> types = new HashSet<PluginType>();
+	private Set<PluginType> types = new HashSet<>();
 
 	/**
 	 * Languages.
 	 */
-	private Map<String, Properties> langs = new HashMap<String, Properties>();
+	private Map<String, Properties> langs = new HashMap<>();
 
 	/**
 	 * FreeMarker configuration.
@@ -144,7 +144,7 @@ public abstract class AbstractPlugin implements Serializable {
 	/*
 	 * private List<AbstractEventListener<?>> eventListeners = new
 	 * ArrayList<AbstractEventListener<?>>();
-	 * 
+	 *
 	 *//**
 		 * Adds the specified event listener.
 		 *
@@ -268,7 +268,7 @@ public abstract class AbstractPlugin implements Serializable {
 	 * protected void start() { for (final AbstractEventListener<?>
 	 * eventListener : eventListeners) {
 	 * eventManager.registerListener(eventListener); } }
-	 * 
+	 *
 	 *//**
 		 * The lifecycle pointcut for the plugin to close(disable status).
 		 *//*
@@ -410,7 +410,7 @@ public abstract class AbstractPlugin implements Serializable {
 	 * Converts this plugin to a json object (plugin description).
 	 *
 	 * @return a json object, for example,
-	 * 
+	 *
 	 *         <pre>
 	 * {
 	 *     "oId": "",

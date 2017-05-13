@@ -16,17 +16,19 @@
 package org.b3log.solo.module.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.util.Strings;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
+ * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the
+ * converter.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.0.0.2, Nov 3, 2016
@@ -34,36 +36,38 @@ import org.pegdown.PegDownProcessor;
  */
 public final class Markdowns {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(Markdowns.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Markdowns.class);
 
-    /**
-     * Converts the specified markdown text to HTML.
-     *
-     * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns
-     * "Markdown error" if exception
-     */
-    public static String toHTML(final String markdownText) {
-        if (Strings.isEmptyOrNull(markdownText)) {
-            return "";
-        }
+	/**
+	 * Converts the specified markdown text to HTML.
+	 *
+	 * @param markdownText
+	 *            the specified markdown text
+	 * @return converted HTML, returns {@code null} if the specified markdown
+	 *         text is "" or {@code null}, returns "Markdown error" if exception
+	 */
+	public static String toHTML(final String markdownText) {
+		if (Strings.isEmptyOrNull(markdownText)) {
+			return "";
+		}
 
-        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
-        String ret = pegDownProcessor.markdownToHtml(markdownText);
+		final PegDownProcessor pegDownProcessor = new PegDownProcessor(
+				Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
+		String ret = pegDownProcessor.markdownToHtml(markdownText);
 
-        if (!StringUtils.startsWith(ret, "<p>")) {
-            ret = "<p>" + ret + "</p>";
-        }
+		if (!StringUtils.startsWith(ret, "<p>")) {
+			ret = "<p>" + ret + "</p>";
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Private constructor.
-     */
-    private Markdowns() {
-    }
+	/**
+	 * Private constructor.
+	 */
+	private Markdowns() {
+	}
 }

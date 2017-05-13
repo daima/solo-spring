@@ -17,20 +17,20 @@ package org.b3log.solo.module.event;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
+import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailService.Message;
 import org.b3log.solo.frame.mail.MailServiceFactory;
-import org.b3log.solo.util.Strings;
-import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,114 +48,104 @@ public final class ArticleCommentReplyNotifier {
 	private PreferenceQueryService preferenceQueryService;
 	@Autowired
 	private CommentDao commentDao;
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ArticleCommentReplyNotifier.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ArticleCommentReplyNotifier.class);
 
-    /**
-     * Mail service.
-     */
-    private MailService mailService = MailServiceFactory.getMailService();
+	/**
+	 * Mail service.
+	 */
+	private MailService mailService = MailServiceFactory.getMailService();
 
-    
-    public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject eventData = event.getData();
-        final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
-        final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
+	public void action(final Event<JSONObject> event) throws EventException {
+		final JSONObject eventData = event.getData();
+		final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
+		final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
 
-        logger.debug(
-                "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), eventData, ArticleCommentReplyNotifier.class);
-        final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+		logger.debug("Processing an event[type={0}, data={1}] in listener[className={2}]", event.getType(), eventData,
+				ArticleCommentReplyNotifier.class);
+		final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
-        if (Strings.isEmptyOrNull(originalCommentId)) {
-            logger.debug( "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
+		if (Strings.isEmptyOrNull(originalCommentId)) {
+			logger.debug("This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
 
-            return;
-        }
+			return;
+		}
 
-        if (Latkes.getServePath().contains("localhost")) {
-            logger.info("Solo runs on local server, so should not send mail");
+		if (Latkes.getServePath().contains("localhost")) {
+			logger.info("Solo runs on local server, so should not send mail");
 
-            return;
-        }
+			return;
+		}
 
-        try {
-            final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-            final JSONObject originalComment = commentDao.get(originalCommentId);
-            final String originalCommentEmail = originalComment.getString(Comment.COMMENT_EMAIL);
+		try {
+			final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
+			final JSONObject originalComment = commentDao.get(originalCommentId);
+			final String originalCommentEmail = originalComment.getString(Comment.COMMENT_EMAIL);
 
-            if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
-                return;
-            }
+			if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
+				return;
+			}
 
-            final JSONObject preference = preferenceQueryService.getPreference();
+			final JSONObject preference = preferenceQueryService.getPreference();
 
-            if (null == preference) {
-                throw new EventException("Not found preference");
-            }
+			if (null == preference) {
+				throw new EventException("Not found preference");
+			}
 
-            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
-            final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
+			final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+			final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
-            final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
-            final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-            final Message message = new Message();
+			final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
+			final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
+			final Message message = new Message();
 
-            message.setFrom(adminEmail);
-            message.addRecipient(originalCommentEmail);
-            final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
+			message.setFrom(adminEmail);
+			message.addRecipient(originalCommentEmail);
+			final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
-            final String articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final String articleLink = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-            final String commentName = comment.getString(Comment.COMMENT_NAME);
-            final String commentURL = comment.getString(Comment.COMMENT_URL);
-            String commenter;
+			final String articleTitle = article.getString(Article.ARTICLE_TITLE);
+			final String articleLink = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
+			final String commentName = comment.getString(Comment.COMMENT_NAME);
+			final String commentURL = comment.getString(Comment.COMMENT_URL);
+			String commenter;
 
-            if (!"http://".equals(commentURL)) {
-                commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
-            } else {
-                commenter = commentName;
-            }
-            final String mailSubject = replyNotificationTemplate.getString(
-                    "subject").replace("${postLink}", articleLink)
-                    .replace("${postTitle}", articleTitle)
-                    .replace("${replier}", commenter)
-                    .replace("${blogTitle}", blogTitle)
-                    .replace("${replyURL}",
-                            Latkes.getServePath() + commentSharpURL)
-                    .replace("${replyContent}", commentContent);
+			if (!"http://".equals(commentURL)) {
+				commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
+			} else {
+				commenter = commentName;
+			}
+			final String mailSubject = replyNotificationTemplate.getString("subject")
+					.replace("${postLink}", articleLink).replace("${postTitle}", articleTitle)
+					.replace("${replier}", commenter).replace("${blogTitle}", blogTitle)
+					.replace("${replyURL}", Latkes.getServePath() + commentSharpURL)
+					.replace("${replyContent}", commentContent);
 
-            message.setSubject(mailSubject);
-            final String mailBody = replyNotificationTemplate
-                    .getString("body")
-                    .replace("${postLink}", articleLink)
-                    .replace("${postTitle}", articleTitle)
-                    .replace("${replier}", commenter)
-                    .replace("${blogTitle}", blogTitle)
-                    .replace("${replyURL}",
-                            Latkes.getServePath() + commentSharpURL)
-                    .replace("${replyContent}", commentContent);
+			message.setSubject(mailSubject);
+			final String mailBody = replyNotificationTemplate.getString("body").replace("${postLink}", articleLink)
+					.replace("${postTitle}", articleTitle).replace("${replier}", commenter)
+					.replace("${blogTitle}", blogTitle).replace("${replyURL}", Latkes.getServePath() + commentSharpURL)
+					.replace("${replyContent}", commentContent);
 
-            message.setHtmlBody(mailBody);
-            logger.debug( "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                    mailSubject, mailBody, originalCommentEmail);
-            mailService.send(message);
+			message.setHtmlBody(mailBody);
+			logger.debug("Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody,
+					originalCommentEmail);
+			mailService.send(message);
 
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new EventException("Reply notifier error!");
-        }
-    }
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new EventException("Reply notifier error!");
+		}
+	}
 
-    /**
-     * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
-     *
-     * @return event type
-     */
-    
-    public String getEventType() {
-        return EventTypes.ADD_COMMENT_TO_ARTICLE;
-    }
+	/**
+	 * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
+	 *
+	 * @return event type
+	 */
+
+	public String getEventType() {
+		return EventTypes.ADD_COMMENT_TO_ARTICLE;
+	}
 }

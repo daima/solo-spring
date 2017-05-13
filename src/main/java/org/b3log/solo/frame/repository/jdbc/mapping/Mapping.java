@@ -15,24 +15,23 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * the interface for mapping.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.0.0.0, Jan 12, 2012
  */
 public interface Mapping {
 
-    /**
-     * for mapping from java definition to database table-definition sql.
-     * 
-     * 
-     * @param definition {@link FieldDefinition}
-     * @return table-definition sql.
-     */
-    String toDataBaseSting(FieldDefinition definition);
+	/**
+	 * for mapping from java definition to database table-definition sql.
+	 * 
+	 * 
+	 * @param definition
+	 *            {@link FieldDefinition}
+	 * @return table-definition sql.
+	 */
+	String toDataBaseSting(FieldDefinition definition);
 }

@@ -15,48 +15,46 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * String mapping.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Feb 21, 2013
  */
 public class StringMapping implements Mapping {
 
-    @Override
-    public String toDataBaseSting(final FieldDefinition definition) {
-        final StringBuilder sql = new StringBuilder();
+	@Override
+	public String toDataBaseSting(final FieldDefinition definition) {
+		final StringBuilder sql = new StringBuilder();
 
-        sql.append(definition.getName());
+		sql.append(definition.getName());
 
-        if (definition.getLength() == null) {
-            definition.setLength(new Integer("0"));
-        }
+		if (definition.getLength() == null) {
+			definition.setLength(new Integer("0"));
+		}
 
-        final Integer length = definition.getLength();
+		final Integer length = definition.getLength();
 
-        if (length > new Integer("255")) {
-            if (length > new Integer("16777215")) {
-                sql.append(" longtext");
-            } else if (length > new Integer("65535")) {
-                sql.append(" mediumtext");
-            } else {
-                sql.append(" text");
-            }
-        } else {
-            sql.append(" varchar(").append(length < 1 ? new Integer("100") : length);
-            sql.append(")");
-        }
+		if (length > new Integer("255")) {
+			if (length > new Integer("16777215")) {
+				sql.append(" longtext");
+			} else if (length > new Integer("65535")) {
+				sql.append(" mediumtext");
+			} else {
+				sql.append(" text");
+			}
+		} else {
+			sql.append(" varchar(").append(length < 1 ? new Integer("100") : length);
+			sql.append(")");
+		}
 
-        if (!definition.getNullable()) {
-            sql.append(" not null");
-        }
+		if (!definition.getNullable()) {
+			sql.append(" not null");
+		}
 
-        return sql.toString();
-    }
+		return sql.toString();
+	}
 }

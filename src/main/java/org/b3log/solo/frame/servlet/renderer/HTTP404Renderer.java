@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * HTTP {@link HttpServletResponse#SC_NOT_FOUND 404 status} renderer.
@@ -33,17 +31,17 @@ import org.slf4j.LoggerFactory;
  */
 public final class HTTP404Renderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(HTTP404Renderer.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(HTTP404Renderer.class);
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        try {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        } catch (final IOException e) {
-            logger.error("Renders 404 error", e);
-        }
-    }
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		try {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		} catch (final IOException e) {
+			logger.error("Renders 404 error", e);
+		}
+	}
 }

@@ -23,12 +23,12 @@ package org.b3log.solo.frame.plugin;
  */
 public enum PluginType {
 
-    /**
-     * Indicates a plugin belongs ADMIN.
-     */
-    ADMIN,
-    /**
-     * Indicates a plugin belongs PUBLIC.
-     */
-    PUBLIC
+	/**
+	 * Indicates a plugin belongs ADMIN.
+	 */
+	ADMIN,
+	/**
+	 * Indicates a plugin belongs PUBLIC.
+	 */
+	PUBLIC
 }

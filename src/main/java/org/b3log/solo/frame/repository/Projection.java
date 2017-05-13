@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 /**
  * Projection.
  *
@@ -24,94 +23,96 @@ package org.b3log.solo.frame.repository;
  */
 public class Projection {
 
-    /**
-     * Key.
-     */
-    private String key;
+	/**
+	 * Key.
+	 */
+	private String key;
 
-    /**
-     * Value type.
-     */
-    private Class<?> type;
+	/**
+	 * Value type.
+	 */
+	private Class<?> type;
 
-    /**
-     * Initialization value for hashing.
-     */
-    private static final int INIT_HASH = 3;
+	/**
+	 * Initialization value for hashing.
+	 */
+	private static final int INIT_HASH = 3;
 
-    /**
-     * Base for hashing.
-     */
-    private static final int BASE = 29;
+	/**
+	 * Base for hashing.
+	 */
+	private static final int BASE = 29;
 
-    /**
-     * Gets the key.
-     * 
-     * @return key
-     */
-    public String getKey() {
-        return key;
-    }
+	/**
+	 * Gets the key.
+	 * 
+	 * @return key
+	 */
+	public String getKey() {
+		return key;
+	}
 
-    /**
-     * Gets the value type.
-     * 
-     * @return value type
-     */
-    public Class<?> getType() {
-        return type;
-    }
+	/**
+	 * Gets the value type.
+	 * 
+	 * @return value type
+	 */
+	public Class<?> getType() {
+		return type;
+	}
 
-    /**
-     * Constructs a projection with the specified key and value type.
-     * 
-     * @param key the specified key
-     * @param type the specified value type
-     */
-    public Projection(final String key, final Class<?> type) {
-        this.key = key;
-        this.type = type;
-    }
+	/**
+	 * Constructs a projection with the specified key and value type.
+	 * 
+	 * @param key
+	 *            the specified key
+	 * @param type
+	 *            the specified value type
+	 */
+	public Projection(final String key, final Class<?> type) {
+		this.key = key;
+		this.type = type;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
 
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
 
-        final Projection other = (Projection) obj;
+		final Projection other = (Projection) obj;
 
-        if ((this.key == null) ? (other.key != null) : !this.key.equals(other.key)) {
-            return false;
-        }
+		if ((this.key == null) ? (other.key != null) : !this.key.equals(other.key)) {
+			return false;
+		}
 
-        if (this.type != other.type && (this.type == null || !this.type.equals(other.type))) {
-            return false;
-        }
+		if (this.type != other.type && (this.type == null || !this.type.equals(other.type))) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int ret = INIT_HASH;
+	@Override
+	public int hashCode() {
+		int ret = INIT_HASH;
 
-        ret = BASE * ret + (this.key != null ? this.key.hashCode() : 0);
-        ret = BASE * ret + (this.type != null ? this.type.hashCode() : 0);
+		ret = BASE * ret + (this.key != null ? this.key.hashCode() : 0);
+		ret = BASE * ret + (this.type != null ? this.type.hashCode() : 0);
 
-        return ret;
-    }
+		return ret;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder("key=");
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder("key=");
 
-        stringBuilder.append(key).append(", typeClassName=").append(type.getClass().getName());
+		stringBuilder.append(key).append(", typeClassName=").append(type.getClass().getName());
 
-        return stringBuilder.toString();
-    }
+		return stringBuilder.toString();
+	}
 }

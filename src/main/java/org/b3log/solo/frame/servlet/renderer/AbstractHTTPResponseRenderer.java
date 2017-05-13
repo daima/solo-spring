@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-
 
 /**
  * Abstract HTTP response renderer.
@@ -34,55 +32,61 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class AbstractHTTPResponseRenderer implements HTTPResponseRenderer {
 
-    /**
-     * the rendererId of this renderer.
-     */
-    private String rendererId;
+	/**
+	 * the rendererId of this renderer.
+	 */
+	private String rendererId;
 
-    /**
-     * setRendererId.
-     * @param rendererId rendererId
-     */
-    public void setRendererId(final String rendererId) {
-        this.rendererId = rendererId;
-    }
+	/**
+	 * setRendererId.
+	 * 
+	 * @param rendererId
+	 *            rendererId
+	 */
+	public void setRendererId(final String rendererId) {
+		this.rendererId = rendererId;
+	}
 
-    @Override
-    public abstract void render(final HttpServletRequest request, final HttpServletResponse response);
+	@Override
+	public abstract void render(final HttpServletRequest request, final HttpServletResponse response);
 
-    @Override
-    public void preRender(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> args) {
-        if (StringUtils.isBlank(rendererId)) {
-            return;
-        }
+	@Override
+	public void preRender(final HttpServletRequest request, final HttpServletResponse response,
+			final Map<String, Object> args) {
+		if (StringUtils.isBlank(rendererId)) {
+			return;
+		}
 
-//        final Set<AbstractPlugin> pSet = Lifecycle.getBeanManager().getReference(PluginManager.class).getPlugins(rendererId);
-//
-//        for (AbstractPlugin plugin : pSet) {
-//            plugin.prePlug(context, args);
-//        }
+		// final Set<AbstractPlugin> pSet =
+		// Lifecycle.getBeanManager().getReference(PluginManager.class).getPlugins(rendererId);
+		//
+		// for (AbstractPlugin plugin : pSet) {
+		// plugin.prePlug(context, args);
+		// }
 
-    }
+	}
 
-    @Override
-    public void postRender(final HttpServletRequest request, final HttpServletResponse response, final Object ret) {
+	@Override
+	public void postRender(final HttpServletRequest request, final HttpServletResponse response, final Object ret) {
 
-        if (StringUtils.isBlank(rendererId)) {
-            return;
-        }
+		if (StringUtils.isBlank(rendererId)) {
+			return;
+		}
 
-//        final Set<AbstractPlugin> pSet = Lifecycle.getBeanManager().getReference(PluginManager.class).getPlugins(rendererId);
-//
-//        for (AbstractPlugin plugin : pSet) {
-//            plugin.plug(getRenderDataModel(), context, ret);
-//        }
-    }
+		// final Set<AbstractPlugin> pSet =
+		// Lifecycle.getBeanManager().getReference(PluginManager.class).getPlugins(rendererId);
+		//
+		// for (AbstractPlugin plugin : pSet) {
+		// plugin.plug(getRenderDataModel(), context, ret);
+		// }
+	}
 
-    /**
-     * getRenderDataModel.
-     * @return map
-     */
-    public Map<String, Object> getRenderDataModel() {
-        return new HashMap<String, Object>();
-    }
+	/**
+	 * getRenderDataModel.
+	 * 
+	 * @return map
+	 */
+	public Map<String, Object> getRenderDataModel() {
+		return new HashMap<>();
+	}
 }

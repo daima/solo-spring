@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 import org.b3log.solo.util.Ids;
-
 
 /**
  * Key generator with time millisecond.
@@ -28,9 +26,9 @@ import org.b3log.solo.util.Ids;
  */
 public final class TimeMillisKeyGenerator implements KeyGenerator<String> {
 
-    @Override
-    public String gen() {
-        return Ids.genTimeMillisId();
-    }
-    
+	@Override
+	public String gen() {
+		return Ids.genTimeMillisId();
+	}
+
 }

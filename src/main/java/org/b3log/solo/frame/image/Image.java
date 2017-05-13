@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.image;
 
-
 /**
  * Image.
  *
@@ -23,50 +22,52 @@ package org.b3log.solo.frame.image;
  * @version 1.0.0.1, Sep 18, 2012
  */
 public final class Image {
-    
-    /**
-     * Name.
-     */
-    private String name;
 
-    /**
-     * Data.
-     */
-    private byte[] data;
-    
-    /**
-     * Gets the name.
-     * 
-     * @return name
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /**
-     * Sets the name with the specified name.
-     * 
-     * @param name the specified name
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
+	/**
+	 * Name.
+	 */
+	private String name;
 
-    /**
-     * Gets the data.
-     * 
-     * @return data
-     */
-    public byte[] getData() {
-        return data;
-    }
+	/**
+	 * Data.
+	 */
+	private byte[] data;
 
-    /**
-     * Sets the data with the specified data.
-     * 
-     * @param data the specified data
-     */
-    public void setData(final byte[] data) {
-        this.data = data;
-    }
+	/**
+	 * Gets the name.
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets the name with the specified name.
+	 * 
+	 * @param name
+	 *            the specified name
+	 */
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Gets the data.
+	 * 
+	 * @return data
+	 */
+	public byte[] getData() {
+		return data;
+	}
+
+	/**
+	 * Sets the data with the specified data.
+	 * 
+	 * @param data
+	 *            the specified data
+	 */
+	public void setData(final byte[] data) {
+		this.data = data;
+	}
 }

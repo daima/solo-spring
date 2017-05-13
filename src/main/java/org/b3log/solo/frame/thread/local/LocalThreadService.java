@@ -19,9 +19,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import org.b3log.solo.frame.thread.ThreadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.b3log.solo.frame.thread.ThreadService;
 
 /**
  * Local thread service.
@@ -31,101 +32,104 @@ import org.b3log.solo.frame.thread.ThreadService;
  */
 public final class LocalThreadService implements ThreadService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(LocalThreadService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(LocalThreadService.class);
 
-    /**
-     * Executor service.
-     */
-    public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
+	/**
+	 * Executor service.
+	 */
+	public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
 
-    @Override
-    public Thread createThreadForCurrentRequest(final Runnable runnable) {
-        return Executors.defaultThreadFactory().newThread(runnable);
-    }
+	@Override
+	public Thread createThreadForCurrentRequest(final Runnable runnable) {
+		return Executors.defaultThreadFactory().newThread(runnable);
+	}
 
-    @Override
-    public Future<?> submit(final Runnable runnable, final long millseconds) {
-        final Object monitor = new Object();
-        final Worker worker = new Worker(runnable, millseconds, monitor);
+	@Override
+	public Future<?> submit(final Runnable runnable, final long millseconds) {
+		final Object monitor = new Object();
+		final Worker worker = new Worker(runnable, millseconds, monitor);
 
-        synchronized (monitor) {
-            EXECUTOR_SERVICE.execute(worker);
+		synchronized (monitor) {
+			EXECUTOR_SERVICE.execute(worker);
 
-            try {
-                monitor.wait();
-            } catch (final Exception e) {
-                logger.error("Wait failed", e);
-            }
-        }
+			try {
+				monitor.wait();
+			} catch (final Exception e) {
+				logger.error("Wait failed", e);
+			}
+		}
 
-        return worker.getFuture();
-    }
+		return worker.getFuture();
+	}
 
-    /**
-     * Worker.
-     */
-    private static class Worker implements Runnable {
+	/**
+	 * Worker.
+	 */
+	private static class Worker implements Runnable {
 
-        /**
-         * Future.
-         */
-        private Future<?> future;
+		/**
+		 * Future.
+		 */
+		private Future<?> future;
 
-        /**
-         * Runnable.
-         */
-        private final Runnable runnable;
+		/**
+		 * Runnable.
+		 */
+		private final Runnable runnable;
 
-        /**
-         * Timeout.
-         */
-        private final long timeout;
+		/**
+		 * Timeout.
+		 */
+		private final long timeout;
 
-        /**
-         * Object.
-         */
-        private Object monitor;
+		/**
+		 * Object.
+		 */
+		private Object monitor;
 
-        /**
-         * Constructs a worker.
-         *
-         * @param runnable the specified runnable
-         * @param timeout the specified timeout
-         * @param monitor the specified monitor
-         */
-        Worker(final Runnable runnable, final long timeout, final Object monitor) {
-            this.runnable = runnable;
-            this.timeout = timeout;
-            this.monitor = monitor;
-        }
+		/**
+		 * Constructs a worker.
+		 *
+		 * @param runnable
+		 *            the specified runnable
+		 * @param timeout
+		 *            the specified timeout
+		 * @param monitor
+		 *            the specified monitor
+		 */
+		Worker(final Runnable runnable, final long timeout, final Object monitor) {
+			this.runnable = runnable;
+			this.timeout = timeout;
+			this.monitor = monitor;
+		}
 
-        /**
-         * Get the future.
-         *
-         * @return future
-         */
-        public Future<?> getFuture() {
-            return future;
-        }
+		/**
+		 * Get the future.
+		 *
+		 * @return future
+		 */
+		public Future<?> getFuture() {
+			return future;
+		}
 
-        @Override
-        public void run() {
-            synchronized (monitor) {
-                try {
-                    future = EXECUTOR_SERVICE.submit(runnable);
+		@Override
+		public void run() {
+			synchronized (monitor) {
+				try {
+					future = EXECUTOR_SERVICE.submit(runnable);
 
-                    future.get(timeout, TimeUnit.MILLISECONDS);
-                } catch (final Exception e) {
-                    logger.warn("Task executes failed [runnable=" + runnable.toString() + "]", e);
+					future.get(timeout, TimeUnit.MILLISECONDS);
+				} catch (final Exception e) {
+					logger.warn("Task executes failed [runnable=" + runnable.toString() + "]", e);
 
-                    future = null;
-                }
+					future = null;
+				}
 
-                monitor.notify();
-            }
-        }
-    }
+				monitor.notify();
+			}
+		}
+	}
 }

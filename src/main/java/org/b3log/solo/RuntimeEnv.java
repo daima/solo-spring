@@ -24,8 +24,8 @@ package org.b3log.solo;
  */
 public enum RuntimeEnv {
 
-    /**
-     * Indicates Latke runs on local (standard Servlet container).
-     */
-    LOCAL,
+	/**
+	 * Indicates Latke runs on local (standard Servlet container).
+	 */
+	LOCAL,
 }

@@ -15,48 +15,48 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, Oct 31, 2011
- * @since  0.3.1
+ * @since 0.3.1
  */
 public final class Link {
 
-    /**
-     * Link.
-     */
-    public static final String LINK = "link";
+	/**
+	 * Link.
+	 */
+	public static final String LINK = "link";
 
-    /**
-     * Links.
-     */
-    public static final String LINKS = "links";
+	/**
+	 * Links.
+	 */
+	public static final String LINKS = "links";
 
-    /**
-     * Key of title.
-     */
-    public static final String LINK_TITLE = "linkTitle";
+	/**
+	 * Key of title.
+	 */
+	public static final String LINK_TITLE = "linkTitle";
 
-    /**
-     * Key of address.
-     */
-    public static final String LINK_ADDRESS = "linkAddress";
+	/**
+	 * Key of address.
+	 */
+	public static final String LINK_ADDRESS = "linkAddress";
 
-    /**
-     * Key of description.
-     */
-    public static final String LINK_DESCRIPTION = "linkDescription";
+	/**
+	 * Key of description.
+	 */
+	public static final String LINK_DESCRIPTION = "linkDescription";
 
-    /**
-     * Key of order.
-     */
-    public static final String LINK_ORDER = "linkOrder";
+	/**
+	 * Key of order.
+	 */
+	public static final String LINK_ORDER = "linkOrder";
 
-    /**
-     * Private default constructor.
-     */
-    private Link() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Link() {
+	}
 }

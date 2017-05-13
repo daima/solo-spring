@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * XML HTTP response renderer.
  *
@@ -34,37 +32,38 @@ import org.slf4j.LoggerFactory;
  */
 public final class TextXMLRenderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(TextXMLRenderer.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(TextXMLRenderer.class);
 
-    /**
-     * Content to render.
-     */
-    private String content;
+	/**
+	 * Content to render.
+	 */
+	private String content;
 
-    /**
-     * Sets the content with the specified content.
-     * 
-     * @param content the specified content
-     */
-    public void setContent(final String content) {
-        this.content = content;
-    }
+	/**
+	 * Sets the content with the specified content.
+	 * 
+	 * @param content
+	 *            the specified content
+	 */
+	public void setContent(final String content) {
+		this.content = content;
+	}
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        try {
-            response.setContentType("text/xml");
-            response.setCharacterEncoding("UTF-8");
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		try {
+			response.setContentType("text/xml");
+			response.setCharacterEncoding("UTF-8");
 
-            final PrintWriter writer = response.getWriter();
+			final PrintWriter writer = response.getWriter();
 
-            writer.write(content);
-            writer.close();
-        } catch (final IOException e) {
-            logger.error("Render failed", e);
-        }
-    }
+			writer.write(content);
+			writer.close();
+		} catch (final IOException e) {
+			logger.error("Render failed", e);
+		}
+	}
 }

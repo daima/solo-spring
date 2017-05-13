@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  * The interface of all the renderer.
@@ -30,26 +28,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface HTTPResponseRenderer {
 
-    /**
-     * Pre-render before the real method be invoked.
-     * 
-     * @param context the specified HTTP request context
-     * @param args the arguments of the real method
-     */
-    void preRender(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> args);
+	/**
+	 * Pre-render before the real method be invoked.
+	 * 
+	 * @param context
+	 *            the specified HTTP request context
+	 * @param args
+	 *            the arguments of the real method
+	 */
+	void preRender(final HttpServletRequest request, final HttpServletResponse response,
+			final Map<String, Object> args);
 
-    /**
-     * Renders with the specified HTTP request context.
-     * 
-     * @param context the specified HTTP request context
-     */
-    void render(final HttpServletRequest request, final HttpServletResponse response);
+	/**
+	 * Renders with the specified HTTP request context.
+	 * 
+	 * @param context
+	 *            the specified HTTP request context
+	 */
+	void render(final HttpServletRequest request, final HttpServletResponse response);
 
-    /**
-     * Post-render after the real method be invoked.
-     * 
-     * @param context the specified HTTP request context
-     * @param ret the return value of the real method
-     */
-    void postRender(final HttpServletRequest request, final HttpServletResponse response, final Object ret);
+	/**
+	 * Post-render after the real method be invoked.
+	 * 
+	 * @param context
+	 *            the specified HTTP request context
+	 * @param ret
+	 *            the return value of the real method
+	 */
+	void postRender(final HttpServletRequest request, final HttpServletResponse response, final Object ret);
 }

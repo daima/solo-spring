@@ -15,10 +15,8 @@
  */
 package org.b3log.solo.dao;
 
-
 import org.b3log.solo.model.Option;
 import org.springframework.stereotype.Repository;
-
 
 /**
  * Option repository.
@@ -28,10 +26,10 @@ import org.springframework.stereotype.Repository;
  * @since 0.6.0
  */
 @Repository
-public class OptionDao extends AbstractBlogDao{
+public class OptionDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return Option.OPTION;
-    }
+		return Option.OPTION;
+	}
 }

@@ -15,42 +15,42 @@
  */
 package org.b3log.solo.frame.urlfetch.local;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import org.b3log.solo.frame.urlfetch.HTTPRequest;
 
+import org.b3log.solo.frame.urlfetch.HTTPRequest;
 
 /**
  * Specific Handler for urlfetch.
- * 
- * match {@link org.b3log.solo.frame.servlet.HTTPRequestMethod}<br>POST</br>
+ *
+ * match {@link org.b3log.solo.frame.servlet.HTTPRequestMethod}<br>
+ * POST</br>
  * Override {@link #configConnection(HttpURLConnection, HTTPRequest)}
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 0.0.0.2, Aug 15, 2011
- * 
+ *
  */
 class UrlFetchPostHandler extends UrlFetchCommonHandler {
 
-    @Override
-    protected void configConnection(final HttpURLConnection httpURLConnection, final HTTPRequest request)
-        throws IOException {
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setUseCaches(false);
+	@Override
+	protected void configConnection(final HttpURLConnection httpURLConnection, final HTTPRequest request)
+			throws IOException {
+		httpURLConnection.setDoOutput(true);
+		httpURLConnection.setUseCaches(false);
 
-        if (request.getPayload() != null) {
+		if (request.getPayload() != null) {
 
-            final OutputStream outputStream = httpURLConnection.getOutputStream();
+			final OutputStream outputStream = httpURLConnection.getOutputStream();
 
-            outputStream.write(request.getPayload());
+			outputStream.write(request.getPayload());
 
-            outputStream.flush();
-            outputStream.close();
-        }
-        
-        // TODO: request.getPayloadMap()
+			outputStream.flush();
+			outputStream.close();
+		}
 
-    }
+		// TODO: request.getPayloadMap()
+
+	}
 }

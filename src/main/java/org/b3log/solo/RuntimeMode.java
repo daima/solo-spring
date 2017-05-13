@@ -20,16 +20,16 @@ package org.b3log.solo;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Jun 24, 2011
- * @see Latkes#getRuntimeMode() 
+ * @see Latkes#getRuntimeMode()
  */
 public enum RuntimeMode {
 
-    /**
-     * Indicates Latke runs in development.
-     */
-    DEVELOPMENT,
-    /**
-     * Indicates Latke runs in production.
-     */
-    PRODUCTION,
+	/**
+	 * Indicates Latke runs in development.
+	 */
+	DEVELOPMENT,
+	/**
+	 * Indicates Latke runs in production.
+	 */
+	PRODUCTION,
 }

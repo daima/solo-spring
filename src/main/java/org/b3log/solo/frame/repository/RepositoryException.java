@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 /**
  * Repository exception.
  *
@@ -24,33 +23,35 @@ package org.b3log.solo.frame.repository;
  */
 public class RepositoryException extends Exception {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * Default serial version uid.
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Public default constructor.
-     */
-    public RepositoryException() {
-        super("Repository exception!");
-    }
+	/**
+	 * Public default constructor.
+	 */
+	public RepositoryException() {
+		super("Repository exception!");
+	}
 
-    /**
-     * Public constructor with {@link Throwable}.
-     *
-     * @param throwable the specified throwable object
-     */
-    public RepositoryException(final Throwable throwable) {
-        super(throwable);
-    }
+	/**
+	 * Public constructor with {@link Throwable}.
+	 *
+	 * @param throwable
+	 *            the specified throwable object
+	 */
+	public RepositoryException(final Throwable throwable) {
+		super(throwable);
+	}
 
-    /**
-     * Public constructor with message.
-     *
-     * @param msg the specified message
-     */
-    public RepositoryException(final String msg) {
-        super(msg);
-    }
+	/**
+	 * Public constructor with message.
+	 *
+	 * @param msg
+	 *            the specified message
+	 */
+	public RepositoryException(final String msg) {
+		super(msg);
+	}
 }

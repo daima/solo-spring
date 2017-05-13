@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,43 +22,44 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- *  servlet forward renderer.
- * 
+ * servlet forward renderer.
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.0.0.0, Sep 26, 2013
  */
 public class StaticFileRenderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(StaticFileRenderer.class);
-    
-    /**
-     * Request dispatcher.
-     */
-    private RequestDispatcher requestDispatcher;
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(StaticFileRenderer.class);
 
-    /**
-     * requestDispatcher holder.
-     * @param requestDispatcher requestDispatcher
-     */
-    public StaticFileRenderer(final RequestDispatcher requestDispatcher) {
-        this.requestDispatcher = requestDispatcher;
-    }
+	/**
+	 * Request dispatcher.
+	 */
+	private RequestDispatcher requestDispatcher;
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
+	/**
+	 * requestDispatcher holder.
+	 * 
+	 * @param requestDispatcher
+	 *            requestDispatcher
+	 */
+	public StaticFileRenderer(final RequestDispatcher requestDispatcher) {
+		this.requestDispatcher = requestDispatcher;
+	}
 
-        try {
-            requestDispatcher.forward(request, response);
-        } catch (final Exception e) {
-            logger.error("servlet forward error", e);
-            throw new RuntimeException(e);
-        }
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
 
-    }
+		try {
+			requestDispatcher.forward(request, response);
+		} catch (final Exception e) {
+			logger.error("servlet forward error", e);
+			throw new RuntimeException(e);
+		}
+
+	}
 
 }

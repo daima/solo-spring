@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.module.event;
 
-
 /**
  * Event types.
  *
@@ -25,48 +24,49 @@ package org.b3log.solo.module.event;
  */
 public final class EventTypes {
 
-    /**
-     * Indicates a add article event.
-     */
-    public static final String ADD_ARTICLE = "Add Article";
+	/**
+	 * Indicates a add article event.
+	 */
+	public static final String ADD_ARTICLE = "Add Article";
 
-    /**
-     * Indicates a update article event.
-     */
-    public static final String UPDATE_ARTICLE = "Update Article";
+	/**
+	 * Indicates a update article event.
+	 */
+	public static final String UPDATE_ARTICLE = "Update Article";
 
-    /**
-     * Indicates a remove article event.
-     */
-    public static final String REMOVE_ARTICLE = "Remove Article";
-    
-    /**
-     * Indicates a before render article event.
-     */
-    public static final String BEFORE_RENDER_ARTICLE = "Before Render Article";
+	/**
+	 * Indicates a remove article event.
+	 */
+	public static final String REMOVE_ARTICLE = "Remove Article";
 
-    /**
-     * Indicates an add comment to article event.
-     */
-    public static final String ADD_COMMENT_TO_ARTICLE = "Add Comment To Article";
+	/**
+	 * Indicates a before render article event.
+	 */
+	public static final String BEFORE_RENDER_ARTICLE = "Before Render Article";
 
-    /**
-     * Indicates an add comment (from symphony) to article event.
-     */
-    public static final String ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY = "Add Comment To Article From Symphony";
+	/**
+	 * Indicates an add comment to article event.
+	 */
+	public static final String ADD_COMMENT_TO_ARTICLE = "Add Comment To Article";
 
-    /**
-     * Indicates an add comment to page event.
-     */
-    public static final String ADD_COMMENT_TO_PAGE = "Add Comment To Page";
+	/**
+	 * Indicates an add comment (from symphony) to article event.
+	 */
+	public static final String ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY = "Add Comment To Article From Symphony";
 
-    /**
-     * Indicates a remove comment event.
-     */
-    public static final String REMOVE_COMMENT = "Remove Comment";
+	/**
+	 * Indicates an add comment to page event.
+	 */
+	public static final String ADD_COMMENT_TO_PAGE = "Add Comment To Page";
 
-    /**
-     * Private default constructor.
-     */
-    private EventTypes() {}
+	/**
+	 * Indicates a remove comment event.
+	 */
+	public static final String REMOVE_COMMENT = "Remove Comment";
+
+	/**
+	 * Private default constructor.
+	 */
+	private EventTypes() {
+	}
 }

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all archive date model relevant keys.
  *
@@ -24,43 +23,44 @@ package org.b3log.solo.model;
  */
 public final class ArchiveDate {
 
-    /**
-     * Archive date.
-     */
-    public static final String ARCHIVE_DATE = "archiveDate";
+	/**
+	 * Archive date.
+	 */
+	public static final String ARCHIVE_DATE = "archiveDate";
 
-    /**
-     * Archive dates.
-     */
-    public static final String ARCHIVE_DATES = "archiveDates";
+	/**
+	 * Archive dates.
+	 */
+	public static final String ARCHIVE_DATES = "archiveDates";
 
-    /**
-     * Archive time.
-     */
-    public static final String ARCHIVE_TIME = "archiveTime";
+	/**
+	 * Archive time.
+	 */
+	public static final String ARCHIVE_TIME = "archiveTime";
 
-    /**
-     * Key of archive date article count.
-     */
-    public static final String ARCHIVE_DATE_ARTICLE_COUNT = "archiveDateArticleCount";
+	/**
+	 * Key of archive date article count.
+	 */
+	public static final String ARCHIVE_DATE_ARTICLE_COUNT = "archiveDateArticleCount";
 
-    /**
-     * Key of archive date article count.
-     */
-    public static final String ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT = "archiveDatePublishedArticleCount";
+	/**
+	 * Key of archive date article count.
+	 */
+	public static final String ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT = "archiveDatePublishedArticleCount";
 
-    /**
-     * Archive date year.
-     */
-    public static final String ARCHIVE_DATE_YEAR = "archiveDateYear";
+	/**
+	 * Archive date year.
+	 */
+	public static final String ARCHIVE_DATE_YEAR = "archiveDateYear";
 
-    /**
-     * Archive date month.
-     */
-    public static final String ARCHIVE_DATE_MONTH = "archiveDateMonth";
+	/**
+	 * Archive date month.
+	 */
+	public static final String ARCHIVE_DATE_MONTH = "archiveDateMonth";
 
-    /**
-     * Private default constructor.
-     */
-    private ArchiveDate() {}
+	/**
+	 * Private default constructor.
+	 */
+	private ArchiveDate() {
+	}
 }

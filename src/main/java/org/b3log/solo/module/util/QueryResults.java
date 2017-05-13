@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.module.util;
 
-
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.model.Pagination;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 /**
  * Query result utilities.
@@ -31,49 +29,52 @@ import org.json.JSONObject;
  */
 public final class QueryResults {
 
-    /**
-     * Constructs a default query result.
-     * 
-     * @return a default query result, 
-     * <pre>
-     * {
-     *     "sc": false
-     * }
-     * </pre>
-     */
-    public static JSONObject defaultResult() {
-        return new JSONObject().put(Keys.STATUS_CODE, false);
-    }
+	/**
+	 * Constructs a default query result.
+	 * 
+	 * @return a default query result,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "sc": false
+	 * }
+	 *         </pre>
+	 */
+	public static JSONObject defaultResult() {
+		return new JSONObject().put(Keys.STATUS_CODE, false);
+	}
 
-    /**
-     * Constructs a default query results.
-     * 
-     * @return a default query results,
-     * <pre>
-     * {
-     *     "pagination": {
-     *       "paginationPageCount": 0
-     *     },
-     *     "rslts": []
-     * }
-     * </pre>
-     */
-    public static JSONObject defaultResults() {
-        final JSONObject ret = new JSONObject();
-        final JSONObject pagination = new JSONObject();
+	/**
+	 * Constructs a default query results.
+	 * 
+	 * @return a default query results,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "pagination": {
+	 *       "paginationPageCount": 0
+	 *     },
+	 *     "rslts": []
+	 * }
+	 *         </pre>
+	 */
+	public static JSONObject defaultResults() {
+		final JSONObject ret = new JSONObject();
+		final JSONObject pagination = new JSONObject();
 
-        ret.put(Pagination.PAGINATION, pagination);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
+		ret.put(Pagination.PAGINATION, pagination);
+		pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
 
-        final JSONArray results = new JSONArray();
+		final JSONArray results = new JSONArray();
 
-        ret.put(Keys.RESULTS, results);
+		ret.put(Keys.RESULTS, results);
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Private constructor.
-     */
-    private QueryResults() {}
+	/**
+	 * Private constructor.
+	 */
+	private QueryResults() {
+	}
 }

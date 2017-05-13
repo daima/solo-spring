@@ -15,36 +15,35 @@
  */
 package org.b3log.solo.frame.urlfetch.local;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import org.b3log.solo.frame.urlfetch.HTTPRequest;
 
+import org.b3log.solo.frame.urlfetch.HTTPRequest;
 
 /**
  * PUT method handler.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Oct 12, 2012
  */
 class UrlFetchPutHandler extends UrlFetchCommonHandler {
 
-    @Override
-    protected void configConnection(final HttpURLConnection httpURLConnection, final HTTPRequest request)
-        throws IOException {
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setUseCaches(false);
+	@Override
+	protected void configConnection(final HttpURLConnection httpURLConnection, final HTTPRequest request)
+			throws IOException {
+		httpURLConnection.setDoOutput(true);
+		httpURLConnection.setUseCaches(false);
 
-        if (null != request.getPayload()) {
-            final OutputStream outputStream = httpURLConnection.getOutputStream();
+		if (null != request.getPayload()) {
+			final OutputStream outputStream = httpURLConnection.getOutputStream();
 
-            outputStream.write(request.getPayload());
+			outputStream.write(request.getPayload());
 
-            outputStream.flush();
-            outputStream.close();
-        }
+			outputStream.flush();
+			outputStream.close();
+		}
 
-        // TODO: request.getPayloadMap()
-    }
+		// TODO: request.getPayloadMap()
+	}
 }

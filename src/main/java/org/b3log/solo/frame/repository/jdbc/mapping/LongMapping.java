@@ -15,30 +15,28 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * Long type mapping.
- * 
+ *
  * <p>
  * Maps Java long type to SQL bigint type.
  * </p>
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Feb 29, 2012
  */
 public final class LongMapping implements Mapping {
 
-    @Override
-    public String toDataBaseSting(final FieldDefinition definition) {
-        final StringBuilder builder = new StringBuilder(definition.getName()).append(" bigint");
+	@Override
+	public String toDataBaseSting(final FieldDefinition definition) {
+		final StringBuilder builder = new StringBuilder(definition.getName()).append(" bigint");
 
-        if (!definition.getNullable()) {
-            builder.append(" not null");
-        }
+		if (!definition.getNullable()) {
+			builder.append(" not null");
+		}
 
-        return builder.toString();
-    }
+		return builder.toString();
+	}
 }

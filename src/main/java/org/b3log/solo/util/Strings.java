@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * String utilities.
  *
@@ -35,227 +33,243 @@ import java.util.regex.Pattern;
  */
 public final class Strings {
 
-    /**
-     * Line separator.
-     */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	/**
+	 * Line separator.
+	 */
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    /**
-     * Maximum length of local part of a valid email address.
-     */
-    private static final int MAX_EMAIL_LENGTH_LOCAL = 64;
+	/**
+	 * Maximum length of local part of a valid email address.
+	 */
+	private static final int MAX_EMAIL_LENGTH_LOCAL = 64;
 
-    /**
-     * Maximum length of domain part of a valid email address.
-     */
-    private static final int MAX_EMAIL_LENGTH_DOMAIN = 255;
+	/**
+	 * Maximum length of domain part of a valid email address.
+	 */
+	private static final int MAX_EMAIL_LENGTH_DOMAIN = 255;
 
-    /**
-     * Maximum length of a valid email address.
-     */
-    private static final int MAX_EMAIL_LENGTH = 256;
+	/**
+	 * Maximum length of a valid email address.
+	 */
+	private static final int MAX_EMAIL_LENGTH = 256;
 
-    /**
-     * Email pattern.
-     */
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
-        "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-    
-    /**
-     * Private default constructor.
-     */
-    private Strings() {}
+	/**
+	 * Email pattern.
+	 */
+	private static final Pattern EMAIL_PATTERN = Pattern
+			.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
-    /**
-     * Converts the specified string into a string list line by line.
-     *
-     * @param string the specified string
-     * @return a list of string lines, returns {@code null} if the specified 
-     * string is {@code null}
-     * @throws IOException io exception
-     */
-    public static List<String> toLines(final String string) throws IOException {
-        if (null == string) {
-            return null;
-        }
+	/**
+	 * Private default constructor.
+	 */
+	private Strings() {
+	}
 
-        final BufferedReader bufferedReader = new BufferedReader(new StringReader(string));
-        final List<String> ret = new ArrayList<String>();
+	/**
+	 * Converts the specified string into a string list line by line.
+	 *
+	 * @param string
+	 *            the specified string
+	 * @return a list of string lines, returns {@code null} if the specified
+	 *         string is {@code null}
+	 * @throws IOException
+	 *             io exception
+	 */
+	public static List<String> toLines(final String string) throws IOException {
+		if (null == string) {
+			return null;
+		}
 
-        try {
-            String line = bufferedReader.readLine();
+		final BufferedReader bufferedReader = new BufferedReader(new StringReader(string));
+		final List<String> ret = new ArrayList<>();
 
-            while (null != line) {
-                ret.add(line);
+		try {
+			String line = bufferedReader.readLine();
 
-                line = bufferedReader.readLine();
-            }
-        } finally {
-            bufferedReader.close();
-        }
+			while (null != line) {
+				ret.add(line);
 
-        return ret;
-    }
+				line = bufferedReader.readLine();
+			}
+		} finally {
+			bufferedReader.close();
+		}
 
-    /**
-     * Checks whether the specified string is numeric.
-     * 
-     * @param string the specified string
-     * @return {@code true} if the specified string is numeric, returns 
-     * returns {@code false} otherwise
-     */
-    public static boolean isNumeric(final String string) {
-        if (isEmptyOrNull(string)) {
-            return false;
-        }
+		return ret;
+	}
 
-        final Pattern pattern = Pattern.compile("[0-9]*");
-        final Matcher matcher = pattern.matcher(string);
+	/**
+	 * Checks whether the specified string is numeric.
+	 * 
+	 * @param string
+	 *            the specified string
+	 * @return {@code true} if the specified string is numeric, returns returns
+	 *         {@code false} otherwise
+	 */
+	public static boolean isNumeric(final String string) {
+		if (isEmptyOrNull(string)) {
+			return false;
+		}
 
-        return matcher.matches();
-    }
+		final Pattern pattern = Pattern.compile("[0-9]*");
+		final Matcher matcher = pattern.matcher(string);
 
-    /**
-     * Checks whether the specified string is a valid email address.
-     * 
-     * @param string the specified string
-     * @return {@code true} if the specified string is a valid email address,
-     * returns {@code false} otherwise
-     */
-    public static boolean isEmail(final String string) {
-        if (isEmptyOrNull(string)) {
-            return false;
-        }
+		return matcher.matches();
+	}
 
-        if (MAX_EMAIL_LENGTH < string.length()) {
-            return false;
-        }
+	/**
+	 * Checks whether the specified string is a valid email address.
+	 * 
+	 * @param string
+	 *            the specified string
+	 * @return {@code true} if the specified string is a valid email address,
+	 *         returns {@code false} otherwise
+	 */
+	public static boolean isEmail(final String string) {
+		if (isEmptyOrNull(string)) {
+			return false;
+		}
 
-        final String[] parts = string.split("@");
+		if (MAX_EMAIL_LENGTH < string.length()) {
+			return false;
+		}
 
-        if (2 != parts.length) {
-            return false;
-        }
+		final String[] parts = string.split("@");
 
-        final String local = parts[0];
+		if (2 != parts.length) {
+			return false;
+		}
 
-        if (MAX_EMAIL_LENGTH_LOCAL < local.length()) {
-            return false;
-        }
+		final String local = parts[0];
 
-        final String domain = parts[1];
+		if (MAX_EMAIL_LENGTH_LOCAL < local.length()) {
+			return false;
+		}
 
-        if (MAX_EMAIL_LENGTH_DOMAIN < domain.length()) {
-            return false;
-        }
+		final String domain = parts[1];
 
-        return EMAIL_PATTERN.matcher(string).matches();
-    }
+		if (MAX_EMAIL_LENGTH_DOMAIN < domain.length()) {
+			return false;
+		}
 
-    /**
-     * Determines whether the specified string is {@code ""} or {@code null}.
-     *
-     * @param string the specified string
-     * @return {@code true} if the specified string is {@code ""} or
-     * {@code null}, returns {@code false} otherwise
-     */
-    public static boolean isEmptyOrNull(final String string) {
-        return string == null || string.length() == 0;
-    }
+		return EMAIL_PATTERN.matcher(string).matches();
+	}
 
-    /**
-     * Trims every string in the specified strings array.
-     *
-     * @param strings the specified strings array, returns {@code null} if the
-     * specified strings is {@code null}
-     * @return a trimmed strings array
-     */
-    public static String[] trimAll(final String[] strings) {
-        if (null == strings) {
-            return null;
-        }
+	/**
+	 * Determines whether the specified string is {@code ""} or {@code null}.
+	 *
+	 * @param string
+	 *            the specified string
+	 * @return {@code true} if the specified string is {@code ""} or
+	 *         {@code null}, returns {@code false} otherwise
+	 */
+	public static boolean isEmptyOrNull(final String string) {
+		return string == null || string.length() == 0;
+	}
 
-        final String[] ret = new String[strings.length];
+	/**
+	 * Trims every string in the specified strings array.
+	 *
+	 * @param strings
+	 *            the specified strings array, returns {@code null} if the
+	 *            specified strings is {@code null}
+	 * @return a trimmed strings array
+	 */
+	public static String[] trimAll(final String[] strings) {
+		if (null == strings) {
+			return null;
+		}
 
-        for (int i = 0; i < strings.length; i++) {
-            ret[i] = strings[i].trim();
-        }
+		final String[] ret = new String[strings.length];
 
-        return ret;
-    }
-    
-    /**
-     * Determines whether the specified strings contains the specified string, ignoring case considerations.
-     * 
-     * @param string the specified string
-     * @param strings the specified strings
-     * @return {@code true} if the specified strings contains the specified string, ignoring case considerations, returns {@code false} 
-     * otherwise
-     */
-    public static boolean containsIgnoreCase(final String string, final String[] strings) {
-        if (null == strings) {
-            return false;
-        }
-        
-        for (final String str : strings) {
-            if (null == str && null == string) {
-                return true;
-            }
+		for (int i = 0; i < strings.length; i++) {
+			ret[i] = strings[i].trim();
+		}
 
-            if (null == string || null == str) {
-                continue;
-            }
+		return ret;
+	}
 
-            if (string.equalsIgnoreCase(str)) {
-                return true;
-            }
-        }
+	/**
+	 * Determines whether the specified strings contains the specified string,
+	 * ignoring case considerations.
+	 * 
+	 * @param string
+	 *            the specified string
+	 * @param strings
+	 *            the specified strings
+	 * @return {@code true} if the specified strings contains the specified
+	 *         string, ignoring case considerations, returns {@code false}
+	 *         otherwise
+	 */
+	public static boolean containsIgnoreCase(final String string, final String[] strings) {
+		if (null == strings) {
+			return false;
+		}
 
-        return false;
-    }
+		for (final String str : strings) {
+			if (null == str && null == string) {
+				return true;
+			}
 
-    /**
-     * Determines whether the specified strings contains the specified string.
-     * 
-     * @param string the specified string
-     * @param strings the specified strings
-     * @return {@code true} if the specified strings contains the specified string, returns {@code false} otherwise
-     */
-    public static boolean contains(final String string, final String[] strings) {
-        if (null == strings) {
-            return false;
-        }
-        
-        for (final String str : strings) {
-            if (null == str && null == string) {
-                return true;
-            }
+			if (null == string || null == str) {
+				continue;
+			}
 
-            if (null == string || null == str) {
-                continue;
-            }
+			if (string.equalsIgnoreCase(str)) {
+				return true;
+			}
+		}
 
-            if (string.equals(str)) {
-                return true;
-            }
-        }
+		return false;
+	}
 
-        return false;
-    }
+	/**
+	 * Determines whether the specified strings contains the specified string.
+	 * 
+	 * @param string
+	 *            the specified string
+	 * @param strings
+	 *            the specified strings
+	 * @return {@code true} if the specified strings contains the specified
+	 *         string, returns {@code false} otherwise
+	 */
+	public static boolean contains(final String string, final String[] strings) {
+		if (null == strings) {
+			return false;
+		}
 
-    /**
-     * Determines whether the specified string is a valid URL.
-     * 
-     * @param string the specified string
-     * @return {@code true} if the specified string is a valid URL, returns {@code false} otherwise
-     */
-    public static boolean isURL(final String string) {
-        try {
-            new URL(string);
+		for (final String str : strings) {
+			if (null == str && null == string) {
+				return true;
+			}
 
-            return true;
-        } catch (final MalformedURLException e) {
-            return false;
-        }
-    }
+			if (null == string || null == str) {
+				continue;
+			}
+
+			if (string.equals(str)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determines whether the specified string is a valid URL.
+	 * 
+	 * @param string
+	 *            the specified string
+	 * @return {@code true} if the specified string is a valid URL, returns
+	 *         {@code false} otherwise
+	 */
+	public static boolean isURL(final String string) {
+		try {
+			new URL(string);
+
+			return true;
+		} catch (final MalformedURLException e) {
+			return false;
+		}
+	}
 }

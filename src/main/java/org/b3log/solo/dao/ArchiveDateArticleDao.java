@@ -27,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
-
 /**
  * Archive date-Article relation repository.
  *
@@ -38,28 +37,31 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArchiveDateArticleDao extends AbstractBlogDao {
 
-    public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
-        throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, archiveDateId)).addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
-            1);
+	public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
+			throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL,
+						archiveDateId))
+				.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING)
+				.setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
-        return get(query);
-    }
+		return get(query);
+	}
 
-    public JSONObject getByArticleId(final String articleId) throws RepositoryException {
-        final Query query = new Query();
+	public JSONObject getByArticleId(final String articleId) throws RepositoryException {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
+		query.setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
 	@Override
 	public String getTableNamePostfix() {

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,8 +22,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.json.JSONArray;
 
+import org.json.JSONArray;
 
 /**
  * Collection utilities.
@@ -34,194 +33,214 @@ import org.json.JSONArray;
  */
 public final class CollectionUtils {
 
-    /**
-     * Private default constructor.
-     */
-    private CollectionUtils() {}
+	/**
+	 * Private default constructor.
+	 */
+	private CollectionUtils() {
+	}
 
-    /**
-     * Gets a list of integers(size specified by the given size) between the
-     * specified start(inclusion) and end(inclusion) randomly.
-     *
-     * @param start the specified start
-     * @param end the specified end
-     * @param size the given size
-     * @return a list of integers
-     */
-    public static List<Integer> getRandomIntegers(final int start, final int end, final int size) {
-        if (size > (end - start + 1)) {
-            throw new IllegalArgumentException("The specified size more then (end - start + 1)!");
-        }
+	/**
+	 * Gets a list of integers(size specified by the given size) between the
+	 * specified start(inclusion) and end(inclusion) randomly.
+	 *
+	 * @param start
+	 *            the specified start
+	 * @param end
+	 *            the specified end
+	 * @param size
+	 *            the given size
+	 * @return a list of integers
+	 */
+	public static List<Integer> getRandomIntegers(final int start, final int end, final int size) {
+		if (size > (end - start + 1)) {
+			throw new IllegalArgumentException("The specified size more then (end - start + 1)!");
+		}
 
-        final List<Integer> integers = genIntegers(start, end);
-        final List<Integer> ret = new ArrayList<Integer>();
+		final List<Integer> integers = genIntegers(start, end);
+		final List<Integer> ret = new ArrayList<>();
 
-        int remainsSize;
-        int index;
+		int remainsSize;
+		int index;
 
-        while (ret.size() < size) {
-            remainsSize = integers.size();
-            index = (int) (Math.random() * (remainsSize - 1));
-            final Integer i = integers.get(index);
+		while (ret.size() < size) {
+			remainsSize = integers.size();
+			index = (int) (Math.random() * (remainsSize - 1));
+			final Integer i = integers.get(index);
 
-            ret.add(i);
-            integers.remove(i);
-        }
+			ret.add(i);
+			integers.remove(i);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Generates a list of integers from the specified start(inclusion) to the
-     * specified end(inclusion).
-     *
-     * @param start the specified start
-     * @param end the specified end
-     * @return a list of integers
-     */
-    public static List<Integer> genIntegers(final int start, final int end) {
-        final List<Integer> ret = new ArrayList<Integer>();
+	/**
+	 * Generates a list of integers from the specified start(inclusion) to the
+	 * specified end(inclusion).
+	 *
+	 * @param start
+	 *            the specified start
+	 * @param end
+	 *            the specified end
+	 * @return a list of integers
+	 */
+	public static List<Integer> genIntegers(final int start, final int end) {
+		final List<Integer> ret = new ArrayList<>();
 
-        for (int i = 0; i <= end; i++) {
-            ret.add(i + start);
-        }
+		for (int i = 0; i <= end; i++) {
+			ret.add(i + start);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Converts the specified array to a set.
-     *
-     * @param <T> the type of elements maintained by the specified array
-     * @param array the specified array
-     * @return a hash set
-     */
-    public static <T> Set<T> arrayToSet(final T[] array) {
-        if (null == array) {
-            return Collections.emptySet();
-        }
+	/**
+	 * Converts the specified array to a set.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified array
+	 * @param array
+	 *            the specified array
+	 * @return a hash set
+	 */
+	public static <T> Set<T> arrayToSet(final T[] array) {
+		if (null == array) {
+			return Collections.emptySet();
+		}
 
-        final Set<T> ret = new HashSet<T>();
+		final Set<T> ret = new HashSet<>();
 
-        for (int i = 0; i < array.length; i++) {
-            final T object = array[i];
+		for (int i = 0; i < array.length; i++) {
+			final T object = array[i];
 
-            ret.add(object);
-        }
+			ret.add(object);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Converts the specified {@link List list} to a
-     * {@link JSONArray JSON array}.
-     *
-     * @param <T> the type of elements maintained by the specified list
-     * @param list the specified list
-     * @return a {@link JSONArray JSON array}
-     */
-    public static <T> JSONArray listToJSONArray(final List<T> list) {
-        final JSONArray ret = new JSONArray();
+	/**
+	 * Converts the specified {@link List list} to a {@link JSONArray JSON
+	 * array}.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified list
+	 * @param list
+	 *            the specified list
+	 * @return a {@link JSONArray JSON array}
+	 */
+	public static <T> JSONArray listToJSONArray(final List<T> list) {
+		final JSONArray ret = new JSONArray();
 
-        if (null == list) {
-            return ret;
-        }
+		if (null == list) {
+			return ret;
+		}
 
-        for (final T object : list) {
-            ret.put(object);
-        }
+		for (final T object : list) {
+			ret.put(object);
+		}
 
-        return ret;
-    }
-    
-    /**
-     * Converts the specified {@link Collection collection} to a {@link JSONArray JSON array}.
-     *
-     * @param <T> the type of elements maintained by the specified collection
-     * @param collection the specified collection
-     * @return a {@link JSONArray JSON array}
-     */
-    public static <T> JSONArray toJSONArray(final Collection<T> collection) {
-        final JSONArray ret = new JSONArray();
+		return ret;
+	}
 
-        if (null == collection) {
-            return ret;
-        }
+	/**
+	 * Converts the specified {@link Collection collection} to a
+	 * {@link JSONArray JSON array}.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified collection
+	 * @param collection
+	 *            the specified collection
+	 * @return a {@link JSONArray JSON array}
+	 */
+	public static <T> JSONArray toJSONArray(final Collection<T> collection) {
+		final JSONArray ret = new JSONArray();
 
-        for (final T object : collection) {
-            ret.put(object);
-        }
+		if (null == collection) {
+			return ret;
+		}
 
-        return ret;
-    }
+		for (final T object : collection) {
+			ret.put(object);
+		}
 
-    /**
-     * Converts the specified {@link JSONArray JSON array} to a
-     * {@link List list}.
-     *
-     * @param <T> the type of elements maintained by the specified json array
-     * @param jsonArray the specified json array
-     * @return an {@link ArrayList array list}
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> Set<T> jsonArrayToSet(final JSONArray jsonArray) {
-        if (null == jsonArray) {
-            return Collections.emptySet();
-        }
+		return ret;
+	}
 
-        final Set<T> ret = new HashSet<T>();
+	/**
+	 * Converts the specified {@link JSONArray JSON array} to a {@link List
+	 * list}.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified json array
+	 * @param jsonArray
+	 *            the specified json array
+	 * @return an {@link ArrayList array list}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Set<T> jsonArrayToSet(final JSONArray jsonArray) {
+		if (null == jsonArray) {
+			return Collections.emptySet();
+		}
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            ret.add((T) jsonArray.opt(i));
-        }
+		final Set<T> ret = new HashSet<>();
 
-        return ret;
-    }
+		for (int i = 0; i < jsonArray.length(); i++) {
+			ret.add((T) jsonArray.opt(i));
+		}
 
-    /**
-     * Converts the specified {@link JSONArray JSON array} to a
-     * {@link List list}.
-     *
-     * @param <T> the type of elements maintained by the specified json array
-     * @param jsonArray the specified json array
-     * @return an {@link ArrayList array list}
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> List<T> jsonArrayToList(final JSONArray jsonArray) {
-        if (null == jsonArray) {
-            return Collections.emptyList();
-        }
+		return ret;
+	}
 
-        final List<T> ret = new ArrayList<T>();
+	/**
+	 * Converts the specified {@link JSONArray JSON array} to a {@link List
+	 * list}.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified json array
+	 * @param jsonArray
+	 *            the specified json array
+	 * @return an {@link ArrayList array list}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> jsonArrayToList(final JSONArray jsonArray) {
+		if (null == jsonArray) {
+			return Collections.emptyList();
+		}
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            ret.add((T) jsonArray.opt(i));
-        }
+		final List<T> ret = new ArrayList<>();
 
-        return ret;
-    }
+		for (int i = 0; i < jsonArray.length(); i++) {
+			ret.add((T) jsonArray.opt(i));
+		}
 
-    /**
-     * Converts the specified {@link JSONArray JSON array} to an array.
-     *
-     * @param <T> the type of elements maintained by the specified json array
-     * @param jsonArray the specified json array
-     * @param newType the class of the copy to be returned
-     * @return an array
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T[] jsonArrayToArray(final JSONArray jsonArray, final Class<? extends T[]> newType) {
-        if (null == jsonArray) {
-            return (T[]) new Object[] {};
-        }
+		return ret;
+	}
 
-        final int newLength = jsonArray.length();
-        final Object[] original = new Object[newLength];
+	/**
+	 * Converts the specified {@link JSONArray JSON array} to an array.
+	 *
+	 * @param <T>
+	 *            the type of elements maintained by the specified json array
+	 * @param jsonArray
+	 *            the specified json array
+	 * @param newType
+	 *            the class of the copy to be returned
+	 * @return an array
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] jsonArrayToArray(final JSONArray jsonArray, final Class<? extends T[]> newType) {
+		if (null == jsonArray) {
+			return (T[]) new Object[] {};
+		}
 
-        for (int i = 0; i < newLength; i++) {
-            original[i] = jsonArray.opt(i);
-        }
+		final int newLength = jsonArray.length();
+		final Object[] original = new Object[newLength];
 
-        return Arrays.copyOf(original, newLength, newType);
-    }
+		for (int i = 0; i < newLength; i++) {
+			original[i] = jsonArray.opt(i);
+		}
+
+		return Arrays.copyOf(original, newLength, newType);
+	}
 }

@@ -19,111 +19,117 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * Encapsulation of the result of a {@link HTTPRequest HTTP request} made via the {@link URLFetchService}.
+ * Encapsulation of the result of a {@link HTTPRequest HTTP request} made via
+ * the {@link URLFetchService}.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.0, Jul 7, 2015
  */
 public final class HTTPResponse {
 
-    /**
-     * Content.
-     */
-    private byte[] content;
+	/**
+	 * Content.
+	 */
+	private byte[] content;
 
-    /**
-     * Final URL.
-     */
-    private URL finalURL;
+	/**
+	 * Final URL.
+	 */
+	private URL finalURL;
 
-    /**
-     * Response code.
-     */
-    private int responseCode;
+	/**
+	 * Response code.
+	 */
+	private int responseCode;
 
-    /**
-     * HTTP headers.
-     */
-    private List<HTTPHeader> headers = new ArrayList<HTTPHeader>();
+	/**
+	 * HTTP headers.
+	 */
+	private List<HTTPHeader> headers = new ArrayList<>();
 
-    /**
-     * Adds the specified HTTP header.
-     *
-     * @param header the specified HTTP header
-     */
-    public void addHeader(final HTTPHeader header) {
-        headers.add(header);
-    }
+	/**
+	 * Adds the specified HTTP header.
+	 *
+	 * @param header
+	 *            the specified HTTP header
+	 */
+	public void addHeader(final HTTPHeader header) {
+		headers.add(header);
+	}
 
-    /**
-     * Gets HTTP headers.
-     *
-     * @return HTTP headers
-     */
-    public List<HTTPHeader> getHeaders() {
-        return Collections.unmodifiableList(headers);
-    }
+	/**
+	 * Gets HTTP headers.
+	 *
+	 * @return HTTP headers
+	 */
+	public List<HTTPHeader> getHeaders() {
+		return Collections.unmodifiableList(headers);
+	}
 
-    /**
-     * Gets the content.
-     *
-     * @return content
-     */
-    public byte[] getContent() {
-        return content;
-    }
+	/**
+	 * Gets the content.
+	 *
+	 * @return content
+	 */
+	public byte[] getContent() {
+		return content;
+	}
 
-    /**
-     * Sets the content with the specified content.
-     *
-     * @param content the specified content
-     */
-    public void setContent(final byte[] content) {
-        this.content = content;
-    }
+	/**
+	 * Sets the content with the specified content.
+	 *
+	 * @param content
+	 *            the specified content
+	 */
+	public void setContent(final byte[] content) {
+		this.content = content;
+	}
 
-    /**
-     * Gets the final URL.
-     *
-     * @return final URL
-     */
-    public URL getFinalURL() {
-        return finalURL;
-    }
+	/**
+	 * Gets the final URL.
+	 *
+	 * @return final URL
+	 */
+	public URL getFinalURL() {
+		return finalURL;
+	}
 
-    /**
-     * Sets the final URL with the specified final URL.
-     *
-     * @param finalURL the specified final URL
-     */
-    public void setFinalURL(final URL finalURL) {
-        this.finalURL = finalURL;
-    }
+	/**
+	 * Sets the final URL with the specified final URL.
+	 *
+	 * @param finalURL
+	 *            the specified final URL
+	 */
+	public void setFinalURL(final URL finalURL) {
+		this.finalURL = finalURL;
+	}
 
-    /**
-     * Gets the response code.
-     *
-     * @return response code
-     */
-    public int getResponseCode() {
-        return responseCode;
-    }
+	/**
+	 * Gets the response code.
+	 *
+	 * @return response code
+	 */
+	public int getResponseCode() {
+		return responseCode;
+	}
 
-    /**
-     * Sets the response code with the specified response code.
-     *
-     * @param responseCode the specified response code
-     */
-    public void setResponseCode(final int responseCode) {
-        this.responseCode = responseCode;
-    }
+	/**
+	 * Sets the response code with the specified response code.
+	 *
+	 * @param responseCode
+	 *            the specified response code
+	 */
+	public void setResponseCode(final int responseCode) {
+		this.responseCode = responseCode;
+	}
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
 }

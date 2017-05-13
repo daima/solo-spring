@@ -15,14 +15,12 @@
  */
 package org.b3log.solo.module.util;
 
-
 import org.b3log.solo.util.MD5;
 import org.b3log.solo.util.PropsUtil;
 
-
 /**
  * Thumbnail utilities.
- * 
+ *
  * <p>
  * By using <a href="http://gravatar.com">Gravatar</a> for user thumbnail.
  * </p>
@@ -33,28 +31,31 @@ import org.b3log.solo.util.PropsUtil;
  */
 public final class Thumbnails {
 
-    /**
-     * Gravatar address.
-     */
-    public static final String GRAVATAR;
+	/**
+	 * Gravatar address.
+	 */
+	public static final String GRAVATAR;
 
-    static {
-        GRAVATAR = PropsUtil.getString("gravatar");
-    }
+	static {
+		GRAVATAR = PropsUtil.getString("gravatar");
+	}
 
-    /**
-     * Gets the Gravatar URL for the specified email with the specified size.
-     * 
-     * @param email the specified email
-     * @param size the specified size
-     * @return the Gravatar URL
-     */
-    public static String getGravatarURL(final String email, final String size) {
-        return Thumbnails.GRAVATAR + MD5.hash(email) + "?s=" + size;
-    }
+	/**
+	 * Gets the Gravatar URL for the specified email with the specified size.
+	 * 
+	 * @param email
+	 *            the specified email
+	 * @param size
+	 *            the specified size
+	 * @return the Gravatar URL
+	 */
+	public static String getGravatarURL(final String email, final String size) {
+		return Thumbnails.GRAVATAR + MD5.hash(email) + "?s=" + size;
+	}
 
-    /**
-     * Private constructor.
-     */
-    private Thumbnails() {}
+	/**
+	 * Private constructor.
+	 */
+	private Thumbnails() {
+	}
 }

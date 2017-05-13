@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloWordController {
 
-	@RequestMapping(value="/hello")
+	@RequestMapping(value = "/hello")
 	public ModelAndView handleRequest(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 		ModelAndView mv = new ModelAndView("hello");
 		mv.addObject("title", "Spring MVC And Freemarker");

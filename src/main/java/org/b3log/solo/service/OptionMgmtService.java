@@ -15,17 +15,14 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.solo.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.b3log.solo.frame.repository.Transaction;
-import org.b3log.solo.frame.service.ServiceException;
-import org.springframework.stereotype.Service;
-import org.b3log.solo.util.Strings;
 import org.b3log.solo.dao.OptionDao;
+import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Option management service.
@@ -37,80 +34,84 @@ import org.json.JSONObject;
 @Service
 public class OptionMgmtService {
 
-    /**
-     * Option repository.
-     */
-    @Autowired
-    private OptionDao optionRepository;
+	/**
+	 * Option repository.
+	 */
+	@Autowired
+	private OptionDao optionRepository;
 
-    /**
-     * Adds or updates the specified option.
-     * 
-     * @param option the specified option
-     * @return option id
-     * @throws ServiceException 
-     */
-    public String addOrUpdateOption(final JSONObject option) throws ServiceException {
-//        final Transaction transaction = optionRepository.beginTransaction();
+	/**
+	 * Adds or updates the specified option.
+	 * 
+	 * @param option
+	 *            the specified option
+	 * @return option id
+	 * @throws ServiceException
+	 */
+	public String addOrUpdateOption(final JSONObject option) throws ServiceException {
+		// final Transaction transaction = optionRepository.beginTransaction();
 
-        try {
-            String id = option.optString(Keys.OBJECT_ID);
+		try {
+			String id = option.optString(Keys.OBJECT_ID);
 
-            if (Strings.isEmptyOrNull(id)) {
-                id = optionRepository.add(option);
-            } else {
-                final JSONObject old = optionRepository.get(id);
+			if (Strings.isEmptyOrNull(id)) {
+				id = optionRepository.add(option);
+			} else {
+				final JSONObject old = optionRepository.get(id);
 
-                if (null == old) { // The id is specified by caller
-                    id = optionRepository.add(option);
-                } else {
-                    old.put(Option.OPTION_CATEGORY, option.optString(Option.OPTION_CATEGORY));
-                    old.put(Option.OPTION_VALUE, option.optString(Option.OPTION_VALUE));
+				if (null == old) { // The id is specified by caller
+					id = optionRepository.add(option);
+				} else {
+					old.put(Option.OPTION_CATEGORY, option.optString(Option.OPTION_CATEGORY));
+					old.put(Option.OPTION_VALUE, option.optString(Option.OPTION_VALUE));
 
-                    optionRepository.update(id, old);
-                }
-            }
+					optionRepository.update(id, old);
+				}
+			}
 
-//            transaction.commit();
+			// transaction.commit();
 
-            return id;
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			return id;
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Removes the option specified by the given option id. 
-     * 
-     * @param optionId the given option id
-     * @throws ServiceException service exception
-     */
-    public void removeOption(final String optionId) throws ServiceException {
-//        final Transaction transaction = optionRepository.beginTransaction();
+	/**
+	 * Removes the option specified by the given option id.
+	 * 
+	 * @param optionId
+	 *            the given option id
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void removeOption(final String optionId) throws ServiceException {
+		// final Transaction transaction = optionRepository.beginTransaction();
 
-        try {
-            optionRepository.remove(optionId);
+		try {
+			optionRepository.remove(optionId);
 
-//            transaction.commit();
-        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			// transaction.commit();
+		} catch (final Exception e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Sets the option repository with the specified option repository.
-     * 
-     * @param optionRepository the specified option repository
-     */
-    public void setOptionRepository(final OptionDao optionRepository) {
-        this.optionRepository = optionRepository;
-    }
+	/**
+	 * Sets the option repository with the specified option repository.
+	 * 
+	 * @param optionRepository
+	 *            the specified option repository
+	 */
+	public void setOptionRepository(final OptionDao optionRepository) {
+		this.optionRepository = optionRepository;
+	}
 }

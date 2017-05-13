@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.dao;
 
-
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
@@ -26,7 +25,6 @@ import org.b3log.solo.frame.repository.RepositoryException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
-
 
 /**
  * User repository.
@@ -40,46 +38,44 @@ public class UserDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return User.USER;
-    }
+		return User.USER;
+	}
 
-   
-    public JSONObject getByEmail(final String email) throws RepositoryException {
-        final Query query = new Query().setPageCount(1);
+	public JSONObject getByEmail(final String email) throws RepositoryException {
+		final Query query = new Query().setPageCount(1);
 
-        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+		query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-   
-    public JSONObject getAdmin() throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+	public JSONObject getAdmin() throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-   
-    public boolean isAdminEmail(final String email) throws RepositoryException {
-        final JSONObject user = getByEmail(email);
+	public boolean isAdminEmail(final String email) throws RepositoryException {
+		final JSONObject user = getByEmail(email);
 
-        if (null == user) {
-            return false;
-        }
+		if (null == user) {
+			return false;
+		}
 
-        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
-    }
+		return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
+	}
 }

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.urlfetch;
 
-
 /**
  * This class depicts either an HTTP request header or an HTTP response header.
  *
@@ -24,60 +23,64 @@ package org.b3log.solo.frame.urlfetch;
  */
 public final class HTTPHeader {
 
-    /**
-     * Name.
-     */
-    private String name;
+	/**
+	 * Name.
+	 */
+	private String name;
 
-    /**
-     * Value.
-     */
-    private String value;
+	/**
+	 * Value.
+	 */
+	private String value;
 
-    /**
-     * Constructs a HTTP header with the specified name and value.
-     * 
-     * @param name the specified name
-     * @param value the specified value
-     */
-    public HTTPHeader(final String name, final String value) {
-        this.name = name;
-        this.value = value;
-    }
+	/**
+	 * Constructs a HTTP header with the specified name and value.
+	 * 
+	 * @param name
+	 *            the specified name
+	 * @param value
+	 *            the specified value
+	 */
+	public HTTPHeader(final String name, final String value) {
+		this.name = name;
+		this.value = value;
+	}
 
-    /**
-     * Gets the name.
-     * 
-     * @return name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the name.
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets the name with the specified name.
-     * 
-     * @param name the specified name
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
+	/**
+	 * Sets the name with the specified name.
+	 * 
+	 * @param name
+	 *            the specified name
+	 */
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-    /**
-     * Gets the value.
-     * 
-     * @return value
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * Gets the value.
+	 * 
+	 * @return value
+	 */
+	public String getValue() {
+		return value;
+	}
 
-    /**
-     * Sets the value with the specified value.
-     * 
-     * @param value the specified value
-     */
-    public void setValue(final String value) {
-        this.value = value;
-    }
+	/**
+	 * Sets the value with the specified value.
+	 * 
+	 * @param value
+	 *            the specified value
+	 */
+	public void setValue(final String value) {
+		this.value = value;
+	}
 }

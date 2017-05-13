@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,10 +23,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
 /**
  * Query.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.0, Jun 27, 2012
  * @see Projection
@@ -36,298 +34,308 @@ import java.util.Set;
  */
 public final class Query {
 
-    /**
-     * Current page number.
-     */
-    private int currentPageNum = 1;
+	/**
+	 * Current page number.
+	 */
+	private int currentPageNum = 1;
 
-    /**
-     * Page count.
-     */
-    private Integer pageCount;
+	/**
+	 * Page count.
+	 */
+	private Integer pageCount;
 
-    /**
-     * Page size.
-     */
-    private int pageSize = Integer.MAX_VALUE;
+	/**
+	 * Page size.
+	 */
+	private int pageSize = Integer.MAX_VALUE;
 
-    /**
-     * Sorts.
-     */
-    private Map<String, SortDirection> sorts = new LinkedHashMap<String, SortDirection>();
+	/**
+	 * Sorts.
+	 */
+	private Map<String, SortDirection> sorts = new LinkedHashMap<>();
 
-    /**
-     * Filter.
-     */
-    private Filter filter;
+	/**
+	 * Filter.
+	 */
+	private Filter filter;
 
-    /**
-     * Projections.
-     */
-    private Set<Projection> projections = new HashSet<Projection>();
+	/**
+	 * Projections.
+	 */
+	private Set<Projection> projections = new HashSet<>();
 
-    /**
-     * Indices.
-     */
-    private Set<String[]> indexes = new HashSet<String[]>();
+	/**
+	 * Indices.
+	 */
+	private Set<String[]> indexes = new HashSet<>();
 
-    /**
-     * Initialization value for hashing.
-     */
-    private static final int INIT_HASH = 5;
+	/**
+	 * Initialization value for hashing.
+	 */
+	private static final int INIT_HASH = 5;
 
-    /**
-     * Base for hashing.
-     */
-    private static final int BASE = 83;
+	/**
+	 * Base for hashing.
+	 */
+	private static final int BASE = 83;
 
-    /**
-     * Adds a projection with the specified property name and value type.
-     * 
-     * @param propertyName the specified property name
-     * @param valueType the specified value type
-     * @return the current query object
-     */
-    public Query addProjection(final String propertyName, final Class<?> valueType) {
-        projections.add(new Projection(propertyName, valueType));
+	/**
+	 * Adds a projection with the specified property name and value type.
+	 * 
+	 * @param propertyName
+	 *            the specified property name
+	 * @param valueType
+	 *            the specified value type
+	 * @return the current query object
+	 */
+	public Query addProjection(final String propertyName, final Class<?> valueType) {
+		projections.add(new Projection(propertyName, valueType));
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Gets the projections.
-     * 
-     * @return projections
-     */
-    public Set<Projection> getProjections() {
-        return Collections.unmodifiableSet(projections);
-    }
+	/**
+	 * Gets the projections.
+	 * 
+	 * @return projections
+	 */
+	public Set<Projection> getProjections() {
+		return Collections.unmodifiableSet(projections);
+	}
 
-    /**
-     * Indexes the specified properties for future queries.
-     * 
-     * @param properties the specified properties
-     * @return the current query object
-     */
-    public Query index(final String... properties) {
-        if (null == properties || 0 == properties.length) {
-            return this;
-        }
+	/**
+	 * Indexes the specified properties for future queries.
+	 * 
+	 * @param properties
+	 *            the specified properties
+	 * @return the current query object
+	 */
+	public Query index(final String... properties) {
+		if (null == properties || 0 == properties.length) {
+			return this;
+		}
 
-        indexes.add(properties);
+		indexes.add(properties);
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Gets the indices.
-     * 
-     * @return indices
-     */
-    public Set<String[]> getIndexes() {
-        return Collections.unmodifiableSet(indexes);
-    }
+	/**
+	 * Gets the indices.
+	 * 
+	 * @return indices
+	 */
+	public Set<String[]> getIndexes() {
+		return Collections.unmodifiableSet(indexes);
+	}
 
-    /**
-     * Adds sort for the specified property with the specified direction.
-     *
-     * @param propertyName the specified property name to sort
-     * @param sortDirection the specified sort
-     * @return the current query object
-     */
-    public Query addSort(final String propertyName, final SortDirection sortDirection) {
-        sorts.put(propertyName, sortDirection);
+	/**
+	 * Adds sort for the specified property with the specified direction.
+	 *
+	 * @param propertyName
+	 *            the specified property name to sort
+	 * @param sortDirection
+	 *            the specified sort
+	 * @return the current query object
+	 */
+	public Query addSort(final String propertyName, final SortDirection sortDirection) {
+		sorts.put(propertyName, sortDirection);
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Sets the filter with the specified filter.
-     * 
-     * @param filter the specified filter
-     * @return the current query object 
-     */
-    public Query setFilter(final Filter filter) {
-        this.filter = filter;
+	/**
+	 * Sets the filter with the specified filter.
+	 * 
+	 * @param filter
+	 *            the specified filter
+	 * @return the current query object
+	 */
+	public Query setFilter(final Filter filter) {
+		this.filter = filter;
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Gets the filter.
-     * 
-     * @return filter
-     */
-    public Filter getFilter() {
-        return filter;
-    }
+	/**
+	 * Gets the filter.
+	 * 
+	 * @return filter
+	 */
+	public Filter getFilter() {
+		return filter;
+	}
 
-    /**
-     * Gets the current page number.
-     *
-     * <p>
-     *   <b>Note</b>: The default value of the current page number is
-     *   {@code -1}.
-     * </p>
-     *
-     * @return current page number
-     */
-    public int getCurrentPageNum() {
-        return currentPageNum;
-    }
+	/**
+	 * Gets the current page number.
+	 *
+	 * <p>
+	 * <b>Note</b>: The default value of the current page number is {@code -1}.
+	 * </p>
+	 *
+	 * @return current page number
+	 */
+	public int getCurrentPageNum() {
+		return currentPageNum;
+	}
 
-    /**
-     * Sets the current page number with the specified current page number.
-     *
-     * @param currentPageNum the specified current page number
-     * @return the current query object
-     */
-    public Query setCurrentPageNum(final int currentPageNum) {
-        this.currentPageNum = currentPageNum;
+	/**
+	 * Sets the current page number with the specified current page number.
+	 *
+	 * @param currentPageNum
+	 *            the specified current page number
+	 * @return the current query object
+	 */
+	public Query setCurrentPageNum(final int currentPageNum) {
+		this.currentPageNum = currentPageNum;
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Sets the page size.
-     *
-     * <p>
-     *   <b>Note</b>: The default value of the page size {@code -1}.
-     * </p>
-     *
-     * @return page size
-     */
-    public int getPageSize() {
-        return pageSize;
-    }
+	/**
+	 * Sets the page size.
+	 *
+	 * <p>
+	 * <b>Note</b>: The default value of the page size {@code -1}.
+	 * </p>
+	 *
+	 * @return page size
+	 */
+	public int getPageSize() {
+		return pageSize;
+	}
 
-    /**
-     * Sets the page size with the specified page size.
-     *
-     * @param pageSize the specified page size
-     * @return the current query object
-     */
-    public Query setPageSize(final int pageSize) {
-        this.pageSize = pageSize;
+	/**
+	 * Sets the page size with the specified page size.
+	 *
+	 * @param pageSize
+	 *            the specified page size
+	 * @return the current query object
+	 */
+	public Query setPageSize(final int pageSize) {
+		this.pageSize = pageSize;
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Gets the sorts.
-     *
-     * @return sorts
-     */
-    public Map<String, SortDirection> getSorts() {
-        return Collections.unmodifiableMap(sorts);
-    }
+	/**
+	 * Gets the sorts.
+	 *
+	 * @return sorts
+	 */
+	public Map<String, SortDirection> getSorts() {
+		return Collections.unmodifiableMap(sorts);
+	}
 
-    /**
-     * Gets the page count.
-     * 
-     * @return page count
-     */
-    public Integer getPageCount() {
-        return pageCount;
-    }
+	/**
+	 * Gets the page count.
+	 * 
+	 * @return page count
+	 */
+	public Integer getPageCount() {
+		return pageCount;
+	}
 
-    /**
-     * Sets the page count with the specified page count.
-     * 
-     * @param pageCount the specified page count
-     * @return the current query object 
-     */
-    public Query setPageCount(final int pageCount) {
-        this.pageCount = pageCount;
+	/**
+	 * Sets the page count with the specified page count.
+	 * 
+	 * @param pageCount
+	 *            the specified page count
+	 * @return the current query object
+	 */
+	public Query setPageCount(final int pageCount) {
+		this.pageCount = pageCount;
 
-        return this;
-    }
+		return this;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
 
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
 
-        final Query other = (Query) obj;
+		final Query other = (Query) obj;
 
-        if (this.currentPageNum != other.currentPageNum) {
-            return false;
-        }
+		if (this.currentPageNum != other.currentPageNum) {
+			return false;
+		}
 
-        if (this.pageSize != other.pageSize) {
-            return false;
-        }
+		if (this.pageSize != other.pageSize) {
+			return false;
+		}
 
-        if (this.sorts != other.sorts && (this.sorts == null || !this.sorts.equals(other.sorts))) {
-            return false;
-        }
+		if (this.sorts != other.sorts && (this.sorts == null || !this.sorts.equals(other.sorts))) {
+			return false;
+		}
 
-        if (this.filter != other.filter && (this.filter == null || !this.filter.equals(other.filter))) {
-            return false;
-        }
+		if (this.filter != other.filter && (this.filter == null || !this.filter.equals(other.filter))) {
+			return false;
+		}
 
-        if (this.projections != other.projections && (this.projections == null || !this.projections.equals(other.projections))) {
-            return false;
-        }
+		if (this.projections != other.projections
+				&& (this.projections == null || !this.projections.equals(other.projections))) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = INIT_HASH;
+	@Override
+	public int hashCode() {
+		int hash = INIT_HASH;
 
-        hash = BASE * hash + this.currentPageNum;
-        hash = BASE * hash + this.pageSize;
-        hash = BASE * hash + (this.sorts != null ? this.sorts.hashCode() : 0);
-        hash = BASE * hash + (this.filter != null ? this.filter.hashCode() : 0);
-        hash = BASE * hash + (this.projections != null ? this.projections.hashCode() : 0);
+		hash = BASE * hash + this.currentPageNum;
+		hash = BASE * hash + this.pageSize;
+		hash = BASE * hash + (this.sorts != null ? this.sorts.hashCode() : 0);
+		hash = BASE * hash + (this.filter != null ? this.filter.hashCode() : 0);
+		hash = BASE * hash + (this.projections != null ? this.projections.hashCode() : 0);
 
-        return hash;
-    }
+		return hash;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder("currentPageNum=").append(currentPageNum).append(", pageSize=").append(pageSize).append(", pageCount=").append(pageCount).append(
-            ", sorts=[");
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder("currentPageNum=").append(currentPageNum)
+				.append(", pageSize=").append(pageSize).append(", pageCount=").append(pageCount).append(", sorts=[");
 
-        final Set<Entry<String, SortDirection>> entrySet = sorts.entrySet();
-        final Iterator<Entry<String, SortDirection>> sortsIterator = entrySet.iterator();
+		final Set<Entry<String, SortDirection>> entrySet = sorts.entrySet();
+		final Iterator<Entry<String, SortDirection>> sortsIterator = entrySet.iterator();
 
-        while (sortsIterator.hasNext()) {
-            final Entry<String, SortDirection> sort = sortsIterator.next();
+		while (sortsIterator.hasNext()) {
+			final Entry<String, SortDirection> sort = sortsIterator.next();
 
-            stringBuilder.append("[key=").append(sort.getKey()).append(", direction=").append(sort.getValue().name()).append("]");
+			stringBuilder.append("[key=").append(sort.getKey()).append(", direction=").append(sort.getValue().name())
+					.append("]");
 
-            if (sortsIterator.hasNext()) {
-                stringBuilder.append(", ");
-            }
-        }
+			if (sortsIterator.hasNext()) {
+				stringBuilder.append(", ");
+			}
+		}
 
-        stringBuilder.append("]");
-        if (null != filter) {
-            stringBuilder.append(", filter=[").append(filter.toString()).append("]");
-        }
-        stringBuilder.append(", projections=[");
+		stringBuilder.append("]");
+		if (null != filter) {
+			stringBuilder.append(", filter=[").append(filter.toString()).append("]");
+		}
+		stringBuilder.append(", projections=[");
 
-        final Iterator<Projection> projectionsIterator = projections.iterator();
+		final Iterator<Projection> projectionsIterator = projections.iterator();
 
-        while (projectionsIterator.hasNext()) {
-            final Projection projection = projectionsIterator.next();
+		while (projectionsIterator.hasNext()) {
+			final Projection projection = projectionsIterator.next();
 
-            stringBuilder.append('[').append(projection.toString()).append(']');
+			stringBuilder.append('[').append(projection.toString()).append(']');
 
-            if (projectionsIterator.hasNext()) {
-                stringBuilder.append(", ");
-            }
-        }
-        stringBuilder.append("]");
+			if (projectionsIterator.hasNext()) {
+				stringBuilder.append(", ");
+			}
+		}
+		stringBuilder.append("]");
 
-        return stringBuilder.toString();
-    }
+		return stringBuilder.toString();
+	}
 }

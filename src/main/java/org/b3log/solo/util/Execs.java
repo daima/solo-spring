@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,9 @@ import org.slf4j.LoggerFactory;
  * Command execution utilities.
  *
  * <p>
- * Uses {@link Runtime#exec(java.lang.String)} to execute command, to avoid the execution be blocked, starts a thread to
- * read error stream from th executing sub process.
+ * Uses {@link Runtime#exec(java.lang.String)} to execute command, to avoid the
+ * execution be blocked, starts a thread to read error stream from th executing
+ * sub process.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
@@ -40,121 +42,123 @@ import org.slf4j.LoggerFactory;
  */
 public final class Execs {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(Execs.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Execs.class);
 
-    /**
-     * Private constructor.
-     */
-    private Execs() {
-    }
+	/**
+	 * Private constructor.
+	 */
+	private Execs() {
+	}
 
-    /**
-     * Executes the specified command.
-     *
-     * @param cmd the specified command
-     * @return execution output, returns {@code null} if execution failed
-     */
-    public static String exec(final String cmd) {
-        InputStream inputStream = null;
+	/**
+	 * Executes the specified command.
+	 *
+	 * @param cmd
+	 *            the specified command
+	 * @return execution output, returns {@code null} if execution failed
+	 */
+	public static String exec(final String cmd) {
+		InputStream inputStream = null;
 
-        try {
-            final Process p = Runtime.getRuntime().exec(cmd);
+		try {
+			final Process p = Runtime.getRuntime().exec(cmd);
 
-            // Starts a thread for error stream
-            final Thread t = new Thread(new InputStreamRunnable(p.getErrorStream()));
+			// Starts a thread for error stream
+			final Thread t = new Thread(new InputStreamRunnable(p.getErrorStream()));
 
-            t.start();
+			t.start();
 
-            inputStream = p.getInputStream();
-            final String result = IOUtils.toString(inputStream, "UTF-8");
+			inputStream = p.getInputStream();
+			final String result = IOUtils.toString(inputStream, "UTF-8");
 
-            inputStream.close();
-            p.destroy();
+			inputStream.close();
+			p.destroy();
 
-            return result;
-        } catch (final IOException e) {
-            logger.error("Executes command [" + cmd + "] failed", e);
+			return result;
+		} catch (final IOException e) {
+			logger.error("Executes command [" + cmd + "] failed", e);
 
-            return null;
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-    }
+			return null;
+		} finally {
+			IOUtils.closeQuietly(inputStream);
+		}
+	}
 
-    /**
-     * Executes the specified commands.
-     *
-     * @param cmds the specified commands
-     * @return execution output, returns {@code null} if execution failed
-     */
-    public static String exec(final String[] cmds) {
-        InputStream inputStream = null;
+	/**
+	 * Executes the specified commands.
+	 *
+	 * @param cmds
+	 *            the specified commands
+	 * @return execution output, returns {@code null} if execution failed
+	 */
+	public static String exec(final String[] cmds) {
+		InputStream inputStream = null;
 
-        try {
-            final Process p = Runtime.getRuntime().exec(cmds);
+		try {
+			final Process p = Runtime.getRuntime().exec(cmds);
 
-            // Starts a thread for error stream
-            final Thread t = new Thread(new InputStreamRunnable(p.getErrorStream()));
+			// Starts a thread for error stream
+			final Thread t = new Thread(new InputStreamRunnable(p.getErrorStream()));
 
-            t.start();
+			t.start();
 
-            inputStream = p.getInputStream();
-            final String result = IOUtils.toString(inputStream, "UTF-8");
+			inputStream = p.getInputStream();
+			final String result = IOUtils.toString(inputStream, "UTF-8");
 
-            inputStream.close();
-            p.destroy();
+			inputStream.close();
+			p.destroy();
 
-            return result;
-        } catch (final IOException e) {
-            logger.error("Executes commands [" + Arrays.toString(cmds) + "] failed", e);
+			return result;
+		} catch (final IOException e) {
+			logger.error("Executes commands [" + Arrays.toString(cmds) + "] failed", e);
 
-            return null;
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-    }
+			return null;
+		} finally {
+			IOUtils.closeQuietly(inputStream);
+		}
+	}
 
-    /**
-     * Input stream handle thread.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, May 8, 2013
-     * @since 0.1.0
-     */
-    private static class InputStreamRunnable implements Runnable {
+	/**
+	 * Input stream handle thread.
+	 *
+	 * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+	 * @version 1.0.0.0, May 8, 2013
+	 * @since 0.1.0
+	 */
+	private static class InputStreamRunnable implements Runnable {
 
-        /**
-         * Reader.
-         */
-        private BufferedReader bufferedReader;
+		/**
+		 * Reader.
+		 */
+		private BufferedReader bufferedReader;
 
-        /**
-         * Constructs a input stream handle thread with the specified input stream.
-         *
-         * @param is the specified input stream
-         */
-        public InputStreamRunnable(final InputStream is) {
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(is), "UTF-8"));
-            } catch (final UnsupportedEncodingException e) {
-                throw new IllegalStateException("Constructs input stream handle thread failed", e);
-            }
-        }
+		/**
+		 * Constructs a input stream handle thread with the specified input
+		 * stream.
+		 *
+		 * @param is
+		 *            the specified input stream
+		 */
+		public InputStreamRunnable(final InputStream is) {
+			try {
+				bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(is), "UTF-8"));
+			} catch (final UnsupportedEncodingException e) {
+				throw new IllegalStateException("Constructs input stream handle thread failed", e);
+			}
+		}
 
-        @Override
-        public void run() {
-            try {
-                String s;
-
-                while (null != (s = bufferedReader.readLine())) {
-                }
-            } catch (final IOException e) {
-            } finally {
-                IOUtils.closeQuietly(bufferedReader);
-            }
-        }
-    }
+		@Override
+		public void run() {
+			try {
+				while (null != (bufferedReader.readLine())) {
+				}
+			} catch (final IOException e) {
+			} finally {
+				IOUtils.closeQuietly(bufferedReader);
+			}
+		}
+	}
 }

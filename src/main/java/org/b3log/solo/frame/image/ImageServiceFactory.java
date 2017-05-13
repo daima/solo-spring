@@ -28,52 +28,53 @@ import org.slf4j.LoggerFactory;
  */
 public final class ImageServiceFactory {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ImageServiceFactory.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ImageServiceFactory.class);
 
-    /**
-     * Image service.
-     */
-    private static final ImageService IMAGE_SERVICE;
+	/**
+	 * Image service.
+	 */
+	private static final ImageService IMAGE_SERVICE;
 
-    static {
-        logger.info("Constructing Image Service....");
+	static {
+		logger.info("Constructing Image Service....");
 
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        try {
-            Class<ImageService> serviceClass = null;
+		try {
+			Class<ImageService> serviceClass = null;
 
-            switch (runtimeEnv) {
-                case LOCAL:
-                    serviceClass = (Class<ImageService>) Class.forName("org.b3log.solo.frame.image.local.LocalImageService");
-                    IMAGE_SERVICE = serviceClass.newInstance();
+			switch (runtimeEnv) {
+			case LOCAL:
+				serviceClass = (Class<ImageService>) Class
+						.forName("org.b3log.solo.frame.image.local.LocalImageService");
+				IMAGE_SERVICE = serviceClass.newInstance();
 
-                    break;
-                default:
-                    throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException("Can not initialize Image Service!", e);
-        }
+				break;
+			default:
+				throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
+			}
+		} catch (final Exception e) {
+			throw new RuntimeException("Can not initialize Image Service!", e);
+		}
 
-        logger.info("Constructed Image Service");
-    }
+		logger.info("Constructed Image Service");
+	}
 
-    /**
-     * Gets image service.
-     *
-     * @return image service
-     */
-    public static ImageService getImageService() {
-        return IMAGE_SERVICE;
-    }
+	/**
+	 * Gets image service.
+	 *
+	 * @return image service
+	 */
+	public static ImageService getImageService() {
+		return IMAGE_SERVICE;
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private ImageServiceFactory() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private ImageServiceFactory() {
+	}
 }

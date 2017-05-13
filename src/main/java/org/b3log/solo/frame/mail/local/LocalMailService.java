@@ -16,14 +16,15 @@
 package org.b3log.solo.frame.mail.local;
 
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.b3log.solo.frame.mail.MailService;
 import org.b3log.solo.frame.mail.MailServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the {@link MailService} interface.
- * 
+ *
  * @author <a href="mailto:jiangzezhou1989@gmail.com">zezhou jiang</a>
  * @version 1.0.0.3, Sep 29, 2011
  */
@@ -34,15 +35,11 @@ public final class LocalMailService implements MailService {
 	public void send(final Message message) throws IOException {
 		// TODO: zezhou jiang, throws ioexception while send fails
 
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					new MailSender().sendMail(message);
-				} catch (final Exception e) {
-					logger.error("Sends mail failed", e);
-				}
+		new Thread(() -> {
+			try {
+				new MailSender().sendMail(message);
+			} catch (final Exception e) {
+				logger.error("Sends mail failed", e);
 			}
 		}).start();
 	}

@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.util;
 
-
 import java.util.regex.Pattern;
-
 
 /**
  * Regular expression path matcher.
@@ -28,22 +26,25 @@ import java.util.regex.Pattern;
  */
 public final class RegexPathMatcher {
 
-    /**
-     * Determines whether the specified path matches the specified regular 
-     * expression pattern.
-     * 
-     * @param pattern the specified regular expression pattern
-     * @param path the specified path
-     * @return {@code true} if matches, returns {@code false} otherwise
-     */
-    public static boolean match(final String pattern, final String path) {
-        final Pattern p = Pattern.compile(pattern);
+	/**
+	 * Determines whether the specified path matches the specified regular
+	 * expression pattern.
+	 * 
+	 * @param pattern
+	 *            the specified regular expression pattern
+	 * @param path
+	 *            the specified path
+	 * @return {@code true} if matches, returns {@code false} otherwise
+	 */
+	public static boolean match(final String pattern, final String path) {
+		final Pattern p = Pattern.compile(pattern);
 
-        return p.matcher(path).matches();
-    }
+		return p.matcher(path).matches();
+	}
 
-    /**
-     * Private constructor.
-     */
-    private RegexPathMatcher() {}
+	/**
+	 * Private constructor.
+	 */
+	private RegexPathMatcher() {
+	}
 }

@@ -15,23 +15,21 @@
  */
 package org.b3log.solo.controller.util;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-
 
 /**
  * Fill tag articles.
@@ -44,53 +42,53 @@ import freemarker.template.TemplateModelException;
 @Service
 public class FillTagArticles implements TemplateMethodModelEx {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(FillTagArticles.class);
-    /**
-     * Arg size.
-     */
-    private static final int ARG_SIZE = 3;
-    /**
-     * Tag query service.
-     */
-    @Autowired
-    private TagQueryService tagQueryService;
-    /**
-     * Article query service.
-     */
-    @Autowired
-    private ArticleQueryService articleQueryService;
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(FillTagArticles.class);
+	/**
+	 * Arg size.
+	 */
+	private static final int ARG_SIZE = 3;
+	/**
+	 * Tag query service.
+	 */
+	@Autowired
+	private TagQueryService tagQueryService;
+	/**
+	 * Article query service.
+	 */
+	@Autowired
+	private ArticleQueryService articleQueryService;
 
-    @Override
-    public Object exec(final List arguments) throws TemplateModelException {
-        if (arguments.size() != ARG_SIZE) {
-            logger.debug("FillTagArticles with wrong arguments!");
+	@Override
+	public Object exec(final List arguments) throws TemplateModelException {
+		if (arguments.size() != ARG_SIZE) {
+			logger.debug("FillTagArticles with wrong arguments!");
 
-            throw new TemplateModelException("Wrong arguments!");
-        }
+			throw new TemplateModelException("Wrong arguments!");
+		}
 
-        final String tagTitle = (String) arguments.get(0);
-        final int currentPageNum = Integer.parseInt((String) arguments.get(1));
-        final int pageSize = Integer.parseInt((String) arguments.get(2));
+		final String tagTitle = (String) arguments.get(0);
+		final int currentPageNum = Integer.parseInt((String) arguments.get(1));
+		final int pageSize = Integer.parseInt((String) arguments.get(2));
 
-        try {
-            final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
-            if (null == result) {
-                return new ArrayList<JSONObject>();
-            }
+		try {
+			final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
+			if (null == result) {
+				return new ArrayList<JSONObject>();
+			}
 
-            final JSONObject tag = result.getJSONObject(Tag.TAG);
-            final String tagId = tag.getString(Keys.OBJECT_ID);
+			final JSONObject tag = result.getJSONObject(Tag.TAG);
+			final String tagId = tag.getString(Keys.OBJECT_ID);
 
-            final List<JSONObject> ret = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
+			final List<JSONObject> ret = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
 
-            return ret;
-        } catch (final Exception e) {
-            logger.error("Fill tag articles failed", e);
-        }
+			return ret;
+		} catch (final Exception e) {
+			logger.error("Fill tag articles failed", e);
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

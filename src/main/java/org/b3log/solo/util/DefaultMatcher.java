@@ -15,15 +15,13 @@
  */
 package org.b3log.solo.util;
 
-
 import org.weborganic.furi.URIPattern;
 import org.weborganic.furi.URIResolveResult;
 import org.weborganic.furi.URIResolver;
 
-
 /**
  * the url-match util.
- * 
+ *
  * using https://code.google.com/p/wo-furi/ which is Deprecated.
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
@@ -31,22 +29,25 @@ import org.weborganic.furi.URIResolver;
  */
 public final class DefaultMatcher {
 
-    /**
-     * Do match.
-     *
-     * @param pattern     pattern uri
-     * @param requestPath request uri
-     * @return {@link URIResolveResult}
-     */
-    public static URIResolveResult match(final String pattern, final String requestPath) {
-        final URIResolver uriResolver = new URIResolver(requestPath);
-        final URIPattern uriPattern = new URIPattern(pattern);
+	/**
+	 * Do match.
+	 *
+	 * @param pattern
+	 *            pattern uri
+	 * @param requestPath
+	 *            request uri
+	 * @return {@link URIResolveResult}
+	 */
+	public static URIResolveResult match(final String pattern, final String requestPath) {
+		final URIResolver uriResolver = new URIResolver(requestPath);
+		final URIPattern uriPattern = new URIPattern(pattern);
 
-        return uriResolver.resolve(uriPattern);
-    }
+		return uriResolver.resolve(uriPattern);
+	}
 
-    /**
-     * Private constructor.
-     */
-    private DefaultMatcher() {}
+	/**
+	 * Private constructor.
+	 */
+	private DefaultMatcher() {
+	}
 }

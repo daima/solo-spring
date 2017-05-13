@@ -15,50 +15,49 @@
  */
 package org.b3log.solo.frame.urlfetch.local;
 
-
 import org.springframework.web.bind.annotation.RequestMethod;
-
 
 /**
  * UrlFetchHandlerFactory to get an UrlFetchHandler.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Oct 12, 2012
  */
 final class UrlFetchHandlerFactory {
 
-    /**
-     * 
-     * @param requestMethod {@link HTTPRequestMethod}
-     * @return {@link UrlFetchCommonHandler}
-     */
-    public static UrlFetchCommonHandler getFetchHandler(
-        final RequestMethod requestMethod) {
-        UrlFetchCommonHandler ret = null;
+	/**
+	 * 
+	 * @param requestMethod
+	 *            {@link HTTPRequestMethod}
+	 * @return {@link UrlFetchCommonHandler}
+	 */
+	public static UrlFetchCommonHandler getFetchHandler(final RequestMethod requestMethod) {
+		UrlFetchCommonHandler ret = null;
 
-        /*
-         * now just Distinguish POST and the others.
-         */
-        switch (requestMethod) {
-        case POST:
-            ret = new UrlFetchPostHandler();
-            break;
+		/*
+		 * now just Distinguish POST and the others.
+		 */
+		switch (requestMethod) {
+		case POST:
+			ret = new UrlFetchPostHandler();
+			break;
 
-        case PUT:
-            ret = new UrlFetchPutHandler();
-            break;
+		case PUT:
+			ret = new UrlFetchPutHandler();
+			break;
 
-        default:
-            ret = new UrlFetchCommonHandler();
-            break;
-        }
+		default:
+			ret = new UrlFetchCommonHandler();
+			break;
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Private construction method.
-     */
-    private UrlFetchHandlerFactory() {}
+	/**
+	 * Private construction method.
+	 */
+	private UrlFetchHandlerFactory() {
+	}
 }

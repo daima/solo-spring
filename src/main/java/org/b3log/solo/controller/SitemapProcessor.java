@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.controller;
 
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -30,8 +29,6 @@ import org.b3log.solo.dao.ArchiveDateDao;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
 import org.b3log.solo.dao.TagDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
@@ -45,11 +42,12 @@ import org.b3log.solo.model.sitemap.Sitemap;
 import org.b3log.solo.model.sitemap.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 
 /**
  * Site map (sitemap) processor.
@@ -61,177 +59,188 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SitemapProcessor {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(SitemapProcessor.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(SitemapProcessor.class);
 
-    /**
-     * Article repository.
-     */
-    @Autowired
-    private ArticleDao articleDao;
+	/**
+	 * Article repository.
+	 */
+	@Autowired
+	private ArticleDao articleDao;
 
-    /**
-     * Page repository.
-     */
-    @Autowired
-    private PageDao pageDao;
+	/**
+	 * Page repository.
+	 */
+	@Autowired
+	private PageDao pageDao;
 
-    /**
-     * Tag repository.
-     */
-    @Autowired
-    private TagDao tagDao;
+	/**
+	 * Tag repository.
+	 */
+	@Autowired
+	private TagDao tagDao;
 
-    /**
-     * Archive date repository.
-     */
-    @Autowired
-    private ArchiveDateDao archiveDateDao;
+	/**
+	 * Archive date repository.
+	 */
+	@Autowired
+	private ArchiveDateDao archiveDateDao;
 
-    /**
-     * Returns the sitemap.
-     * 
-     * @param context the specified context
-     */
-    @RequestMapping(value = "/sitemap.xml", method=RequestMethod.GET)
-    public void sitemap(final HttpServletRequest request, final HttpServletResponse response) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
-        final Sitemap sitemap = new Sitemap();
+	/**
+	 * Returns the sitemap.
+	 * 
+	 * @param context
+	 *            the specified context
+	 */
+	@RequestMapping(value = "/sitemap.xml", method = RequestMethod.GET)
+	public void sitemap(final HttpServletRequest request, final HttpServletResponse response) {
+		final TextXMLRenderer renderer = new TextXMLRenderer();
+		final Sitemap sitemap = new Sitemap();
 
-        try {
-            addArticles(sitemap);
-            addNavigations(sitemap);
-            addTags(sitemap);
-            addArchives(sitemap);
+		try {
+			addArticles(sitemap);
+			addNavigations(sitemap);
+			addTags(sitemap);
+			addArchives(sitemap);
 
-            logger.info("Generating sitemap....");
-            final String content = sitemap.toString();
+			logger.info("Generating sitemap....");
+			final String content = sitemap.toString();
 
-            logger.info("Generated sitemap");
-            renderer.setContent(content);
-        } catch (final Exception e) {
-            logger.error("Get blog article feed error", e);
+			logger.info("Generated sitemap");
+			renderer.setContent(content);
+		} catch (final Exception e) {
+			logger.error("Get blog article feed error", e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        renderer.render(request, response);
-    }
+			try {
+				response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			} catch (final IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		renderer.render(request, response);
+	}
 
-    /**
-     * Adds articles into the specified sitemap.
-     * 
-     * @param sitemap the specified sitemap
-     * @throws Exception exception
-     */
-    private void addArticles(final Sitemap sitemap) throws Exception {
-        // XXX: query all articles?
-        final Query query = new Query().setCurrentPageNum(1).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).addSort(
-            Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+	/**
+	 * Adds articles into the specified sitemap.
+	 * 
+	 * @param sitemap
+	 *            the specified sitemap
+	 * @throws Exception
+	 *             exception
+	 */
+	private void addArticles(final Sitemap sitemap) throws Exception {
+		// XXX: query all articles?
+		final Query query = new Query().setCurrentPageNum(1)
+				.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))
+				.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
-        // XXX: maybe out of memory 
-        final JSONObject articleResult = articleDao.get(query);
+		// XXX: maybe out of memory
+		final JSONObject articleResult = articleDao.get(query);
 
-        final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+		final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.getJSONObject(i);
-            final String permalink = article.getString(Article.ARTICLE_PERMALINK);
+		for (int i = 0; i < articles.length(); i++) {
+			final JSONObject article = articles.getJSONObject(i);
+			final String permalink = article.getString(Article.ARTICLE_PERMALINK);
 
-            final URL url = new URL();
+			final URL url = new URL();
 
-            url.setLoc(Latkes.getServePath() + permalink);
+			url.setLoc(Latkes.getServePath() + permalink);
 
-            final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-            final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
+			final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+			final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
 
-            url.setLastMod(lastMod);
+			url.setLastMod(lastMod);
 
-            sitemap.addURL(url);
-        }
-    }
+			sitemap.addURL(url);
+		}
+	}
 
-    /**
-     * Adds navigations into the specified sitemap.
-     * 
-     * @param sitemap the specified sitemap
-     * @throws Exception exception 
-     */
-    private void addNavigations(final Sitemap sitemap) throws Exception {
-        final JSONObject result = pageDao.get(new Query());
-        final JSONArray pages = result.getJSONArray(Keys.RESULTS);
+	/**
+	 * Adds navigations into the specified sitemap.
+	 * 
+	 * @param sitemap
+	 *            the specified sitemap
+	 * @throws Exception
+	 *             exception
+	 */
+	private void addNavigations(final Sitemap sitemap) throws Exception {
+		final JSONObject result = pageDao.get(new Query());
+		final JSONArray pages = result.getJSONArray(Keys.RESULTS);
 
-        for (int i = 0; i < pages.length(); i++) {
-            final JSONObject page = pages.getJSONObject(i);
-            final String permalink = page.getString(Page.PAGE_PERMALINK);
+		for (int i = 0; i < pages.length(); i++) {
+			final JSONObject page = pages.getJSONObject(i);
+			final String permalink = page.getString(Page.PAGE_PERMALINK);
 
-            final URL url = new URL();
+			final URL url = new URL();
 
-            // The navigation maybe a page or a link
-            // Just filters for user mistakes tolerance
-            if (!permalink.contains("://")) {
-                url.setLoc(Latkes.getServePath() + permalink);
-            } else {
-                url.setLoc(permalink);
-            }
+			// The navigation maybe a page or a link
+			// Just filters for user mistakes tolerance
+			if (!permalink.contains("://")) {
+				url.setLoc(Latkes.getServePath() + permalink);
+			} else {
+				url.setLoc(permalink);
+			}
 
-            sitemap.addURL(url);
-        }
-    }
+			sitemap.addURL(url);
+		}
+	}
 
-    /**
-     * Adds tags (tag-articles) and tags wall (/tags.html) into the specified sitemap.
-     * 
-     * @param sitemap the specified sitemap
-     * @throws Exception exception
-     */
-    private void addTags(final Sitemap sitemap) throws Exception {
-        final JSONObject result = tagDao.get(new Query());
-        final JSONArray tags = result.getJSONArray(Keys.RESULTS);
+	/**
+	 * Adds tags (tag-articles) and tags wall (/tags.html) into the specified
+	 * sitemap.
+	 * 
+	 * @param sitemap
+	 *            the specified sitemap
+	 * @throws Exception
+	 *             exception
+	 */
+	private void addTags(final Sitemap sitemap) throws Exception {
+		final JSONObject result = tagDao.get(new Query());
+		final JSONArray tags = result.getJSONArray(Keys.RESULTS);
 
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
-            final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE), "UTF-8");
+		for (int i = 0; i < tags.length(); i++) {
+			final JSONObject tag = tags.getJSONObject(i);
+			final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE), "UTF-8");
 
-            final URL url = new URL();
+			final URL url = new URL();
 
-            url.setLoc(Latkes.getServePath() + "/tags/" + link);
+			url.setLoc(Latkes.getServePath() + "/tags/" + link);
 
-            sitemap.addURL(url);
-        }
+			sitemap.addURL(url);
+		}
 
-        // Tags wall
-        final URL url = new URL();
+		// Tags wall
+		final URL url = new URL();
 
-        url.setLoc(Latkes.getServePath() + "/tags.html");
-        sitemap.addURL(url);
-    }
+		url.setLoc(Latkes.getServePath() + "/tags.html");
+		sitemap.addURL(url);
+	}
 
-    /**
-     * Adds archives (archive-articles) into the specified sitemap.
-     * 
-     * @param sitemap the specified sitemap
-     * @throws Exception exception
-     */
-    private void addArchives(final Sitemap sitemap) throws Exception {
-        final JSONObject result = archiveDateDao.get(new Query());
-        final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+	/**
+	 * Adds archives (archive-articles) into the specified sitemap.
+	 * 
+	 * @param sitemap
+	 *            the specified sitemap
+	 * @throws Exception
+	 *             exception
+	 */
+	private void addArchives(final Sitemap sitemap) throws Exception {
+		final JSONObject result = archiveDateDao.get(new Query());
+		final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
 
-        for (int i = 0; i < archiveDates.length(); i++) {
-            final JSONObject archiveDate = archiveDates.getJSONObject(i);
-            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-            final String dateString = DateFormatUtils.format(time, "yyyy/MM");
+		for (int i = 0; i < archiveDates.length(); i++) {
+			final JSONObject archiveDate = archiveDates.getJSONObject(i);
+			final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+			final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
-            final URL url = new URL();
+			final URL url = new URL();
 
-            url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
+			url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
 
-            sitemap.addURL(url);
-        }
-    }
+			sitemap.addURL(url);
+		}
+	}
 }

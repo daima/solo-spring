@@ -62,244 +62,254 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class BlogProcessor {
 
-    /**
-     * Article query service.
-     */
-    @Autowired
-    private ArticleQueryService articleQueryService;
+	/**
+	 * Article query service.
+	 */
+	@Autowired
+	private ArticleQueryService articleQueryService;
 
-    /**
-     * Tag query service.
-     */
-    @Autowired
-    private TagQueryService tagQueryService;
+	/**
+	 * Tag query service.
+	 */
+	@Autowired
+	private TagQueryService tagQueryService;
 
-    /**
-     * Statistic query service.
-     */
-    @Autowired
-    private StatisticQueryService statisticQueryService;
+	/**
+	 * Statistic query service.
+	 */
+	@Autowired
+	private StatisticQueryService statisticQueryService;
 
-    /**
-     * User query service.
-     */
-    @Autowired
-    private UserQueryService userQueryService;
+	/**
+	 * User query service.
+	 */
+	@Autowired
+	private UserQueryService userQueryService;
 
-    /**
-     * Preference query service.
-     */
-    @Autowired
-    private PreferenceQueryService preferenceQueryService;
+	/**
+	 * Preference query service.
+	 */
+	@Autowired
+	private PreferenceQueryService preferenceQueryService;
 
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+	/**
+	 * URL fetch service.
+	 */
+	private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
-    /**
-     * Gets blog information.
-     *
-     * <ul>
-     * <li>Time of the recent updated article</li>
-     * <li>Article count</li>
-     * <li>Comment count</li>
-     * <li>Tag count</li>
-     * <li>Serve path</li>
-     * <li>Static serve path</li>
-     * <li>Solo version</li>
-     * <li>Runtime environment (LOCAL)</li>
-     * <li>Locale</li>
-     * </ul>
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/blog/info", method=RequestMethod.GET)
-    public void getBlogInfo(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONObject jsonObject = new JSONObject();
-        
-        jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
-        final JSONObject statistic = statisticQueryService.getStatistic();
+	/**
+	 * Gets blog information.
+	 *
+	 * <ul>
+	 * <li>Time of the recent updated article</li>
+	 * <li>Article count</li>
+	 * <li>Comment count</li>
+	 * <li>Tag count</li>
+	 * <li>Serve path</li>
+	 * <li>Static serve path</li>
+	 * <li>Solo version</li>
+	 * <li>Runtime environment (LOCAL)</li>
+	 * <li>Locale</li>
+	 * </ul>
+	 *
+	 * @param context
+	 *            the specified context
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/blog/info", method = RequestMethod.GET)
+	public void getBlogInfo(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		final JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
-        jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
-        jsonObject.put("tagCount", tagQueryService.getTagCount());
-        jsonObject.put("servePath", Latkes.getServePath());
-        jsonObject.put("staticServePath", Latkes.getStaticServePath());
-        jsonObject.put("version", SoloConstant.VERSION);
-        jsonObject.put("locale", Latkes.getLocale());
-        jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
+		final JSONObject statistic = statisticQueryService.getStatistic();
 
-        jsonObject.put("runtimeEnv", runtimeEnv);
-        if (RuntimeEnv.LOCAL == runtimeEnv) {
-            jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
-        }
-        final JSONRenderer renderer = new JSONRenderer();
-        renderer.setJSONObject(jsonObject);
-        renderer.render(request, response);
-    }
+		jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
+		jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+		jsonObject.put("tagCount", tagQueryService.getTagCount());
+		jsonObject.put("servePath", Latkes.getServePath());
+		jsonObject.put("staticServePath", Latkes.getStaticServePath());
+		jsonObject.put("version", SoloConstant.VERSION);
+		jsonObject.put("locale", Latkes.getLocale());
+		jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-    /**
-     * Sync user to https://hacpai.com.
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/blog/symphony/user", method=RequestMethod.GET)
-    public void syncUser(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        if (Latkes.getServePath().contains("localhost")) {
-            return;
-        }
+		jsonObject.put("runtimeEnv", runtimeEnv);
+		if (RuntimeEnv.LOCAL == runtimeEnv) {
+			jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
+		}
+		final JSONRenderer renderer = new JSONRenderer();
+		renderer.setJSONObject(jsonObject);
+		renderer.render(request, response);
+	}
 
-        final JSONObject preference = preferenceQueryService.getPreference();
+	/**
+	 * Sync user to https://hacpai.com.
+	 *
+	 * @param context
+	 *            the specified context
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/blog/symphony/user", method = RequestMethod.GET)
+	public void syncUser(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		if (Latkes.getServePath().contains("localhost")) {
+			return;
+		}
 
-        if (null == preference) {
-            return; // not init yet
-        }
+		final JSONObject preference = preferenceQueryService.getPreference();
 
-        final HTTPRequest httpRequest = new HTTPRequest();
+		if (null == preference) {
+			return; // not init yet
+		}
 
-        httpRequest.setURL(new URL(PropsUtil.getString("symphony.servePath") + "/apis/user"));
-        httpRequest.setRequestMethod(RequestMethod.POST);
-        final JSONObject jsonObject = new JSONObject();
+		final HTTPRequest httpRequest = new HTTPRequest();
 
-        final JSONObject admin = userQueryService.getAdmin();
+		httpRequest.setURL(new URL(PropsUtil.getString("symphony.servePath") + "/apis/user"));
+		httpRequest.setRequestMethod(RequestMethod.POST);
+		final JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
-        jsonObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
-        jsonObject.put(User.USER_PASSWORD, admin.getString(User.USER_PASSWORD));
-        jsonObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
-        jsonObject.put("clientHost", Latkes.getServePath());
+		final JSONObject admin = userQueryService.getAdmin();
 
-        httpRequest.setPayload(jsonObject.toString().getBytes("UTF-8"));
+		jsonObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
+		jsonObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
+		jsonObject.put(User.USER_PASSWORD, admin.getString(User.USER_PASSWORD));
+		jsonObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
+		jsonObject.put("clientHost", Latkes.getServePath());
 
-        urlFetchService.fetchAsync(httpRequest);
-        final JSONRenderer renderer = new JSONRenderer();
-        renderer.setJSONObject(jsonObject);
-        renderer.render(request, response);
-    }
+		httpRequest.setPayload(jsonObject.toString().getBytes("UTF-8"));
 
-    /**
-     * Gets tags of all articles.
-     *
-     * <pre>
-     * {
-     *     "data": [
-     *         ["tag1", "tag2", ....], // tags of one article
-     *         ["tagX", "tagY", ....], // tags of another article
-     *         ....
-     *     ]
-     * }
-     * </pre>
-     *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception io exception
-     */
-    @RequestMapping(value = "/blog/articles-tags", method=RequestMethod.GET)
-    public void getArticlesTags(final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final String pwd = request.getParameter("pwd");
+		urlFetchService.fetchAsync(httpRequest);
+		final JSONRenderer renderer = new JSONRenderer();
+		renderer.setJSONObject(jsonObject);
+		renderer.render(request, response);
+	}
 
-        if (Strings.isEmptyOrNull(pwd)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Gets tags of all articles.
+	 *
+	 * <pre>
+	 * {
+	 *     "data": [
+	 *         ["tag1", "tag2", ....], // tags of one article
+	 *         ["tagX", "tagY", ....], // tags of another article
+	 *         ....
+	 *     ]
+	 * }
+	 * </pre>
+	 *
+	 * @param context
+	 *            the specified context
+	 * @param request
+	 *            the specified HTTP servlet request
+	 * @param response
+	 *            the specified HTTP servlet response
+	 * @throws Exception
+	 *             io exception
+	 */
+	@RequestMapping(value = "/blog/articles-tags", method = RequestMethod.GET)
+	public void getArticlesTags(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		final String pwd = request.getParameter("pwd");
 
-        final JSONObject admin = userQueryService.getAdmin();
+		if (Strings.isEmptyOrNull(pwd)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        if (!MD5.hash(pwd).equals(admin.getString(User.USER_PASSWORD))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+		final JSONObject admin = userQueryService.getAdmin();
 
-        final JSONObject requestJSONObject = new JSONObject();
+		if (!MD5.hash(pwd).equals(admin.getString(User.USER_PASSWORD))) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
-        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
-        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
-        requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
+		final JSONObject requestJSONObject = new JSONObject();
 
-        final JSONArray excludes = new JSONArray();
+		requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
+		requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
+		requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
+		requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
 
-        excludes.put(Article.ARTICLE_CONTENT);
-        excludes.put(Article.ARTICLE_UPDATE_DATE);
-        excludes.put(Article.ARTICLE_CREATE_DATE);
-        excludes.put(Article.ARTICLE_AUTHOR_EMAIL);
-        excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
-        excludes.put(Article.ARTICLE_IS_PUBLISHED);
-        excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
+		final JSONArray excludes = new JSONArray();
 
-        requestJSONObject.put(Keys.EXCLUDES, excludes);
+		excludes.put(Article.ARTICLE_CONTENT);
+		excludes.put(Article.ARTICLE_UPDATE_DATE);
+		excludes.put(Article.ARTICLE_CREATE_DATE);
+		excludes.put(Article.ARTICLE_AUTHOR_EMAIL);
+		excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
+		excludes.put(Article.ARTICLE_IS_PUBLISHED);
+		excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
 
-        final JSONObject result = articleQueryService.getArticles(requestJSONObject);
-        final JSONArray articles = result.optJSONArray(Article.ARTICLES);
+		requestJSONObject.put(Keys.EXCLUDES, excludes);
 
-        final JSONObject ret = new JSONObject();
+		final JSONObject result = articleQueryService.getArticles(requestJSONObject);
+		final JSONArray articles = result.optJSONArray(Article.ARTICLES);
 
-        final JSONArray data = new JSONArray();
+		final JSONObject ret = new JSONObject();
 
-        ret.put("data", data);
+		final JSONArray data = new JSONArray();
 
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.optJSONObject(i);
-            final String tagString = article.optString(Article.ARTICLE_TAGS_REF);
+		ret.put("data", data);
 
-            final JSONArray tagArray = new JSONArray();
+		for (int i = 0; i < articles.length(); i++) {
+			final JSONObject article = articles.optJSONObject(i);
+			final String tagString = article.optString(Article.ARTICLE_TAGS_REF);
 
-            data.put(tagArray);
+			final JSONArray tagArray = new JSONArray();
 
-            final String[] tags = tagString.split(",");
+			data.put(tagArray);
 
-            for (final String tag : tags) {
-                final String trim = tag.trim();
+			final String[] tags = tagString.split(",");
 
-                if (!Strings.isEmptyOrNull(trim)) {
-                    tagArray.put(tag);
-                }
-            }
-        }
-        final JSONRenderer renderer = new JSONRenderer();
-        renderer.setJSONObject(ret);
-        renderer.render(request, response);
-    }
+			for (final String tag : tags) {
+				final String trim = tag.trim();
 
-    /**
-     * Gets interest tags (top 10 and bottom 10).
-     *
-     * <pre>
-     * {
-     *     "data": ["tag1", "tag2", ....]
-     * }
-     * </pre>
-     *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception io exception
-     */
-    @RequestMapping(value = "/blog/interest-tags", method=RequestMethod.GET)
-    public void getInterestTags(final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final JSONObject ret = new JSONObject();
-        final Set<String> tagTitles = new HashSet<>();
+				if (!Strings.isEmptyOrNull(trim)) {
+					tagArray.put(tag);
+				}
+			}
+		}
+		final JSONRenderer renderer = new JSONRenderer();
+		renderer.setJSONObject(ret);
+		renderer.render(request, response);
+	}
 
-        final List<JSONObject> topTags = tagQueryService.getTopTags(10);
-        for (final JSONObject topTag : topTags) {
-            tagTitles.add(topTag.optString(Tag.TAG_TITLE));
-        }
+	/**
+	 * Gets interest tags (top 10 and bottom 10).
+	 *
+	 * <pre>
+	 * {
+	 *     "data": ["tag1", "tag2", ....]
+	 * }
+	 * </pre>
+	 *
+	 * @param context
+	 *            the specified context
+	 * @param request
+	 *            the specified HTTP servlet request
+	 * @param response
+	 *            the specified HTTP servlet response
+	 * @throws Exception
+	 *             io exception
+	 */
+	@RequestMapping(value = "/blog/interest-tags", method = RequestMethod.GET)
+	public void getInterestTags(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		final JSONObject ret = new JSONObject();
+		final Set<String> tagTitles = new HashSet<>();
 
-        final List<JSONObject> bottomTags = tagQueryService.getBottomTags(10);
-        for (final JSONObject bottomTag : bottomTags) {
-            tagTitles.add(bottomTag.optString(Tag.TAG_TITLE));
-        }
+		final List<JSONObject> topTags = tagQueryService.getTopTags(10);
+		for (final JSONObject topTag : topTags) {
+			tagTitles.add(topTag.optString(Tag.TAG_TITLE));
+		}
 
-        ret.put("data", tagTitles);
-        final JSONRenderer renderer = new JSONRenderer();
-        renderer.setJSONObject(ret);
-        renderer.render(request, response);
-    }
+		final List<JSONObject> bottomTags = tagQueryService.getBottomTags(10);
+		for (final JSONObject bottomTag : bottomTags) {
+			tagTitles.add(bottomTag.optString(Tag.TAG_TITLE));
+		}
+
+		ret.put("data", tagTitles);
+		final JSONRenderer renderer = new JSONRenderer();
+		renderer.setJSONObject(ret);
+		renderer.render(request, response);
+	}
 }

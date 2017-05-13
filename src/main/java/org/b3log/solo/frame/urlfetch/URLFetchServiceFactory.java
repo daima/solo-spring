@@ -29,52 +29,53 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("unchecked")
 public final class URLFetchServiceFactory {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(URLFetchServiceFactory.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(URLFetchServiceFactory.class);
 
-    /**
-     * URL fetch service.
-     */
-    private static final URLFetchService URL_FETCH_SERVICE;
+	/**
+	 * URL fetch service.
+	 */
+	private static final URLFetchService URL_FETCH_SERVICE;
 
-    static {
-        logger.info("Constructing URL Fetch Service....");
+	static {
+		logger.info("Constructing URL Fetch Service....");
 
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        try {
-            Class<URLFetchService> serviceClass;
+		try {
+			Class<URLFetchService> serviceClass;
 
-            switch (runtimeEnv) {
-                case LOCAL:
-                	serviceClass = (Class<URLFetchService>) Class.forName("org.b3log.solo.frame.urlfetch.local.LocalURLFetchService");
-                	URL_FETCH_SERVICE = serviceClass.newInstance();
+			switch (runtimeEnv) {
+			case LOCAL:
+				serviceClass = (Class<URLFetchService>) Class
+						.forName("org.b3log.solo.frame.urlfetch.local.LocalURLFetchService");
+				URL_FETCH_SERVICE = serviceClass.newInstance();
 
-                    break;
-                default:
-                    throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException("Can not initialize URL Fetch Service!", e);
-        }
+				break;
+			default:
+				throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
+			}
+		} catch (final Exception e) {
+			throw new RuntimeException("Can not initialize URL Fetch Service!", e);
+		}
 
-        logger.info("Constructed URL Fetch Service");
-    }
+		logger.info("Constructed URL Fetch Service");
+	}
 
-    /**
-     * Gets URL fetch service.
-     *
-     * @return URL fetch service
-     */
-    public static URLFetchService getURLFetchService() {
-        return URL_FETCH_SERVICE;
-    }
+	/**
+	 * Gets URL fetch service.
+	 *
+	 * @return URL fetch service
+	 */
+	public static URLFetchService getURLFetchService() {
+		return URL_FETCH_SERVICE;
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private URLFetchServiceFactory() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private URLFetchServiceFactory() {
+	}
 }

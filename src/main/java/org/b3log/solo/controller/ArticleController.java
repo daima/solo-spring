@@ -37,8 +37,6 @@ import org.b3log.solo.SoloConstant;
 import org.b3log.solo.controller.renderer.ConsoleRenderer;
 import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.frame.event.EventException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.service.ServiceException;
@@ -77,6 +75,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,7 +250,7 @@ public class ArticleController {
 					Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
 
 					if (null == viewPwds) {
-						viewPwds = new HashMap<String, String>();
+						viewPwds = new HashMap<>();
 					}
 
 					viewPwds.put(articleId, pwdTyped);
@@ -696,7 +696,7 @@ public class ArticleController {
 			}
 
 			final String authorId = getAuthorId(requestURI);
-			logger.debug( "Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
+			logger.debug("Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
 
 			final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
 
@@ -705,8 +705,7 @@ public class ArticleController {
 				return;
 			}
 
-			logger.debug( "Request author articles[authorId={0}, currentPageNum={1}]", authorId,
-					currentPageNum);
+			logger.debug("Request author articles[authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
 
 			final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -802,13 +801,11 @@ public class ArticleController {
 				return;
 			}
 
-			logger.debug( "Request archive date[string={0}, currentPageNum={1}]", archiveDateString,
-					currentPageNum);
+			logger.debug("Request archive date[string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
 			final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
 			if (null == result) {
-				logger.warn("Can not find articles for the specified archive date[string={0}]",
-						archiveDateString);
+				logger.warn("Can not find articles for the specified archive date[string={0}]", archiveDateString);
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
@@ -878,7 +875,8 @@ public class ArticleController {
 	 */
 	@RequestMapping(value = "/article-random-double-gen.do", method = RequestMethod.GET)
 	public void updateArticlesRandomValue(final HttpServletRequest request) {
-		//Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and
+		// Commented for issue 308, see
+		// http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and
 		// cron.xml for more details.
 		int DEFAULT_UPDATE_CNT = 0;
 		int updateCnt = DEFAULT_UPDATE_CNT;
@@ -919,7 +917,7 @@ public class ArticleController {
 
 		final String articleId = article.optString(Keys.OBJECT_ID);
 
-		logger.debug( "Article[id={0}]", articleId);
+		logger.debug("Article[id={0}]", articleId);
 		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
 		renderer.setTemplateName("article.ftl");
@@ -993,9 +991,8 @@ public class ArticleController {
 			/*
 			 * try { eventManager.fireEventSynchronously(new
 			 * Event<JSONObject>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
-			 * } catch (final EventException e) { logger.error(
-			 * "Fires [" + EventTypes.BEFORE_RENDER_ARTICLE + "] event failed",
-			 * e); }
+			 * } catch (final EventException e) { logger.error( "Fires [" +
+			 * EventTypes.BEFORE_RENDER_ARTICLE + "] event failed", e); }
 			 */
 		} catch (final Exception e) {
 			logger.error(e.getMessage(), e);

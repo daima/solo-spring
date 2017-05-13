@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,42 +23,42 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * HTTP {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR status} renderer.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.0.0.0, Sep 26, 2013
  */
 public final class HTTP500Renderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(HTTP500Renderer.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(HTTP500Renderer.class);
 
-    /**
-     * the internal exception.
-     */
-    private Exception e;
+	/**
+	 * the internal exception.
+	 */
+	private Exception e;
 
-    /**
-     * the constructor.
-     * 
-     * @param e internal exception
-     *            
-     */
-    public HTTP500Renderer(final Exception e) {
-        this.e = e;
-    }
+	/**
+	 * the constructor.
+	 * 
+	 * @param e
+	 *            internal exception
+	 * 
+	 */
+	public HTTP500Renderer(final Exception e) {
+		this.e = e;
+	}
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        try {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (final IOException e) {
-            logger.error("Renders 505 error", e);
-        }
-    }
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		try {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		} catch (final IOException e) {
+			logger.error("Renders 505 error", e);
+		}
+	}
 }

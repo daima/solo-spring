@@ -1,6 +1,7 @@
 package org.b3log.solo;
 
 import org.springframework.ui.ModelMap;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
 
@@ -11,7 +12,8 @@ public class SpringMVCInterceptor implements WebRequestInterceptor {
 	 */
 	@Override
 	public void preHandle(WebRequest request) throws Exception {
-		request.setAttribute(Keys.HttpRequest.START_TIME_MILLIS, System.currentTimeMillis(), WebRequest.SCOPE_REQUEST);
+		request.setAttribute(Keys.HttpRequest.START_TIME_MILLIS, System.currentTimeMillis(),
+				RequestAttributes.SCOPE_REQUEST);
 	}
 
 	/**
@@ -21,9 +23,9 @@ public class SpringMVCInterceptor implements WebRequestInterceptor {
 	@Override
 	public void postHandle(WebRequest request, ModelMap model) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * 该方法将在整个请求完成之后，也就是说在视图渲染之后进行调用，主要用于进行一些资源的释放
 	 */
@@ -31,7 +33,5 @@ public class SpringMVCInterceptor implements WebRequestInterceptor {
 	public void afterCompletion(WebRequest request, Exception exception) throws Exception {
 		// TODO Auto-generated method stub
 	}
-
-	
 
 }

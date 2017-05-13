@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all skin model relevant keys.
  *
@@ -24,33 +23,34 @@ package org.b3log.solo.model;
  */
 public final class Skin {
 
-    /**
-     * Skin.
-     */
-    public static final String SKIN = "skin";
+	/**
+	 * Skin.
+	 */
+	public static final String SKIN = "skin";
 
-    /**
-     * Skins.
-     */
-    public static final String SKINS = "skins";
+	/**
+	 * Skins.
+	 */
+	public static final String SKINS = "skins";
 
-    /**
-     * Key of skin name, current selected skin name.
-     */
-    public static final String SKIN_NAME = "skinName";
+	/**
+	 * Key of skin name, current selected skin name.
+	 */
+	public static final String SKIN_NAME = "skinName";
 
-    /**
-     * Key of skin names.
-     */
-    public static final String SKIN_NAMES = "skinNames";
+	/**
+	 * Key of skin names.
+	 */
+	public static final String SKIN_NAMES = "skinNames";
 
-    /**
-     * Key of skin directory name.
-     */
-    public static final String SKIN_DIR_NAME = "skinDirName";
+	/**
+	 * Key of skin directory name.
+	 */
+	public static final String SKIN_DIR_NAME = "skinDirName";
 
-    /**
-     * Private default constructor.
-     */
-    private Skin() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Skin() {
+	}
 }

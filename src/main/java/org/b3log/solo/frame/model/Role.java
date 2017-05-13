@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.model;
 
-
 /**
  * This class defines all role/group model relevant keys.
  *
@@ -24,63 +23,64 @@ package org.b3log.solo.frame.model;
  */
 public final class Role {
 
-    /**
-     * Role.
-     */
-    public static final String ROLE = "role";
+	/**
+	 * Role.
+	 */
+	public static final String ROLE = "role";
 
-    /**
-     * Default role.
-     */
-    public static final String DEFAULT_ROLE = "defaultRole";
+	/**
+	 * Default role.
+	 */
+	public static final String DEFAULT_ROLE = "defaultRole";
 
-    /**
-     * Visitor role.
-     */
-    public static final String VISITOR_ROLE = "visitorRole";
+	/**
+	 * Visitor role.
+	 */
+	public static final String VISITOR_ROLE = "visitorRole";
 
-    /**
-     * Administrator role.
-     */
-    public static final String ADMIN_ROLE = "adminRole";
+	/**
+	 * Administrator role.
+	 */
+	public static final String ADMIN_ROLE = "adminRole";
 
-    /**
-     * Roles.
-     */
-    public static final String ROLES = "roles";
+	/**
+	 * Roles.
+	 */
+	public static final String ROLES = "roles";
 
-    /**
-     * Role id.
-     */
-    public static final String ROLE_ID = "roleId";
+	/**
+	 * Role id.
+	 */
+	public static final String ROLE_ID = "roleId";
 
-    /**
-     * Role name.
-     */
-    public static final String ROLE_NAME = "roleName";
+	/**
+	 * Role name.
+	 */
+	public static final String ROLE_NAME = "roleName";
 
-    /**
-     * Update time of this role.
-     */
-    public static final String ROLE_UPDATE_TIME = "roleUpdateTime";
+	/**
+	 * Update time of this role.
+	 */
+	public static final String ROLE_UPDATE_TIME = "roleUpdateTime";
 
-    /**
-     * Role permission set.
-     */
-    public static final String ROLE_PERMISSION_SET = "rolePermissionSet";
+	/**
+	 * Role permission set.
+	 */
+	public static final String ROLE_PERMISSION_SET = "rolePermissionSet";
 
-    /**
-     * Role permission set relation role id.
-     */
-    public static final String ROLE_PERMISSION_SET_RELATION_ROLE_ID = "rolePermissionSetRelationRoleId";
+	/**
+	 * Role permission set relation role id.
+	 */
+	public static final String ROLE_PERMISSION_SET_RELATION_ROLE_ID = "rolePermissionSetRelationRoleId";
 
-    /**
-     * Role user id.
-     */
-    public static final String ROLE_USER_ID = "roleUserId";
+	/**
+	 * Role user id.
+	 */
+	public static final String ROLE_USER_ID = "roleUserId";
 
-    /**
-     * Private default constructor.
-     */
-    private Role() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Role() {
+	}
 }

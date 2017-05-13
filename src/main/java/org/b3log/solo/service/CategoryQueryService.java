@@ -20,8 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.b3log.solo.dao.CategoryDao;
+import org.b3log.solo.dao.CategoryTagDao;
+import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.CompositeFilterOperator;
 import org.b3log.solo.frame.repository.FilterOperator;
@@ -30,15 +31,14 @@ import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.SortDirection;
 import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.util.CollectionUtils;
-import org.b3log.solo.util.Paginator;
-import org.b3log.solo.dao.CategoryDao;
-import org.b3log.solo.dao.CategoryTagDao;
-import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.util.CollectionUtils;
+import org.b3log.solo.util.Paginator;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,247 +52,261 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryQueryService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(CategoryQueryService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CategoryQueryService.class);
 
-    /**
-     * Category repository.
-     */
-    @Autowired
-    private CategoryDao categoryDao;
+	/**
+	 * Category repository.
+	 */
+	@Autowired
+	private CategoryDao categoryDao;
 
-    /**
-     * Tag repository.
-     */
-    @Autowired
-    private TagDao tagDao;
+	/**
+	 * Tag repository.
+	 */
+	@Autowired
+	private TagDao tagDao;
 
-    /**
-     * Category tag repository.
-     */
-    @Autowired
-    private CategoryTagDao categoryTagDao;
+	/**
+	 * Category tag repository.
+	 */
+	@Autowired
+	private CategoryTagDao categoryTagDao;
 
-    /**
-     * Gets most tag category.
-     *
-     * @param fetchSize the specified fetch size
-     * @return categories, returns an empty list if not found
-     */
-    public List<JSONObject> getMostTagCategory(final int fetchSize) {
-        final Query query = new Query().addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
-                addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPageSize(fetchSize).setPageCount(1);
-        try {
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(categoryDao.get(query).optJSONArray(Keys.RESULTS));
-            for (final JSONObject category : ret) {
-                final List<JSONObject> tags = getTags(category.optString(Keys.OBJECT_ID));
+	/**
+	 * Gets most tag category.
+	 *
+	 * @param fetchSize
+	 *            the specified fetch size
+	 * @return categories, returns an empty list if not found
+	 */
+	public List<JSONObject> getMostTagCategory(final int fetchSize) {
+		final Query query = new Query().addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING)
+				.addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING)
+				.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPageSize(fetchSize).setPageCount(1);
+		try {
+			final List<JSONObject> ret = CollectionUtils
+					.jsonArrayToList(categoryDao.get(query).optJSONArray(Keys.RESULTS));
+			for (final JSONObject category : ret) {
+				final List<JSONObject> tags = getTags(category.optString(Keys.OBJECT_ID));
 
-                category.put(Category.CATEGORY_T_TAGS, (Object) tags);
-            }
+				category.put(Category.CATEGORY_T_TAGS, (Object) tags);
+			}
 
-            return ret;
-        } catch (final Exception e) {
-            logger.error("Gets most tag category error", e);
+			return ret;
+		} catch (final Exception e) {
+			logger.error("Gets most tag category error", e);
 
-            return Collections.emptyList();
-        }
-    }
+			return Collections.emptyList();
+		}
+	}
 
-    /**
-     * Gets a category's tags.
-     *
-     * @param categoryId the specified category id
-     * @return tags, returns an empty list if not found
-     */
-    public List<JSONObject> getTags(final String categoryId) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+	/**
+	 * Gets a category's tags.
+	 *
+	 * @param categoryId
+	 *            the specified category id
+	 * @return tags, returns an empty list if not found
+	 */
+	public List<JSONObject> getTags(final String categoryId) {
+		final List<JSONObject> ret = new ArrayList<>();
 
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
-        try {
-            final List<JSONObject> relations = CollectionUtils.jsonArrayToList(
-                    categoryTagDao.get(query).optJSONArray(Keys.RESULTS));
+		final Query query = new Query().setFilter(
+				new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
+		try {
+			final List<JSONObject> relations = CollectionUtils
+					.jsonArrayToList(categoryTagDao.get(query).optJSONArray(Keys.RESULTS));
 
-            for (final JSONObject relation : relations) {
-                final String tagId = relation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
-                final JSONObject tag = tagDao.get(tagId);
+			for (final JSONObject relation : relations) {
+				final String tagId = relation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+				final JSONObject tag = tagDao.get(tagId);
 
-                ret.add(tag);
-            }
-        } catch (final RepositoryException e) {
-            logger.error("Gets category [id=" + categoryId + "] tags error", e);
-        }
+				ret.add(tag);
+			}
+		} catch (final RepositoryException e) {
+			logger.error("Gets category [id=" + categoryId + "] tags error", e);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Gets a category by the specified category URI.
-     *
-     * @param categoryURI the specified category URI
-     * @return category, returns {@code null} if not null
-     * @throws ServiceException service exception
-     */
-    public JSONObject getByURI(final String categoryURI) throws ServiceException {
-        try {
-            final JSONObject ret = categoryDao.getByURI(categoryURI);
-            if (null == ret) {
-                return null;
-            }
+	/**
+	 * Gets a category by the specified category URI.
+	 *
+	 * @param categoryURI
+	 *            the specified category URI
+	 * @return category, returns {@code null} if not null
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getByURI(final String categoryURI) throws ServiceException {
+		try {
+			final JSONObject ret = categoryDao.getByURI(categoryURI);
+			if (null == ret) {
+				return null;
+			}
 
-            return ret;
-        } catch (final RepositoryException e) {
-            logger.error("Gets category [URI=" + categoryURI + "] failed", e);
+			return ret;
+		} catch (final RepositoryException e) {
+			logger.error("Gets category [URI=" + categoryURI + "] failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets a category by the specified category title.
-     *
-     * @param categoryTitle the specified category title
-     * @return category, returns {@code null} if not null
-     * @throws ServiceException service exception
-     */
-    public JSONObject getByTitle(final String categoryTitle) throws ServiceException {
-        try {
-            final JSONObject ret = categoryDao.getByTitle(categoryTitle);
+	/**
+	 * Gets a category by the specified category title.
+	 *
+	 * @param categoryTitle
+	 *            the specified category title
+	 * @return category, returns {@code null} if not null
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getByTitle(final String categoryTitle) throws ServiceException {
+		try {
+			final JSONObject ret = categoryDao.getByTitle(categoryTitle);
 
-            return ret;
-        } catch (final RepositoryException e) {
-            logger.error("Gets category [title=" + categoryTitle + "] failed", e);
+			return ret;
+		} catch (final RepositoryException e) {
+			logger.error("Gets category [title=" + categoryTitle + "] failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets categories by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "categoryTitle": "", // optional
-     *                          "paginationCurrentPageNum": 1,
-     *                          "paginationPageSize": 20,
-     *                          "paginationWindowSize": 10
-     *                          see {@link Pagination} for more details
-     * @return for example,
-     * <pre>
-     * {
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "categories": [{
-     *         "oId": "",
-     *         "categoryTitle": "",
-     *         "categoryDescription": "",
-     *         ....
-     *      }, ....]
-     * }
-     * </pre>
-     * @throws ServiceException service exception
-     * @see Pagination
-     */
-    public JSONObject getCategoris(final JSONObject requestJSONObject) throws ServiceException {
-        final JSONObject ret = new JSONObject();
+	/**
+	 * Gets categories by the specified request json object.
+	 *
+	 * @param requestJSONObject
+	 *            the specified request json object, for example,
+	 *            "categoryTitle": "", // optional "paginationCurrentPageNum":
+	 *            1, "paginationPageSize": 20, "paginationWindowSize": 10 see
+	 *            {@link Pagination} for more details
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "pagination": {
+	 *         "paginationPageCount": 100,
+	 *         "paginationPageNums": [1, 2, 3, 4, 5]
+	 *     },
+	 *     "categories": [{
+	 *         "oId": "",
+	 *         "categoryTitle": "",
+	 *         "categoryDescription": "",
+	 *         ....
+	 *      }, ....]
+	 * }
+	 *         </pre>
+	 * 
+	 * @throws ServiceException
+	 *             service exception
+	 * @see Pagination
+	 */
+	public JSONObject getCategoris(final JSONObject requestJSONObject) throws ServiceException {
+		final JSONObject ret = new JSONObject();
 
-        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
-        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
-        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
-                addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+		final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+		final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+		final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+		final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
+				.addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING)
+				.addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING)
+				.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
-        if (requestJSONObject.has(Category.CATEGORY_TITLE)) {
-            query.setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL,
-                    requestJSONObject.optString(Category.CATEGORY_TITLE)));
-        }
+		if (requestJSONObject.has(Category.CATEGORY_TITLE)) {
+			query.setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL,
+					requestJSONObject.optString(Category.CATEGORY_TITLE)));
+		}
 
-        JSONObject result;
-        try {
-            result = categoryDao.get(query);
-        } catch (final RepositoryException e) {
-            logger.error("Gets categories failed", e);
+		JSONObject result;
+		try {
+			result = categoryDao.get(query);
+		} catch (final RepositoryException e) {
+			logger.error("Gets categories failed", e);
 
-            throw new ServiceException(e);
-        }
+			throw new ServiceException(e);
+		}
 
-        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+		final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
-        final JSONObject pagination = new JSONObject();
-        ret.put(Pagination.PAGINATION, pagination);
-        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+		final JSONObject pagination = new JSONObject();
+		ret.put(Pagination.PAGINATION, pagination);
+		final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+		pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+		pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> categories = CollectionUtils.jsonArrayToList(data);
+		final JSONArray data = result.optJSONArray(Keys.RESULTS);
+		final List<JSONObject> categories = CollectionUtils.jsonArrayToList(data);
 
-        ret.put(Category.CATEGORIES, categories);
+		ret.put(Category.CATEGORIES, categories);
 
-        return ret;
-    }
+		return ret;
+	}
 
-    /**
-     * Gets a category by the specified id.
-     *
-     * @param categoryId the specified id
-     * @return a category, return {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getCategory(final String categoryId) throws ServiceException {
-        try {
-            final JSONObject ret = categoryDao.get(categoryId);
-            if (null == ret) {
-                return null;
-            }
+	/**
+	 * Gets a category by the specified id.
+	 *
+	 * @param categoryId
+	 *            the specified id
+	 * @return a category, return {@code null} if not found
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getCategory(final String categoryId) throws ServiceException {
+		try {
+			final JSONObject ret = categoryDao.get(categoryId);
+			if (null == ret) {
+				return null;
+			}
 
-            final List<JSONObject> tags = getTags(categoryId);
-            ret.put(Category.CATEGORY_T_TAGS, (Object) tags);
+			final List<JSONObject> tags = getTags(categoryId);
+			ret.put(Category.CATEGORY_T_TAGS, (Object) tags);
 
-            return ret;
-        } catch (final RepositoryException e) {
-            logger.error("Gets a category [categoryId=" + categoryId + "] failed", e);
+			return ret;
+		} catch (final RepositoryException e) {
+			logger.error("Gets a category [categoryId=" + categoryId + "] failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Whether a tag specified by the given tag title in a category specified by the given category id.
-     *
-     * @param tagTitle   the given tag title
-     * @param categoryId the given category id
-     * @return {@code true} if the tag in the category, returns {@code false} otherwise
-     */
-    public boolean containTag(final String tagTitle, final String categoryId) {
-        try {
-            final JSONObject category = categoryDao.get(categoryId);
-            if (null == category) {
-                return true;
-            }
+	/**
+	 * Whether a tag specified by the given tag title in a category specified by
+	 * the given category id.
+	 *
+	 * @param tagTitle
+	 *            the given tag title
+	 * @param categoryId
+	 *            the given category id
+	 * @return {@code true} if the tag in the category, returns {@code false}
+	 *         otherwise
+	 */
+	public boolean containTag(final String tagTitle, final String categoryId) {
+		try {
+			final JSONObject category = categoryDao.get(categoryId);
+			if (null == category) {
+				return true;
+			}
 
-            final JSONObject tag = tagDao.getByTitle(tagTitle);
-            if (null == tag) {
-                return true;
-            }
+			final JSONObject tag = tagDao.getByTitle(tagTitle);
+			if (null == tag) {
+				return true;
+			}
 
-            final Query query = new Query().setFilter(
-                    CompositeFilterOperator.and(
-                            new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId),
-                            new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))));
+			final Query query = new Query().setFilter(CompositeFilterOperator.and(
+					new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId),
+					new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL,
+							tag.optString(Keys.OBJECT_ID))));
 
-            return categoryTagDao.count(query) > 0;
-        } catch (final Exception e) {
-            logger.error("Check category tag [tagTitle=" + tagTitle + ", categoryId=" + categoryId + "] failed", e);
+			return categoryTagDao.count(query) > 0;
+		} catch (final Exception e) {
+			logger.error("Check category tag [tagTitle=" + tagTitle + ", categoryId=" + categoryId + "] failed", e);
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }

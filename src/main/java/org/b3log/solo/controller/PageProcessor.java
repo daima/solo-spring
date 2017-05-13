@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.controller.util.Filler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.frame.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.model.Common;
@@ -35,11 +33,12 @@ import org.b3log.solo.module.util.Emotions;
 import org.b3log.solo.module.util.Markdowns;
 import org.b3log.solo.module.util.Skins;
 import org.b3log.solo.service.CommentQueryService;
-import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Stopwatchs;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,107 +54,104 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PageProcessor {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(PageProcessor.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(PageProcessor.class);
 
-    @Autowired
-    private Skins skins;
-    /**
-     * Language service.
-     */
-    @Autowired
-    private LangPropsService langPropsService;
+	@Autowired
+	private Skins skins;
+	/**
+	 * Filler.
+	 */
+	@Autowired
+	private Filler filler;
 
-    /**
-     * Filler.
-     */
-    @Autowired
-    private Filler filler;
+	/**
+	 * Preference query service.
+	 */
+	@Autowired
+	private PreferenceQueryService preferenceQueryService;
 
-    /**
-     * Preference query service.
-     */
-    @Autowired
-    private PreferenceQueryService preferenceQueryService;
+	/**
+	 * Comment query service.
+	 */
+	@Autowired
+	private CommentQueryService commentQueryService;
 
-    /**
-     * Comment query service.
-     */
-    @Autowired
-    private CommentQueryService commentQueryService;
+	/**
+	 * Statistic management service.
+	 */
+	@Autowired
+	private StatisticMgmtService statisticMgmtService;
 
-    /**
-     * Statistic management service.
-     */
-    @Autowired
-    private StatisticMgmtService statisticMgmtService;
+	/**
+	 * Shows page with the specified context.
+	 *
+	 * @param context
+	 *            the specified context
+	 */
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public void showPage(final HttpServletRequest request, final HttpServletResponse response) {
+		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+		renderer.setTemplateName("page.ftl");
+		final Map<String, Object> dataModel = renderer.getDataModel();
 
-    /**
-     * Shows page with the specified context.
-     *
-     * @param context the specified context
-     */
-    @RequestMapping(value = "/page", method=RequestMethod.GET)
-    public void showPage(final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-        renderer.setTemplateName("page.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
+		try {
+			final JSONObject preference = preferenceQueryService.getPreference();
 
-        try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+			if (null == preference) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
 
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
+			skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING),
+					(String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+			// See PermalinkFilter#dispatchToArticleOrPageProcessor()
+			final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
 
-            // See PermalinkFilter#dispatchToArticleOrPageProcessor()
-            final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
+			if (null == page) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
 
-            if (null == page) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
+			final String pageId = page.getString(Keys.OBJECT_ID);
 
-            final String pageId = page.getString(Keys.OBJECT_ID);
+			page.put(Common.COMMENTABLE,
+					preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
+			page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
+			dataModel.put(Page.PAGE, page);
+			final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
-            page.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
-            page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
-            dataModel.put(Page.PAGE, page);
-            final List<JSONObject> comments = commentQueryService.getComments(pageId);
+			dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
-            dataModel.put(Page.PAGE_COMMENTS_REF, comments);
+			// Markdown
+			if ("CodeMirror-Markdown".equals(page.optString(Page.PAGE_EDITOR_TYPE))) {
+				Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
 
-            // Markdown
-            if ("CodeMirror-Markdown".equals(page.optString(Page.PAGE_EDITOR_TYPE))) {
-                Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
+				String content = page.optString(Page.PAGE_CONTENT);
+				content = Emotions.convert(content);
+				content = Markdowns.toHTML(content);
+				page.put(Page.PAGE_CONTENT, content);
 
-                String content = page.optString(Page.PAGE_CONTENT);
-                content = Emotions.convert(content);
-                content = Markdowns.toHTML(content);
-                page.put(Page.PAGE_CONTENT, content);
+				Stopwatchs.end();
+			}
 
-                Stopwatchs.end();
-            }
+			filler.fillSide(request, dataModel, preference);
+			filler.fillBlogHeader(request, response, dataModel, preference);
+			filler.fillBlogFooter(request, dataModel, preference);
 
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+			statisticMgmtService.incBlogViewCount(request, response);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            statisticMgmtService.incBlogViewCount(request, response);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                logger.error(ex.getMessage());
-            }
-        }
-        renderer.render(request, response);
-    }
+			try {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			} catch (final IOException ex) {
+				logger.error(ex.getMessage());
+			}
+		}
+		renderer.render(request, response);
+	}
 }

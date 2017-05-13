@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.controller;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,21 +22,20 @@ import org.b3log.solo.frame.servlet.renderer.DoNothingRenderer;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
 /**
  * Statistics processor.
- * 
+ *
  * <p>
- * Statistics of Solo: 
- * 
- *   <ul>
- *     <li>{@link #viewCounter(org.b3log.solo.frame.servlet.HTTPRequestContext) Blog/Article view counting}</li>
- *   </ul>
+ * Statistics of Solo:
+ *
+ * <ul>
+ * <li>{@link #viewCounter(org.b3log.solo.frame.servlet.HTTPRequestContext)
+ * Blog/Article view counting}</li>
+ * </ul>
  * <p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -47,25 +45,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class StatProcessor {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(StatProcessor.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(StatProcessor.class);
 
-    /**
-     * Statistic management service.
-     */
-    @Autowired
-    private StatisticMgmtService statisticMgmtService;
-
-    /**
-     * Online visitor count refresher.
-     * 
-     * @param context the specified context
-     */
-    @RequestMapping(value = "/console/stat/onlineVisitorRefresh", method=RequestMethod.GET)
-    public void onlineVisitorCountRefresher(final HttpServletRequest request, final HttpServletResponse response) {
-        StatisticMgmtService.removeExpiredOnlineVisitor();
-        new DoNothingRenderer().render(request, response);
-    }
+	/**
+	 * Online visitor count refresher.
+	 * 
+	 * @param context
+	 *            the specified context
+	 */
+	@RequestMapping(value = "/console/stat/onlineVisitorRefresh", method = RequestMethod.GET)
+	public void onlineVisitorCountRefresher(final HttpServletRequest request, final HttpServletResponse response) {
+		StatisticMgmtService.removeExpiredOnlineVisitor();
+		new DoNothingRenderer().render(request, response);
+	}
 }

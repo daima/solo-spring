@@ -15,10 +15,8 @@
  */
 package org.b3log.solo.dao;
 
-
 import org.b3log.solo.model.Statistic;
 import org.springframework.stereotype.Repository;
-
 
 /**
  * Statistic repository.
@@ -32,6 +30,6 @@ public class StatisticDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return Statistic.STATISTIC;
-    }
+		return Statistic.STATISTIC;
+	}
 }

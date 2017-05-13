@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -30,10 +29,9 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Email sender.
- * 
+ *
  * @author <a href="mailto:toughPatient5@gmail.com">Gang Liu</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.3, Jun 15, 2010
@@ -41,105 +39,111 @@ import org.slf4j.LoggerFactory;
 public final class EmailSender implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(EmailSender.class);
 
-    /**
-     * Mail sender account host.
-     */
-    public static final String MAIL_HOST = "smtp.gmail.com";
+	/**
+	 * Mail sender account host.
+	 */
+	public static final String MAIL_HOST = "smtp.gmail.com";
 
-    /**
-     * Email from.
-     */
-    private String from;
+	/**
+	 * Email from.
+	 */
+	private String from;
 
-    /**
-     * Email to.
-     */
-    private String to;
+	/**
+	 * Email to.
+	 */
+	private String to;
 
-    /**
-     * Email message.
-     */
-    private String message;
+	/**
+	 * Email message.
+	 */
+	private String message;
 
-    /**
-     * Email subject.
-     */
-    private String subject;
+	/**
+	 * Email subject.
+	 */
+	private String subject;
 
-    /**
-     * Email user name.
-     */
-    private String userName;
+	/**
+	 * Email user name.
+	 */
+	private String userName;
 
-    /**
-     * Email password.
-     */
-    private String password;
+	/**
+	 * Email password.
+	 */
+	private String password;
 
-    /**
-     * Public constructor with parameters.
-     * 
-     * @param userName username
-     * @param password password
-     * @param from email from
-     * @param to email to
-     * @param message message about
-     * @param subject email subject
-     */
-    public EmailSender(final String userName, final String password, final String from, final String to,
-        final String message, final String subject) {
-        this.userName = userName;
-        this.password = password;
-        this.from = from;
-        this.to = to;
-        this.message = message;
-        this.subject = subject;
-    }
+	/**
+	 * Public constructor with parameters.
+	 * 
+	 * @param userName
+	 *            username
+	 * @param password
+	 *            password
+	 * @param from
+	 *            email from
+	 * @param to
+	 *            email to
+	 * @param message
+	 *            message about
+	 * @param subject
+	 *            email subject
+	 */
+	public EmailSender(final String userName, final String password, final String from, final String to,
+			final String message, final String subject) {
+		this.userName = userName;
+		this.password = password;
+		this.from = from;
+		this.to = to;
+		this.message = message;
+		this.subject = subject;
+	}
 
-    /**
-     * Sends email.
-     * 
-     * @throws MessagingException message exception
-     */
-    private void sendMail() throws MessagingException {
+	/**
+	 * Sends email.
+	 * 
+	 * @throws MessagingException
+	 *             message exception
+	 */
+	private void sendMail() throws MessagingException {
 
-        /*
-         * Properties used to construct a email sending connection
-         * protocal.
-         */
-        final Properties props = new Properties();
+		/*
+		 * Properties used to construct a email sending connection protocal.
+		 */
+		final Properties props = new Properties();
 
-        props.put("mail.smtp.host", MAIL_HOST);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", MAIL_HOST);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
 
-        final Authenticator auth = new SMTPAuthenticator();
-        final MimeMessage msg = new MimeMessage(Session.getDefaultInstance(props, auth));
+		final Authenticator auth = new SMTPAuthenticator();
+		final MimeMessage msg = new MimeMessage(Session.getDefaultInstance(props, auth));
 
-        msg.setFrom(new InternetAddress(from));
-        msg.setRecipient(RecipientType.TO, new InternetAddress(to));
-        msg.setSubject(subject);
-        msg.setText(message);
-        Transport.send(msg);
-    }
+		msg.setFrom(new InternetAddress(from));
+		msg.setRecipient(RecipientType.TO, new InternetAddress(to));
+		msg.setSubject(subject);
+		msg.setText(message);
+		Transport.send(msg);
+	}
 
-    @Override
-    public void run() {
-        try {
-            sendMail();
-        } catch (final MessagingException ex) {
-        	logger.error(ex.getMessage());
-        }
-    }
+	@Override
+	public void run() {
+		try {
+			sendMail();
+		} catch (final MessagingException ex) {
+			logger.error(ex.getMessage());
+		}
+	}
 
-    /**
-     * Inner class for Authenticator.
-     */
-    private class SMTPAuthenticator extends Authenticator {
+	/**
+	 * Inner class for Authenticator.
+	 */
+	private class SMTPAuthenticator extends Authenticator {
 
-        @Override
-        public PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(userName, password);
-        }
-    }
+		@Override
+		public PasswordAuthentication getPasswordAuthentication() {
+			return new PasswordAuthentication(userName, password);
+		}
+	}
 }

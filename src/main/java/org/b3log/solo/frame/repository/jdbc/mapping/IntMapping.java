@@ -15,31 +15,29 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * IntMapping.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.0.0.0, Jan 12, 2012
  */
 public class IntMapping implements Mapping {
 
-    @Override
-    public String toDataBaseSting(final FieldDefinition definition) {
+	@Override
+	public String toDataBaseSting(final FieldDefinition definition) {
 
-        final StringBuilder sql = new StringBuilder();
+		final StringBuilder sql = new StringBuilder();
 
-        sql.append(definition.getName());
-        sql.append(" int");
-        if (!definition.getNullable()) {
-            sql.append(" not null");
-        }
+		sql.append(definition.getName());
+		sql.append(" int");
+		if (!definition.getNullable()) {
+			sql.append(" not null");
+		}
 
-        return sql.toString();
+		return sql.toString();
 
-    }
+	}
 
 }

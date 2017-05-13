@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.frame.plugin;
 
-
 import java.util.Map;
-
 
 /**
  * View load event data.
@@ -27,49 +25,51 @@ import java.util.Map;
  */
 public final class ViewLoadEventData {
 
-    /**
-     * Name of the template file.
-     */
-    private String viewName;
+	/**
+	 * Name of the template file.
+	 */
+	private String viewName;
 
-    /**
-     * Data model.
-     */
-    private Map<String, Object> dataModel;
+	/**
+	 * Data model.
+	 */
+	private Map<String, Object> dataModel;
 
-    /**
-     * Gets the data model.
-     * 
-     * @return data model
-     */
-    public Map<String, Object> getDataModel() {
-        return dataModel;
-    }
+	/**
+	 * Gets the data model.
+	 * 
+	 * @return data model
+	 */
+	public Map<String, Object> getDataModel() {
+		return dataModel;
+	}
 
-    /**
-     * Sets the data model with the specified data model.
-     * 
-     * @param dataModel the specified data model
-     */
-    public void setDataModel(final Map<String, Object> dataModel) {
-        this.dataModel = dataModel;
-    }
+	/**
+	 * Sets the data model with the specified data model.
+	 * 
+	 * @param dataModel
+	 *            the specified data model
+	 */
+	public void setDataModel(final Map<String, Object> dataModel) {
+		this.dataModel = dataModel;
+	}
 
-    /**
-     * Gets the name of the template file.
-     * 
-     * @return name of the template file
-     */
-    public String getViewName() {
-        return viewName;
-    }
+	/**
+	 * Gets the name of the template file.
+	 * 
+	 * @return name of the template file
+	 */
+	public String getViewName() {
+		return viewName;
+	}
 
-    /**
-     * Sets the name of the template file with the specified name.
-     * 
-     * @param viewName the specified name
-     */
-    public void setViewName(final String viewName) {
-        this.viewName = viewName;
-    }
+	/**
+	 * Sets the name of the template file with the specified name.
+	 * 
+	 * @param viewName
+	 *            the specified name
+	 */
+	public void setViewName(final String viewName) {
+		this.viewName = viewName;
+	}
 }

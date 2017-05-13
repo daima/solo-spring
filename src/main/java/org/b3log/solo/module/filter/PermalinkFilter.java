@@ -31,8 +31,6 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Article;
@@ -44,6 +42,8 @@ import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.freemarker.Templates;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,7 +68,7 @@ public final class PermalinkFilter implements Filter {
 	@Autowired
 	private ArticleQueryService articleQueryService;
 	@Autowired
-    private PreferenceQueryService preferenceQueryService;
+	private PreferenceQueryService preferenceQueryService;
 	/**
 	 * Logger.
 	 */
@@ -109,7 +109,8 @@ public final class PermalinkFilter implements Filter {
 			} else {
 				specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
 			}
-			Templates.MAIN_CFG.setServletContextForTemplateLoading(request.getServletContext(), "/skins/" + specifiedSkin);
+			Templates.MAIN_CFG.setServletContextForTemplateLoading(request.getServletContext(),
+					"/skins/" + specifiedSkin);
 			request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 		} catch (ServiceException e1) {
 			e1.printStackTrace();
@@ -117,13 +118,13 @@ public final class PermalinkFilter implements Filter {
 
 		final String requestURI = httpServletRequest.getRequestURI();
 
-		logger.debug( "Request URI[{0}]", requestURI);
+		logger.debug("Request URI[{0}]", requestURI);
 
 		final String contextPath = Latkes.getContextPath();
 		final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 
 		if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
-			logger.debug( "Skip filter request[URI={0}]", permalink);
+			logger.debug("Skip filter request[URI={0}]", permalink);
 			chain.doFilter(request, response);
 
 			return;
@@ -141,7 +142,7 @@ public final class PermalinkFilter implements Filter {
 			}
 
 			if (null == page && null == article) {
-				logger.debug( "Not found article/page with permalink[{0}]", permalink);
+				logger.debug("Not found article/page with permalink[{0}]", permalink);
 				chain.doFilter(request, response);
 
 				return;
@@ -172,7 +173,7 @@ public final class PermalinkFilter implements Filter {
 	/**
 	 * Dispatches the specified request to the specified article or page
 	 * processor with the specified response.
-	 * 
+	 *
 	 * @param request
 	 *            the specified request
 	 * @param response
@@ -207,10 +208,10 @@ public final class PermalinkFilter implements Filter {
 		/*
 		 * final HttpControl httpControl = new
 		 * HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
-		 * 
+		 *
 		 * try { httpControl.nextHandler(); } catch (final Exception e) {
 		 * context.setRenderer(new HTTP500Renderer(e)); }
-		 * 
+		 *
 		 * DispatcherServlet.result(context);
 		 */
 	}

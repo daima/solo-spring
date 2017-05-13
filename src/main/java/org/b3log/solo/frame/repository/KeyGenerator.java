@@ -15,21 +15,21 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 /**
  * Key generator.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Mar 14, 2014
- * @param <T> data type of key
+ * @param <T>
+ *            data type of key
  * @since 1.0.8
  */
 public interface KeyGenerator<T> {
-    
-    /**
-     * Generates a key.
-     * 
-     * @return a key
-     */
-    T gen();
+
+	/**
+	 * Generates a key.
+	 * 
+	 * @return a key
+	 */
+	T gen();
 }

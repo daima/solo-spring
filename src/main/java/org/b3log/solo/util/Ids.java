@@ -15,10 +15,8 @@
  */
 package org.b3log.solo.util;
 
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
 
 /**
  * Id utilities.
@@ -28,46 +26,47 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public final class Ids {
 
-    /**
-     * Lock for unique id generation.
-     */
-    private static final Lock ID_GEN_LOCK = new ReentrantLock();
+	/**
+	 * Lock for unique id generation.
+	 */
+	private static final Lock ID_GEN_LOCK = new ReentrantLock();
 
-    /**
-     * Sleep millisecond.
-     */
-    private static final long ID_GEN_SLEEP_MILLIS = 50;
+	/**
+	 * Sleep millisecond.
+	 */
+	private static final long ID_GEN_SLEEP_MILLIS = 50;
 
-    /**
-     * Private default constructor.
-     */
-    private Ids() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Ids() {
+	}
 
-    /**
-     * Gets current date time string.
-     *
-     * <p>
-     *   <b>Note</b>: This method is not safe in cluster environment.
-     * </p>
-     *
-     * @return a time millis string
-     */
-    public static synchronized String genTimeMillisId() {
-        String ret = null;
+	/**
+	 * Gets current date time string.
+	 *
+	 * <p>
+	 * <b>Note</b>: This method is not safe in cluster environment.
+	 * </p>
+	 *
+	 * @return a time millis string
+	 */
+	public static synchronized String genTimeMillisId() {
+		String ret = null;
 
-        ID_GEN_LOCK.lock();
-        try {
-            ret = String.valueOf(System.currentTimeMillis());
+		ID_GEN_LOCK.lock();
+		try {
+			ret = String.valueOf(System.currentTimeMillis());
 
-            try {
-                Thread.sleep(ID_GEN_SLEEP_MILLIS);
-            } catch (final InterruptedException e) {
-                throw new RuntimeException("Generates time millis id fail");
-            }
-        } finally {
-            ID_GEN_LOCK.unlock();
-        }
+			try {
+				Thread.sleep(ID_GEN_SLEEP_MILLIS);
+			} catch (final InterruptedException e) {
+				throw new RuntimeException("Generates time millis id fail");
+			}
+		} finally {
+			ID_GEN_LOCK.unlock();
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 }

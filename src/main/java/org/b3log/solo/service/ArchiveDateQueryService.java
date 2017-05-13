@@ -15,19 +15,17 @@
  */
 package org.b3log.solo.service;
 
-
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.b3log.solo.dao.ArchiveDateDao;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.dao.ArchiveDateDao;
 import org.b3log.solo.model.ArchiveDate;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 /**
  * Archive date query service.
@@ -39,74 +37,81 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArchiveDateQueryService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ArchiveDateQueryService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ArchiveDateQueryService.class);
 
-    /**
-     * Archive date repository.
-     */
-    @Autowired
-    private ArchiveDateDao archiveDateDao;
+	/**
+	 * Archive date repository.
+	 */
+	@Autowired
+	private ArchiveDateDao archiveDateDao;
 
-    /**
-     * Gets all archive dates.
-     * 
-     * @return a list of archive dates, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getArchiveDates() throws ServiceException {
-        try {
-            return archiveDateDao.getArchiveDates();
-        } catch (final RepositoryException e) {
-            logger.error("Gets archive dates failed", e);
-            throw new ServiceException("Gets archive dates failed");
-        }
-    }
+	/**
+	 * Gets all archive dates.
+	 * 
+	 * @return a list of archive dates, returns an empty list if not found
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public List<JSONObject> getArchiveDates() throws ServiceException {
+		try {
+			return archiveDateDao.getArchiveDates();
+		} catch (final RepositoryException e) {
+			logger.error("Gets archive dates failed", e);
+			throw new ServiceException("Gets archive dates failed");
+		}
+	}
 
-    /**
-     * Gets an archive date by the specified archive date string.
-     * 
-     * @param archiveDateString the specified archive date string (yyyy/MM)
-     * @return for example,
-     * <pre>
-     * {
-     *     "archiveDate": {
-     *         "oId": "",
-     *         "archiveTime": "",
-     *         "archiveDatePublishedArticleCount": int,
-     *         "archiveDateArticleCount": int
-     *     }
-     * }
-     * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getByArchiveDateString(final String archiveDateString) throws ServiceException {
-        final JSONObject ret = new JSONObject();
+	/**
+	 * Gets an archive date by the specified archive date string.
+	 * 
+	 * @param archiveDateString
+	 *            the specified archive date string (yyyy/MM)
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "archiveDate": {
+	 *         "oId": "",
+	 *         "archiveTime": "",
+	 *         "archiveDatePublishedArticleCount": int,
+	 *         "archiveDateArticleCount": int
+	 *     }
+	 * }
+	 *         </pre>
+	 * 
+	 *         , returns {@code null} if not found
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getByArchiveDateString(final String archiveDateString) throws ServiceException {
+		final JSONObject ret = new JSONObject();
 
-        try {
-            final JSONObject archiveDate = archiveDateDao.getByArchiveDate(archiveDateString);
+		try {
+			final JSONObject archiveDate = archiveDateDao.getByArchiveDate(archiveDateString);
 
-            if (null == archiveDate) {
-                return null;
-            }
+			if (null == archiveDate) {
+				return null;
+			}
 
-            ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
+			ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 
-            return ret;
-        } catch (final RepositoryException e) {
-            logger.error("Gets archive date[string=" + archiveDateString + "] failed", e);
-            throw new ServiceException("Gets archive date[string=" + archiveDateString + "] failed");
-        }
-    }
+			return ret;
+		} catch (final RepositoryException e) {
+			logger.error("Gets archive date[string=" + archiveDateString + "] failed", e);
+			throw new ServiceException("Gets archive date[string=" + archiveDateString + "] failed");
+		}
+	}
 
-    /**
-     * Sets archive date repository with the specified archive date repository.
-     * 
-     * @param archiveDateDao the specified archive date repository
-     */
-    public void setArchiveDateRepository(final ArchiveDateDao archiveDateDao) {
-        this.archiveDateDao = archiveDateDao;
-    }
+	/**
+	 * Sets archive date repository with the specified archive date repository.
+	 * 
+	 * @param archiveDateDao
+	 *            the specified archive date repository
+	 */
+	public void setArchiveDateRepository(final ArchiveDateDao archiveDateDao) {
+		this.archiveDateDao = archiveDateDao;
+	}
 }

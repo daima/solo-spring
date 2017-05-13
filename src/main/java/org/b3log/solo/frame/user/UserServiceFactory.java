@@ -27,43 +27,44 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("unchecked")
 public final class UserServiceFactory {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(UserServiceFactory.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(UserServiceFactory.class);
 
-    /**
-     * User service.
-     */
-    private static final UserService USER_SERVICE;
+	/**
+	 * User service.
+	 */
+	private static final UserService USER_SERVICE;
 
-    static {
-        logger.info("Constructing User Service....");
+	static {
+		logger.info("Constructing User Service....");
 
-        try {
-            Class<UserService> serviceClass = null;
+		try {
+			Class<UserService> serviceClass = null;
 
-            serviceClass = (Class<UserService>) Class.forName("org.b3log.solo.frame.user.local.LocalUserService");
-            USER_SERVICE = serviceClass.newInstance();
-        } catch (final Exception e) {
-            throw new RuntimeException("Can not initialize User Service!", e);
-        }
+			serviceClass = (Class<UserService>) Class.forName("org.b3log.solo.frame.user.local.LocalUserService");
+			USER_SERVICE = serviceClass.newInstance();
+		} catch (final Exception e) {
+			throw new RuntimeException("Can not initialize User Service!", e);
+		}
 
-        logger.info("Constructed User Service");
-    }
+		logger.info("Constructed User Service");
+	}
 
-    /**
-     * Gets user service (always be an instance of {@link org.b3log.solo.frame.user.local.LocalUserService}).
-     *
-     * @return user service
-     */
-    public static UserService getUserService() {
-        return USER_SERVICE;
-    }
+	/**
+	 * Gets user service (always be an instance of
+	 * {@link org.b3log.solo.frame.user.local.LocalUserService}).
+	 *
+	 * @return user service
+	 */
+	public static UserService getUserService() {
+		return USER_SERVICE;
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private UserServiceFactory() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private UserServiceFactory() {
+	}
 }

@@ -30,8 +30,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Pagination;
 import org.b3log.solo.frame.repository.CompositeFilter;
 import org.b3log.solo.frame.repository.DBKeyGenerator;
@@ -45,7 +43,6 @@ import org.b3log.solo.frame.repository.Repository;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.SortDirection;
 import org.b3log.solo.frame.repository.TimeMillisKeyGenerator;
-import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.frame.repository.jdbc.util.JdbcUtil;
 import org.b3log.solo.util.CollectionUtils;
@@ -54,6 +51,8 @@ import org.b3log.solo.util.Strings;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -97,7 +96,7 @@ public abstract class JdbcRepository implements Repository {
 	 * Key generator.
 	 */
 	private static final KeyGenerator<?> KEY_GEN;
-	
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -122,19 +121,18 @@ public abstract class JdbcRepository implements Repository {
 		}
 	}
 
-//	public JdbcRepository() {
-//		this.name = "";
-//	}
-//	/**
-//	 * Constructs a JDBC repository with the specified name.
-//	 *
-//	 * @param name
-//	 *            the specified name
-//	 */
-//	public JdbcRepository(final String name) {
-//		this.name = name;
-//	}
-	
+	// public JdbcRepository() {
+	// this.name = "";
+	// }
+	// /**
+	// * Constructs a JDBC repository with the specified name.
+	// *
+	// * @param name
+	// * the specified name
+	// */
+	// public JdbcRepository(final String name) {
+	// this.name = name;
+	// }
 
 	@Override
 	public String add(final JSONObject jsonObject) throws RepositoryException {
@@ -238,7 +236,8 @@ public abstract class JdbcRepository implements Repository {
 			}
 		}
 
-		sql.append("insert into ").append(getTableName()).append(insertString).append(" values ").append(wildcardString);
+		sql.append("insert into ").append(getTableName()).append(insertString).append(" values ")
+				.append(wildcardString);
 	}
 
 	@Override
@@ -247,11 +246,12 @@ public abstract class JdbcRepository implements Repository {
 			return;
 		}
 
-//		final JdbcTransaction currentTransaction = TX.get();
+		// final JdbcTransaction currentTransaction = TX.get();
 
-//		if (null == currentTransaction) {
-//			throw new RepositoryException("Invoking update() outside a transaction");
-//		}
+		// if (null == currentTransaction) {
+		// throw new RepositoryException("Invoking update() outside a
+		// transaction");
+		// }
 
 		final JSONObject oldJsonObject = get(id);
 
@@ -454,8 +454,8 @@ public abstract class JdbcRepository implements Repository {
 	 *            sql
 	 */
 	private void get(final StringBuilder sql) {
-		sql.append("select * from ").append(getTableName()).append(" where ").append(JdbcRepositories.getDefaultKeyName())
-				.append("=").append("?");
+		sql.append("select * from ").append(getTableName()).append(" where ")
+				.append(JdbcRepositories.getDefaultKeyName()).append("=").append("?");
 	}
 
 	@Override
@@ -517,7 +517,8 @@ public abstract class JdbcRepository implements Repository {
 				return ret;
 			}
 
-			final JSONArray jsonResults = JdbcUtil.queryJsonArray(sql.toString(), paramList, connection, getTableName());
+			final JSONArray jsonResults = JdbcUtil.queryJsonArray(sql.toString(), paramList, connection,
+					getTableName());
 
 			ret.put(Keys.RESULTS, jsonResults);
 		} catch (final SQLException e) {
@@ -856,38 +857,33 @@ public abstract class JdbcRepository implements Repository {
 
 		return tableNamePrefix + getTableNamePostfix();
 	}
+
 	public abstract String getTableNamePostfix();
 
-	/*@Override
-	public Transaction beginTransaction() {
-		final JdbcTransaction ret = TX.get();
-
-		if (null != ret) {
-			logger.debug( "There is a transaction[isActive={0}] in current thread", ret.isActive());
-			if (ret.isActive()) {
-				return TX.get(); // Using 'the current transaction'
-			}
-		}
-
-		JdbcTransaction jdbcTransaction = null;
-
-		try {
-			jdbcTransaction = new JdbcTransaction();
-		} catch (final Exception e) {
-			logger.error("Failed to initialize JDBC transaction", e);
-
-			throw new IllegalStateException("Failed to initialize JDBC transaction");
-		}
-
-		TX.set(jdbcTransaction);
-
-		return jdbcTransaction;
-	}
-
-	@Override
-	public boolean hasTransactionBegun() {
-		return null != TX.get();
-	}*/
+	/*
+	 * @Override public Transaction beginTransaction() { final JdbcTransaction
+	 * ret = TX.get();
+	 * 
+	 * if (null != ret) { logger.debug(
+	 * "There is a transaction[isActive={0}] in current thread",
+	 * ret.isActive()); if (ret.isActive()) { return TX.get(); // Using 'the
+	 * current transaction' } }
+	 * 
+	 * JdbcTransaction jdbcTransaction = null;
+	 * 
+	 * try { jdbcTransaction = new JdbcTransaction(); } catch (final Exception
+	 * e) { logger.error("Failed to initialize JDBC transaction", e);
+	 * 
+	 * throw new IllegalStateException("Failed to initialize JDBC transaction");
+	 * }
+	 * 
+	 * TX.set(jdbcTransaction);
+	 * 
+	 * return jdbcTransaction; }
+	 * 
+	 * @Override public boolean hasTransactionBegun() { return null != TX.get();
+	 * }
+	 */
 
 	@Override
 	public boolean isWritable() {

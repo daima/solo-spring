@@ -16,8 +16,6 @@
 package org.b3log.solo.frame.repository.impl;
 
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.AbstractRepository;
@@ -28,6 +26,8 @@ import org.b3log.solo.frame.repository.RepositoryException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User repository implementation.
@@ -37,93 +37,96 @@ import org.json.JSONObject;
  */
 public class UserRepository extends AbstractRepository {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(UserRepository.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
-    /**
-     * Public constructor.
-     */
-    public UserRepository() {
-        super("LakteBuiltInUserRepository");
-    }
+	/**
+	 * Public constructor.
+	 */
+	public UserRepository() {
+		super("LakteBuiltInUserRepository");
+	}
 
-    /**
-     * Gets user by the specified email.
-     * 
-     * @param email the specified email
-     * @return user, returns {@code null} if not found
-     */
-    public JSONObject getByEmail(final String email) {
-        final Query query = new Query();
+	/**
+	 * Gets user by the specified email.
+	 * 
+	 * @param email
+	 *            the specified email
+	 * @return user, returns {@code null} if not found
+	 */
+	public JSONObject getByEmail(final String email) {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+		query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+		try {
+			final JSONObject result = get(query);
+			final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
+			if (0 == array.length()) {
+				return null;
+			}
 
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			return array.getJSONObject(0);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Gets the administrator.
-     * 
-     * @return administrator, returns {@code null} if not found
-     */
-    public JSONObject getAdmin() {
-        final Query query = new Query();
+	/**
+	 * Gets the administrator.
+	 * 
+	 * @return administrator, returns {@code null} if not found
+	 */
+	public JSONObject getAdmin() {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE));
+		query.setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE));
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+		try {
+			final JSONObject result = get(query);
+			final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
+			if (0 == array.length()) {
+				return null;
+			}
 
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			return array.getJSONObject(0);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Determines the specified email is administrator's or not.
-     * 
-     * @param email the specified email
-     * @return {@code true} if it is, returns {@code false} otherwise
-     * @throws RepositoryException repository exception
-     */
-    public boolean isAdminEmail(final String email) throws RepositoryException {
-        final JSONObject user = getByEmail(email);
+	/**
+	 * Determines the specified email is administrator's or not.
+	 * 
+	 * @param email
+	 *            the specified email
+	 * @return {@code true} if it is, returns {@code false} otherwise
+	 * @throws RepositoryException
+	 *             repository exception
+	 */
+	public boolean isAdminEmail(final String email) throws RepositoryException {
+		final JSONObject user = getByEmail(email);
 
-        if (null == user) {
-            return false;
-        }
+		if (null == user) {
+			return false;
+		}
 
-        try {
-            return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
-        } catch (final JSONException e) {
-            logger.error(e.getMessage(), e);
+		try {
+			return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
+		} catch (final JSONException e) {
+			logger.error(e.getMessage(), e);
 
-            throw new RepositoryException(e);
-        }
-    }
+			throw new RepositoryException(e);
+		}
+	}
 
 	@Override
 	public String getTableName() {

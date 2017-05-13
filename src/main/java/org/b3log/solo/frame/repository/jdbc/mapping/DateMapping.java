@@ -15,30 +15,28 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * Date type mapping.
- * 
+ *
  * <p>
  * Maps Java {@link java.util.Date} type to SQL DATETIME type.
  * </p>
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Feb 29, 2012
  */
 public final class DateMapping implements Mapping {
 
-    @Override
-    public String toDataBaseSting(final FieldDefinition definition) {
-        final StringBuilder builder = new StringBuilder(definition.getName()).append(" datetime");
+	@Override
+	public String toDataBaseSting(final FieldDefinition definition) {
+		final StringBuilder builder = new StringBuilder(definition.getName()).append(" datetime");
 
-        if (!definition.getNullable()) {
-            builder.append(" not null");
-        }
+		if (!definition.getNullable()) {
+			builder.append(" not null");
+		}
 
-        return builder.toString();
-    }
+		return builder.toString();
+	}
 }

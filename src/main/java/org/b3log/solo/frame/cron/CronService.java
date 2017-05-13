@@ -19,8 +19,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
 import org.slf4j.Logger;
@@ -41,120 +43,120 @@ import org.w3c.dom.NodeList;
  */
 public final class CronService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(CronService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CronService.class);
 
-    /**
-     * Cron jobs.
-     */
-    private static final List<Cron> CRONS = new ArrayList<Cron>();
+	/**
+	 * Cron jobs.
+	 */
+	private static final List<Cron> CRONS = new ArrayList<>();
 
-    /**
-     * Timers.
-     */
-    private static final List<Timer> TIMERS = new ArrayList<Timer>();
+	/**
+	 * Timers.
+	 */
+	private static final List<Timer> TIMERS = new ArrayList<>();
 
-    /**
-     * Constructs cron jobs and schedules them.
-     */
-    public static void start() {
-        logger.info("Constructing Cron Service....");
+	/**
+	 * Constructs cron jobs and schedules them.
+	 */
+	public static void start() {
+		logger.info("Constructing Cron Service....");
 
-        shutdown();
+		shutdown();
 
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        try {
-            switch (runtimeEnv) {
-                case LOCAL:
-                    loadCronXML();
+		try {
+			switch (runtimeEnv) {
+			case LOCAL:
+				loadCronXML();
 
-                    for (final Cron cron : CRONS) {
-                        cron.setURL(Latkes.getServer() + Latkes.getContextPath() + cron.getURL());
+				for (final Cron cron : CRONS) {
+					cron.setURL(Latkes.getServer() + Latkes.getContextPath() + cron.getURL());
 
-                        final Timer timer = new Timer();
+					final Timer timer = new Timer();
 
-                        TIMERS.add(timer);
+					TIMERS.add(timer);
 
-                        timer.scheduleAtFixedRate(cron, Cron.TEN * Cron.THOUSAND, cron.getPeriod());
+					timer.scheduleAtFixedRate(cron, Cron.TEN * Cron.THOUSAND, cron.getPeriod());
 
-                        logger.debug( "Scheduled a cron job[url={0}]", cron.getURL());
-                    }
+					logger.debug("Scheduled a cron job[url={0}]", cron.getURL());
+				}
 
-                    logger.debug( "[{0}] cron jobs totally", CRONS.size());
+				logger.debug("[{0}] cron jobs totally", CRONS.size());
 
-                    break;
-                default:
-                    throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
-            }
-        } catch (final Exception e) {
-            logger.error("Can not initialize Cron Service!", e);
+				break;
+			default:
+				throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
+			}
+		} catch (final Exception e) {
+			logger.error("Can not initialize Cron Service!", e);
 
-            throw new IllegalStateException(e);
-        }
+			throw new IllegalStateException(e);
+		}
 
-        logger.info("Constructed Cron Service");
-    }
+		logger.info("Constructed Cron Service");
+	}
 
-    /**
-     * Stops all cron jobs and clears cron job list.
-     */
-    public static void shutdown() {
-        CRONS.clear();
+	/**
+	 * Stops all cron jobs and clears cron job list.
+	 */
+	public static void shutdown() {
+		CRONS.clear();
 
-        for (final Timer timer : TIMERS) {
-            timer.cancel();
-        }
+		for (final Timer timer : TIMERS) {
+			timer.cancel();
+		}
 
-        TIMERS.clear();
-    }
+		TIMERS.clear();
+	}
 
-    /**
-     * Loads cron.xml.
-     */
-    private static void loadCronXML() {
-        final File cronXML = Latkes.getWebFile("/WEB-INF/cron.xml");
+	/**
+	 * Loads cron.xml.
+	 */
+	private static void loadCronXML() {
+		final File cronXML = Latkes.getWebFile("/WEB-INF/cron.xml");
 
-        if (null == cronXML || !cronXML.exists()) {
-            logger.info("Not found cron.xml, no cron jobs need to schedule");
+		if (null == cronXML || !cronXML.exists()) {
+			logger.info("Not found cron.xml, no cron jobs need to schedule");
 
-            return;
-        }
+			return;
+		}
 
-        final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
-        try {
-            final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            final Document document = documentBuilder.parse(cronXML);
-            final Element root = document.getDocumentElement();
+		try {
+			final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			final Document document = documentBuilder.parse(cronXML);
+			final Element root = document.getDocumentElement();
 
-            root.normalize();
+			root.normalize();
 
-            final NodeList crons = root.getElementsByTagName("cron");
+			final NodeList crons = root.getElementsByTagName("cron");
 
-            for (int i = 0; i < crons.getLength(); i++) {
-                final Element cronElement = (Element) crons.item(i);
-                final Element urlElement = (Element) cronElement.getElementsByTagName("url").item(0);
-                final Element descriptionElement = (Element) cronElement.getElementsByTagName("description").item(0);
-                final Element scheduleElement = (Element) cronElement.getElementsByTagName("schedule").item(0);
+			for (int i = 0; i < crons.getLength(); i++) {
+				final Element cronElement = (Element) crons.item(i);
+				final Element urlElement = (Element) cronElement.getElementsByTagName("url").item(0);
+				final Element descriptionElement = (Element) cronElement.getElementsByTagName("description").item(0);
+				final Element scheduleElement = (Element) cronElement.getElementsByTagName("schedule").item(0);
 
-                final String url = urlElement.getTextContent();
-                final String description = descriptionElement.getTextContent();
-                final String schedule = scheduleElement.getTextContent();
+				final String url = urlElement.getTextContent();
+				final String description = descriptionElement.getTextContent();
+				final String schedule = scheduleElement.getTextContent();
 
-                CRONS.add(new Cron(url, description, schedule));
-            }
-        } catch (final Exception e) {
-            logger.error("Reads cron.xml failed", e);
-            throw new RuntimeException(e);
-        }
-    }
+				CRONS.add(new Cron(url, description, schedule));
+			}
+		} catch (final Exception e) {
+			logger.error("Reads cron.xml failed", e);
+			throw new RuntimeException(e);
+		}
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private CronService() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private CronService() {
+	}
 }

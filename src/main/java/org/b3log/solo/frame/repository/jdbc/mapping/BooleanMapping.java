@@ -15,34 +15,33 @@
  */
 package org.b3log.solo.frame.repository.jdbc.mapping;
 
-
 import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
-
 
 /**
  * Boolean data type mapping.
- * 
+ *
  * <p>
- * The data type is CHAR(1), we could INSERT INTO `test`(`test`) VALUES (false/true) in MySQL database, the actual value is '0' for false,
- * '1' for true.
+ * The data type is CHAR(1), we could INSERT INTO `test`(`test`) VALUES
+ * (false/true) in MySQL database, the actual value is '0' for false, '1' for
+ * true.
  * </p>
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.0.0.1, Dec 27, 2012
  */
 public class BooleanMapping implements Mapping {
 
-    @Override
-    public String toDataBaseSting(final FieldDefinition definition) {
-        final StringBuilder sql = new StringBuilder();
+	@Override
+	public String toDataBaseSting(final FieldDefinition definition) {
+		final StringBuilder sql = new StringBuilder();
 
-        sql.append(definition.getName());
-        sql.append(" char(1)");
-        if (!definition.getNullable()) {
-            sql.append(" not null");
+		sql.append(definition.getName());
+		sql.append(" char(1)");
+		if (!definition.getNullable()) {
+			sql.append(" not null");
 
-        }
+		}
 
-        return sql.toString();
-    }
+		return sql.toString();
+	}
 }

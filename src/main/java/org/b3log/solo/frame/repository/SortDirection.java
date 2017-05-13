@@ -23,12 +23,12 @@ package org.b3log.solo.frame.repository;
  */
 public enum SortDirection {
 
-    /**
-     * Ascending.
-     */
-    ASCENDING,
-    /**
-     * Descending.
-     */
-    DESCENDING;
+	/**
+	 * Ascending.
+	 */
+	ASCENDING,
+	/**
+	 * Descending.
+	 */
+	DESCENDING;
 }

@@ -15,11 +15,9 @@
  */
 package org.b3log.solo.module.util;
 
-
-import org.b3log.solo.util.freemarker.Templates;
-
 import java.util.TimeZone;
 
+import org.b3log.solo.util.freemarker.Templates;
 
 /**
  * Time zone utilities.
@@ -29,20 +27,22 @@ import java.util.TimeZone;
  */
 public final class TimeZones {
 
-    /**
-     * Sets time zone by the specified time zone id.
-     *
-     * @param timeZoneId the specified time zone id
-     */
-    public static void setTimeZone(final String timeZoneId) {
-        final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+	/**
+	 * Sets time zone by the specified time zone id.
+	 *
+	 * @param timeZoneId
+	 *            the specified time zone id
+	 */
+	public static void setTimeZone(final String timeZoneId) {
+		final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
-        Templates.MAIN_CFG.setTimeZone(timeZone);
-        Templates.MOBILE_CFG.setTimeZone(timeZone);
-    }
+		Templates.MAIN_CFG.setTimeZone(timeZone);
+		Templates.MOBILE_CFG.setTimeZone(timeZone);
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private TimeZones() {}
+	/**
+	 * Private default constructor.
+	 */
+	private TimeZones() {
+	}
 }

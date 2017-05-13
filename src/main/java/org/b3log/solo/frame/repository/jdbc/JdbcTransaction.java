@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.repository.jdbc;
 
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -24,11 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-
 /**
  *
  * JdbcTransaction.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, Mar 6, 2013
@@ -36,91 +34,94 @@ import org.springframework.stereotype.Repository;
 @Repository
 public final class JdbcTransaction implements Transaction {
 
-    /**
-     * Connection.
-     */
-//    private Connection connection;
+	/**
+	 * Connection.
+	 */
+	// private Connection connection;
 
-    /**
-     * Is active.
-     */
-    private boolean isActive;
-    private Connection connection;
-    @Autowired
+	/**
+	 * Is active.
+	 */
+	private boolean isActive;
+	private Connection connection;
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public String getId() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public void commit() {
-        boolean ifSuccess = false;
+	@Override
+	public void commit() {
+		boolean ifSuccess = false;
 
-        try {
-            connection.commit();
-            ifSuccess = true;
-        } catch (final SQLException e) {
-            throw new RuntimeException("commit mistake", e);
-        }
+		try {
+			connection.commit();
+			ifSuccess = true;
+		} catch (final SQLException e) {
+			throw new RuntimeException("commit mistake", e);
+		}
 
-        if (ifSuccess) {
-            dispose();
-        }
-    }
+		if (ifSuccess) {
+			dispose();
+		}
+	}
 
-    @Override
-    public void rollback() {
-        try {
-            connection.rollback();
-        } catch (final SQLException e) {
-            throw new RuntimeException("rollback mistake", e);
-        } finally {
-            dispose();
-        }
-    }
+	@Override
+	public void rollback() {
+		try {
+			connection.rollback();
+		} catch (final SQLException e) {
+			throw new RuntimeException("rollback mistake", e);
+		} finally {
+			dispose();
+		}
+	}
 
-    /**
-     * setActive.
-     * @param isActive isActive
-     */
-    public void setActive(final boolean isActive) {
-        this.isActive = isActive;
-    }
+	/**
+	 * setActive.
+	 * 
+	 * @param isActive
+	 *            isActive
+	 */
+	public void setActive(final boolean isActive) {
+		this.isActive = isActive;
+	}
 
-    @Override
-    public boolean isActive() {
-        return isActive;
-    }
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
 
-    /**
-     * close the connection.
-     */
-    public void dispose() {
-        try {
-            connection.close();
+	/**
+	 * close the connection.
+	 */
+	public void dispose() {
+		try {
+			connection.close();
 
-            JdbcRepository.TX.set(null);
-        } catch (final SQLException e) {
-            throw new RuntimeException("close connection", e);
-        } finally {
-            isActive = false;
-            connection = null;
-        }
-    }
+			JdbcRepository.TX.set(null);
+		} catch (final SQLException e) {
+			throw new RuntimeException("close connection", e);
+		} finally {
+			isActive = false;
+			connection = null;
+		}
+	}
 
-    /**
-     * getConnection.
-     * @return {@link Connection}
-     */
-    public Connection getConnection() throws SQLException {
-    	if (connection == null) {
-    		connection = jdbcTemplate.getDataSource().getConnection();
-            connection.setAutoCommit(false);
-            isActive = true;
-    	}
-        return connection;
-    }
+	/**
+	 * getConnection.
+	 * 
+	 * @return {@link Connection}
+	 */
+	public Connection getConnection() throws SQLException {
+		if (connection == null) {
+			connection = jdbcTemplate.getDataSource().getConnection();
+			connection.setAutoCommit(false);
+			isActive = true;
+		}
+		return connection;
+	}
 }

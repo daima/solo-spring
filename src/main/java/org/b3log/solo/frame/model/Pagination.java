@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.model;
 
-
 /**
  * This class defines all pagination model relevant keys.
  *
@@ -24,63 +23,64 @@ package org.b3log.solo.frame.model;
  */
 public final class Pagination {
 
-    /**
-     * Pagination.
-     */
-    public static final String PAGINATION = "pagination";
+	/**
+	 * Pagination.
+	 */
+	public static final String PAGINATION = "pagination";
 
-    /**
-     * Pagination page count.
-     */
-    public static final String PAGINATION_PAGE_COUNT = "paginationPageCount";
+	/**
+	 * Pagination page count.
+	 */
+	public static final String PAGINATION_PAGE_COUNT = "paginationPageCount";
 
-    /**
-     * Pagination record count.
-     */
-    public static final String PAGINATION_RECORD_COUNT = "paginationRecordCount";
+	/**
+	 * Pagination record count.
+	 */
+	public static final String PAGINATION_RECORD_COUNT = "paginationRecordCount";
 
-    /**
-     * Pagination current page number.
-     */
-    public static final String PAGINATION_CURRENT_PAGE_NUM = "paginationCurrentPageNum";
+	/**
+	 * Pagination current page number.
+	 */
+	public static final String PAGINATION_CURRENT_PAGE_NUM = "paginationCurrentPageNum";
 
-    /**
-     * Pagination page size.
-     */
-    public static final String PAGINATION_PAGE_SIZE = "paginationPageSize";
+	/**
+	 * Pagination page size.
+	 */
+	public static final String PAGINATION_PAGE_SIZE = "paginationPageSize";
 
-    /**
-     * Pagination window size.
-     */
-    public static final String PAGINATION_WINDOW_SIZE = "paginationWindowSize";
+	/**
+	 * Pagination window size.
+	 */
+	public static final String PAGINATION_WINDOW_SIZE = "paginationWindowSize";
 
-    /**
-     * Pagination page numbers.
-     */
-    public static final String PAGINATION_PAGE_NUMS = "paginationPageNums";
+	/**
+	 * Pagination page numbers.
+	 */
+	public static final String PAGINATION_PAGE_NUMS = "paginationPageNums";
 
-    /**
-     * Pagination first page number.
-     */
-    public static final String PAGINATION_FIRST_PAGE_NUM = "paginationFirstPageNum";
+	/**
+	 * Pagination first page number.
+	 */
+	public static final String PAGINATION_FIRST_PAGE_NUM = "paginationFirstPageNum";
 
-    /**
-     * Pagination last page number.
-     */
-    public static final String PAGINATION_LAST_PAGE_NUM = "paginationLastPageNum";
+	/**
+	 * Pagination last page number.
+	 */
+	public static final String PAGINATION_LAST_PAGE_NUM = "paginationLastPageNum";
 
-    /**
-     * Key of previous page number.
-     */
-    public static final String PAGINATION_PREVIOUS_PAGE_NUM = "paginationPreviousPageNum";
+	/**
+	 * Key of previous page number.
+	 */
+	public static final String PAGINATION_PREVIOUS_PAGE_NUM = "paginationPreviousPageNum";
 
-    /**
-     * Key of next page number.
-     */
-    public static final String PAGINATION_NEXT_PAGE_NUM = "paginationNextPageNum";
+	/**
+	 * Key of next page number.
+	 */
+	public static final String PAGINATION_NEXT_PAGE_NUM = "paginationNextPageNum";
 
-    /**
-     * Private constructor.
-     */
-    private Pagination() {}
+	/**
+	 * Private constructor.
+	 */
+	private Pagination() {
+	}
 }

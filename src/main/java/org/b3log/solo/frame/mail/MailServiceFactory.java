@@ -29,52 +29,53 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("unchecked")
 public final class MailServiceFactory {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(MailServiceFactory.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(MailServiceFactory.class);
 
-    /**
-     * Mail service.
-     */
-    private static final MailService MAIL_SERVICE;
+	/**
+	 * Mail service.
+	 */
+	private static final MailService MAIL_SERVICE;
 
-    static {
-        logger.info("Constructing Mail Service....");
+	static {
+		logger.info("Constructing Mail Service....");
 
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        try {
-            Class<MailService> mailServiceClass;
+		try {
+			Class<MailService> mailServiceClass;
 
-            switch (runtimeEnv) {
-                case LOCAL:
-                    mailServiceClass = (Class<MailService>) Class.forName("org.b3log.solo.frame.mail.local.LocalMailService");
-                    MAIL_SERVICE = mailServiceClass.newInstance();
+			switch (runtimeEnv) {
+			case LOCAL:
+				mailServiceClass = (Class<MailService>) Class
+						.forName("org.b3log.solo.frame.mail.local.LocalMailService");
+				MAIL_SERVICE = mailServiceClass.newInstance();
 
-                    break;
-                default:
-                    throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException("Can not initialize Mail Service!", e);
-        }
+				break;
+			default:
+				throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
+			}
+		} catch (final Exception e) {
+			throw new RuntimeException("Can not initialize Mail Service!", e);
+		}
 
-        logger.info("Constructed Mail Service");
-    }
+		logger.info("Constructed Mail Service");
+	}
 
-    /**
-     * Gets mail service.
-     *
-     * @return mail service
-     */
-    public static MailService getMailService() {
-        return MAIL_SERVICE;
-    }
+	/**
+	 * Gets mail service.
+	 *
+	 * @return mail service
+	 */
+	public static MailService getMailService() {
+		return MAIL_SERVICE;
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private MailServiceFactory() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private MailServiceFactory() {
+	}
 }

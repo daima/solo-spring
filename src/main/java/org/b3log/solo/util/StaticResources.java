@@ -19,9 +19,11 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.slf4j.Logger;
@@ -38,130 +40,135 @@ import org.w3c.dom.NodeList;
  */
 public final class StaticResources {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(StaticResources.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(StaticResources.class);
 
-    /**
-     * Static resource path patterns.
-     *
-     * <p>
-     * Initializes from file static-resources.xml.
-     * </p>
-     */
-    private static final Set<String> STATIC_RESOURCE_PATHS = new TreeSet<String>();
+	/**
+	 * Static resource path patterns.
+	 *
+	 * <p>
+	 * Initializes from file static-resources.xml.
+	 * </p>
+	 */
+	private static final Set<String> STATIC_RESOURCE_PATHS = new TreeSet<>();
 
-    /**
-     * Determines whether the static resource path patterns has been initialized.
-     */
-    private static boolean inited;
+	/**
+	 * Determines whether the static resource path patterns has been
+	 * initialized.
+	 */
+	private static boolean inited;
 
-    /**
-     * Determines whether the client requests a static resource with the specified request.
-     *
-     * @param request the specified request
-     * @return {@code true} if the client requests a static resource, returns {@code false} otherwise
-     */
-    public static boolean isStatic(final HttpServletRequest request) {
-        final boolean requestStaticResourceChecked = null == request.getAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED)
-                ? false
-                : (Boolean) request.getAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED);
+	/**
+	 * Determines whether the client requests a static resource with the
+	 * specified request.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @return {@code true} if the client requests a static resource, returns
+	 *         {@code false} otherwise
+	 */
+	public static boolean isStatic(final HttpServletRequest request) {
+		final boolean requestStaticResourceChecked = null == request
+				.getAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED) ? false
+						: (Boolean) request.getAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED);
 
-        if (requestStaticResourceChecked) {
-            return (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
-        }
+		if (requestStaticResourceChecked) {
+			return (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
+		}
 
-        if (!inited) {
-            init();
-        }
+		if (!inited) {
+			init();
+		}
 
-        request.setAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED, true);
-        request.setAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE, false);
+		request.setAttribute(Keys.HttpRequest.REQUEST_STATIC_RESOURCE_CHECKED, true);
+		request.setAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE, false);
 
-        final String requestURI = request.getRequestURI();
+		final String requestURI = request.getRequestURI();
 
-        for (final String pattern : STATIC_RESOURCE_PATHS) {
-            if (AntPathMatcher.match(Latkes.getContextPath() + pattern, requestURI)) {
-                request.setAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE, true);
-                return true;
-            }
-        }
+		for (final String pattern : STATIC_RESOURCE_PATHS) {
+			if (AntPathMatcher.match(Latkes.getContextPath() + pattern, requestURI)) {
+				request.setAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE, true);
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * Initializes the static resource path patterns.
-     */
-    private static synchronized void init() {
-        logger.trace("Reads static resources definition from [static-resources.xml]");
+	/**
+	 * Initializes the static resource path patterns.
+	 */
+	private static synchronized void init() {
+		logger.trace("Reads static resources definition from [static-resources.xml]");
 
-        final File staticResources = Latkes.getWebFile("/WEB-INF/static-resources.xml");
-        if (null == staticResources || !staticResources.exists()) {
-            throw new IllegalStateException("Not found static resources definition from [static-resources.xml]");
-        }
+		final File staticResources = Latkes.getWebFile("/WEB-INF/static-resources.xml");
+		if (null == staticResources || !staticResources.exists()) {
+			throw new IllegalStateException("Not found static resources definition from [static-resources.xml]");
+		}
 
-        final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
-        try {
-            final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            final Document document = documentBuilder.parse(staticResources);
-            final Element root = document.getDocumentElement();
+		try {
+			final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			final Document document = documentBuilder.parse(staticResources);
+			final Element root = document.getDocumentElement();
 
-            root.normalize();
+			root.normalize();
 
-            final NodeList includes = root.getElementsByTagName("include");
+			final NodeList includes = root.getElementsByTagName("include");
 
-            final StringBuilder logBuilder = new StringBuilder("Reading static files: [").append(Strings.LINE_SEPARATOR);
+			final StringBuilder logBuilder = new StringBuilder("Reading static files: [")
+					.append(Strings.LINE_SEPARATOR);
 
-            for (int i = 0; i < includes.getLength(); i++) {
-                final Element include = (Element) includes.item(i);
-                final String path = include.getAttribute("path");
+			for (int i = 0; i < includes.getLength(); i++) {
+				final Element include = (Element) includes.item(i);
+				final String path = include.getAttribute("path");
 
-                STATIC_RESOURCE_PATHS.add(path);
+				STATIC_RESOURCE_PATHS.add(path);
 
-                logBuilder.append("    ").append("path pattern [").append(path).append("]");
-                if (i < includes.getLength() - 1) {
-                    logBuilder.append(",");
-                }
-                logBuilder.append(Strings.LINE_SEPARATOR);
-            }
+				logBuilder.append("    ").append("path pattern [").append(path).append("]");
+				if (i < includes.getLength() - 1) {
+					logBuilder.append(",");
+				}
+				logBuilder.append(Strings.LINE_SEPARATOR);
+			}
 
-            logBuilder.append("]");
+			logBuilder.append("]");
 
-            if (logger.isTraceEnabled()) {
-                logger.debug(logBuilder.toString());
-            }
-        } catch (final Exception e) {
-            logger.error("Reads [" + staticResources.getName() + "] failed", e);
-            throw new RuntimeException(e);
-        }
+			if (logger.isTraceEnabled()) {
+				logger.debug(logBuilder.toString());
+			}
+		} catch (final Exception e) {
+			logger.error("Reads [" + staticResources.getName() + "] failed", e);
+			throw new RuntimeException(e);
+		}
 
-        final StringBuilder logBuilder = new StringBuilder("Static files: [").append(Strings.LINE_SEPARATOR);
-        final Iterator<String> iterator = STATIC_RESOURCE_PATHS.iterator();
+		final StringBuilder logBuilder = new StringBuilder("Static files: [").append(Strings.LINE_SEPARATOR);
+		final Iterator<String> iterator = STATIC_RESOURCE_PATHS.iterator();
 
-        while (iterator.hasNext()) {
-            final String pattern = iterator.next();
+		while (iterator.hasNext()) {
+			final String pattern = iterator.next();
 
-            logBuilder.append("    ").append(pattern);
-            if (iterator.hasNext()) {
-                logBuilder.append(',');
-            }
-            logBuilder.append(Strings.LINE_SEPARATOR);
-        }
-        logBuilder.append("], ").append('[').append(STATIC_RESOURCE_PATHS.size()).append("] path patterns");
+			logBuilder.append("    ").append(pattern);
+			if (iterator.hasNext()) {
+				logBuilder.append(',');
+			}
+			logBuilder.append(Strings.LINE_SEPARATOR);
+		}
+		logBuilder.append("], ").append('[').append(STATIC_RESOURCE_PATHS.size()).append("] path patterns");
 
-        if (logger.isTraceEnabled()) {
-            logger.trace(logBuilder.toString());
-        }
+		if (logger.isTraceEnabled()) {
+			logger.trace(logBuilder.toString());
+		}
 
-        inited = true;
-    }
+		inited = true;
+	}
 
-    /**
-     * Private constructor.
-     */
-    private StaticResources() {
-    }
+	/**
+	 * Private constructor.
+	 */
+	private StaticResources() {
+	}
 }

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -26,7 +25,6 @@ import org.b3log.solo.frame.image.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * PNG HTTP response renderer.
  *
@@ -35,36 +33,37 @@ import org.slf4j.LoggerFactory;
  */
 public final class PNGRenderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(PNGRenderer.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(PNGRenderer.class);
 
-    /**
-     * Image to render.
-     */
-    private Image image;
+	/**
+	 * Image to render.
+	 */
+	private Image image;
 
-    /**
-     * Sets the image with the specified image.
-     * 
-     * @param image the specified image
-     */
-    public void setImage(final Image image) {
-        this.image = image;
-    }
+	/**
+	 * Sets the image with the specified image.
+	 * 
+	 * @param image
+	 *            the specified image
+	 */
+	public void setImage(final Image image) {
+		this.image = image;
+	}
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        try {
-            response.setContentType("image/png");
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		try {
+			response.setContentType("image/png");
 
-            final OutputStream outputStream = response.getOutputStream();
+			final OutputStream outputStream = response.getOutputStream();
 
-            outputStream.write(image.getData());
-            outputStream.close();
-        } catch (final IOException e) {
-            logger.error("Render failed", e);
-        }
-    }
+			outputStream.write(image.getData());
+			outputStream.close();
+		} catch (final IOException e) {
+			logger.error("Render failed", e);
+		}
+	}
 }

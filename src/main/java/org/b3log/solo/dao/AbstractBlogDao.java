@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 @Component
 public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao {
 
@@ -27,7 +28,8 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 	@Override
 	public String add(final JSONObject jsonObject) throws RepositoryException {
 		if (!isWritable() && !isInternalCall()) {
-			throw new RepositoryException("The repository[name=" + getTableNamePostfix() + "] is not writable at present");
+			throw new RepositoryException(
+					"The repository[name=" + getTableNamePostfix() + "] is not writable at present");
 		}
 
 		Repositories.check(getTableNamePostfix(), jsonObject, Keys.OBJECT_ID);
@@ -38,7 +40,8 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 	@Override
 	public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
 		if (!isWritable() && !isInternalCall()) {
-			throw new RepositoryException("The repository[name=" + getTableNamePostfix() + "] is not writable at present");
+			throw new RepositoryException(
+					"The repository[name=" + getTableNamePostfix() + "] is not writable at present");
 		}
 
 		Repositories.check(getTableName(), jsonObject, Keys.OBJECT_ID);
@@ -49,7 +52,8 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 	@Override
 	public void remove(final String id) throws RepositoryException {
 		if (!isWritable() && !isInternalCall()) {
-			throw new RepositoryException("The repository[name=" + getTableNamePostfix() + "] is not writable at present");
+			throw new RepositoryException(
+					"The repository[name=" + getTableNamePostfix() + "] is not writable at present");
 		}
 
 		super.remove(id);
@@ -80,8 +84,8 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.get(query);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(),
-					super.getTableName(), query.toString());
+			logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(), super.getTableName(),
+					query.toString());
 
 			final JSONObject ret = new JSONObject();
 			final JSONObject pagination = new JSONObject();
@@ -101,8 +105,8 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.select(statement, params);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(),
-					super.getTableName(), statement);
+			logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(), super.getTableName(),
+					statement);
 
 			return Collections.emptyList();
 		}
@@ -123,15 +127,13 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		return super.count(query);
 	}
 
-	/*@Override
-	public Transaction beginTransaction() {
-		return super.beginTransaction();
-	}
-
-	@Override
-	public boolean hasTransactionBegun() {
-		return super.hasTransactionBegun();
-	}*/
+	/*
+	 * @Override public Transaction beginTransaction() { return
+	 * super.beginTransaction(); }
+	 * 
+	 * @Override public boolean hasTransactionBegun() { return
+	 * super.hasTransactionBegun(); }
+	 */
 
 	@Override
 	public boolean isWritable() {

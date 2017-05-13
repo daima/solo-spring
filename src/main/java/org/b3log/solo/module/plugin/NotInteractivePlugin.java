@@ -15,14 +15,12 @@
  */
 package org.b3log.solo.module.plugin;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.module.event.AbstractPlugin;
-
 
 /**
  * The default plugin for which do not need interact with the server end.
@@ -34,10 +32,14 @@ import org.b3log.solo.module.event.AbstractPlugin;
 @SuppressWarnings("serial")
 public class NotInteractivePlugin extends AbstractPlugin {
 
-    @Override
-    public void prePlug(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> args) {}
+	@Override
+	public void prePlug(final HttpServletRequest request, final HttpServletResponse response,
+			final Map<String, Object> args) {
+	}
 
-    @Override
-    public void postPlug(final Map<String, Object> dataModel, final HttpServletRequest request, final HttpServletResponse response, final Object ret) {}
+	@Override
+	public void postPlug(final Map<String, Object> dataModel, final HttpServletRequest request,
+			final HttpServletResponse response, final Object ret) {
+	}
 
 }

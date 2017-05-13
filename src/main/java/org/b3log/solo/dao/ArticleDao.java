@@ -20,19 +20,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.repository.CompositeFilterOperator;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.util.CollectionUtils;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,215 +45,221 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArticleDao extends AbstractBlogDao {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ArticleDao.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ArticleDao.class);
 
-    /**
-     * Random range.
-     */
-    private static final double RANDOM_RANGE = 0.1D;
+	/**
+	 * Random range.
+	 */
+	private static final double RANDOM_RANGE = 0.1D;
 
-    @Override
+	@Override
 	public String getTableNamePostfix() {
-        return Article.ARTICLE;
-    }
+		return Article.ARTICLE;
+	}
 
-    
-    public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
-                1);
+	public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
+			throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(CompositeFilterOperator.and(
+						new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail),
+						new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)))
+				.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING)
+				.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum)
+				.setPageSize(pageSize).setPageCount(1);
 
-        return get(query);
-    }
+		return get(query);
+	}
 
-    
-    public JSONObject getByPermalink(final String permalink) throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink)).setPageCount(
-                1);
+	public JSONObject getByPermalink(final String permalink) throws RepositoryException {
+		final Query query = new Query()
+				.setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink))
+				.setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-    
-    public List<JSONObject> getRecentArticles(final int fetchSize) throws RepositoryException {
-        final Query query = new Query();
+	public List<JSONObject> getRecentArticles(final int fetchSize) throws RepositoryException {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-        query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(fetchSize);
-        query.setPageCount(1);
+		query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+		query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+		query.setCurrentPageNum(1);
+		query.setPageSize(fetchSize);
+		query.setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(array);
-    }
+		return CollectionUtils.jsonArrayToList(array);
+	}
 
-    
-    public List<JSONObject> getMostCommentArticles(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).setCurrentPageNum(1).setPageSize(num).setPageCount(
-                1);
+	public List<JSONObject> getMostCommentArticles(final int num) throws RepositoryException {
+		final Query query = new Query().addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING)
+				.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING)
+				.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))
+				.setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(array);
-    }
+		return CollectionUtils.jsonArrayToList(array);
+	}
 
-    
-    public List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException {
-        final Query query = new Query();
+	public List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException {
+		final Query query = new Query();
 
-        query.addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-        query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
-        query.setPageCount(1);
+		query.addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).addSort(Article.ARTICLE_UPDATE_DATE,
+				SortDirection.DESCENDING);
+		query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+		query.setCurrentPageNum(1);
+		query.setPageSize(num);
+		query.setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(array);
-    }
+		return CollectionUtils.jsonArrayToList(array);
+	}
 
-    
-    public JSONObject getPreviousArticle(final String articleId) throws RepositoryException {
-        final JSONObject currentArticle = get(articleId);
-        final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
+	public JSONObject getPreviousArticle(final String articleId) throws RepositoryException {
+		final JSONObject currentArticle = get(articleId);
+		final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
 
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CREATE_DATE,
-                FilterOperator.LESS_THAN, currentArticleCreateDate), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_ABSTRACT, String.class);
+		final Query query = new Query()
+				.setFilter(CompositeFilterOperator.and(
+						new PropertyFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.LESS_THAN,
+								currentArticleCreateDate),
+						new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)))
+				.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1)
+				.setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class)
+				.addProjection(Article.ARTICLE_PERMALINK, String.class)
+				.addProjection(Article.ARTICLE_ABSTRACT, String.class);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (1 != array.length()) {
-            return null;
-        }
+		if (1 != array.length()) {
+			return null;
+		}
 
-        final JSONObject ret = new JSONObject();
-        final JSONObject article = array.optJSONObject(0);
+		final JSONObject ret = new JSONObject();
+		final JSONObject article = array.optJSONObject(0);
 
-        try {
-            ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
-            ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
-            ret.put(Article.ARTICLE_ABSTRACT, article.getString((Article.ARTICLE_ABSTRACT)));
-        } catch (final JSONException e) {
-            throw new RepositoryException(e);
-        }
+		try {
+			ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
+			ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
+			ret.put(Article.ARTICLE_ABSTRACT, article.getString((Article.ARTICLE_ABSTRACT)));
+		} catch (final JSONException e) {
+			throw new RepositoryException(e);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    
-    public JSONObject getNextArticle(final String articleId) throws RepositoryException {
-        final JSONObject currentArticle = get(articleId);
-        final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
+	public JSONObject getNextArticle(final String articleId) throws RepositoryException {
+		final JSONObject currentArticle = get(articleId);
+		final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
 
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CREATE_DATE,
-                FilterOperator.GREATER_THAN, currentArticleCreateDate),
-                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_ABSTRACT, String.class);
+		final Query query = new Query()
+				.setFilter(CompositeFilterOperator.and(
+						new PropertyFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.GREATER_THAN,
+								currentArticleCreateDate),
+						new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)))
+				.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1)
+				.setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class)
+				.addProjection(Article.ARTICLE_PERMALINK, String.class)
+				.addProjection(Article.ARTICLE_ABSTRACT, String.class);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (1 != array.length()) {
-            return null;
-        }
+		if (1 != array.length()) {
+			return null;
+		}
 
-        final JSONObject ret = new JSONObject();
-        final JSONObject article = array.optJSONObject(0);
+		final JSONObject ret = new JSONObject();
+		final JSONObject article = array.optJSONObject(0);
 
-        try {
-            ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
-            ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
-            ret.put(Article.ARTICLE_ABSTRACT, article.getString((Article.ARTICLE_ABSTRACT)));
-        } catch (final JSONException e) {
-            throw new RepositoryException(e);
-        }
+		try {
+			ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
+			ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
+			ret.put(Article.ARTICLE_ABSTRACT, article.getString((Article.ARTICLE_ABSTRACT)));
+		} catch (final JSONException e) {
+			throw new RepositoryException(e);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    
-    public boolean isPublished(final String articleId) throws RepositoryException {
-        final JSONObject article = get(articleId);
+	public boolean isPublished(final String articleId) throws RepositoryException {
+		final JSONObject article = get(articleId);
 
-        if (null == article) {
-            return false;
-        }
+		if (null == article) {
+			return false;
+		}
 
-        return article.optBoolean(Article.ARTICLE_IS_PUBLISHED);
-    }
+		return article.optBoolean(Article.ARTICLE_IS_PUBLISHED);
+	}
 
-    
-    public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+	@Override
+	public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
+		final List<JSONObject> ret = new ArrayList<>();
 
-        if (0 == count()) {
-            return ret;
-        }
+		if (0 == count()) {
+			return ret;
+		}
 
-        final double mid = Math.random() + RANDOM_RANGE;
+		final double mid = Math.random() + RANDOM_RANGE;
 
-        logger.trace("Random mid[{0}]", mid);
+		logger.trace("Random mid[{0}]", mid);
 
-        Query query = new Query();
+		Query query = new Query();
 
-        query.setFilter(
-                CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
-        query.setCurrentPageNum(1);
-        query.setPageSize(fetchSize);
-        query.setPageCount(1);
+		query.setFilter(CompositeFilterOperator.and(
+				new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
+				new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+				new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
+		query.setCurrentPageNum(1);
+		query.setPageSize(fetchSize);
+		query.setPageCount(1);
 
-        final JSONObject result1 = get(query);
-        final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
+		final JSONObject result1 = get(query);
+		final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
-        final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
+		final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
 
-        ret.addAll(list1);
+		ret.addAll(list1);
 
-        final int reminingSize = fetchSize - array1.length();
+		final int reminingSize = fetchSize - array1.length();
 
-        if (0 != reminingSize) { // Query for remains
-            query = new Query();
-            query.setFilter(
-                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
-                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
-            query.setCurrentPageNum(1);
-            query.setPageSize(reminingSize);
-            query.setPageCount(1);
+		if (0 != reminingSize) { // Query for remains
+			query = new Query();
+			query.setFilter(CompositeFilterOperator.and(
+					new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
+					new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+					new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
+			query.setCurrentPageNum(1);
+			query.setPageSize(reminingSize);
+			query.setPageCount(1);
 
-            final JSONObject result2 = get(query);
-            final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
+			final JSONObject result2 = get(query);
+			final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
 
-            final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
+			final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
 
-            ret.addAll(list2);
-        }
+			ret.addAll(list2);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 }

@@ -24,48 +24,48 @@ package org.b3log.solo.frame.repository;
  */
 public enum FilterOperator {
 
-    /**
-     * Less than.
-     */
-    LESS_THAN,
-    /**
-     * Less than or equal.
-     */
-    LESS_THAN_OR_EQUAL,
-    /**
-     * Greater than.
-     */
-    GREATER_THAN,
-    /**
-     * Grater than or equal.
-     */
-    GREATER_THAN_OR_EQUAL,
-    /**
-     * Equal.
-     */
-    EQUAL,
-    /**
-     * Not equal.
-     */
-    NOT_EQUAL,
-    /**
-     * In.
-     */
-    IN,
-    /**
-     * Like.
-     *
-     * <p>
-     * <b>Note</b>: This operation just support JDBC repository.
-     * </p>
-     */
-    LIKE,
-    /**
-     * Not like.
-     *
-     * <p>
-     * <b>Note</b>: This operation just support JDBC repository.
-     * </p>
-     */
-    NOT_LIKE,
+	/**
+	 * Less than.
+	 */
+	LESS_THAN,
+	/**
+	 * Less than or equal.
+	 */
+	LESS_THAN_OR_EQUAL,
+	/**
+	 * Greater than.
+	 */
+	GREATER_THAN,
+	/**
+	 * Grater than or equal.
+	 */
+	GREATER_THAN_OR_EQUAL,
+	/**
+	 * Equal.
+	 */
+	EQUAL,
+	/**
+	 * Not equal.
+	 */
+	NOT_EQUAL,
+	/**
+	 * In.
+	 */
+	IN,
+	/**
+	 * Like.
+	 *
+	 * <p>
+	 * <b>Note</b>: This operation just support JDBC repository.
+	 * </p>
+	 */
+	LIKE,
+	/**
+	 * Not like.
+	 *
+	 * <p>
+	 * <b>Note</b>: This operation just support JDBC repository.
+	 * </p>
+	 */
+	NOT_LIKE,
 }

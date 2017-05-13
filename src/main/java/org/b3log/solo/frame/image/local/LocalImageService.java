@@ -21,7 +21,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 import javax.imageio.ImageIO;
+
 import org.b3log.solo.frame.image.Image;
 import org.b3log.solo.frame.image.ImageService;
 
@@ -33,69 +35,72 @@ import org.b3log.solo.frame.image.ImageService;
  */
 public final class LocalImageService implements ImageService {
 
-    @Override
-    public Image makeImage(final byte[] data) {
-        final Image ret = new Image();
+	@Override
+	public Image makeImage(final byte[] data) {
+		final Image ret = new Image();
 
-        ret.setData(data);
+		ret.setData(data);
 
-        return ret;
-    }
+		return ret;
+	}
 
-    @Override
-    public Image makeImage(final List<Image> images) {
-        if (null == images || images.isEmpty()) {
-            return null;
-        }
+	@Override
+	public Image makeImage(final List<Image> images) {
+		if (null == images || images.isEmpty()) {
+			return null;
+		}
 
-        try {
-            final Image firstImage = images.get(0);
-            BufferedImage tmp = ImageIO.read(new ByteArrayInputStream(firstImage.getData()));
+		try {
+			final Image firstImage = images.get(0);
+			BufferedImage tmp = ImageIO.read(new ByteArrayInputStream(firstImage.getData()));
 
-            for (int i = 1; i < images.size(); i++) {
-                final Image image = images.get(i);
+			for (int i = 1; i < images.size(); i++) {
+				final Image image = images.get(i);
 
-                final byte[] data = image.getData();
-                final BufferedImage awtImage = ImageIO.read(new ByteArrayInputStream(data));
+				final byte[] data = image.getData();
+				final BufferedImage awtImage = ImageIO.read(new ByteArrayInputStream(data));
 
-                tmp = splice(tmp, awtImage);
-            }
+				tmp = splice(tmp, awtImage);
+			}
 
-            final Image ret = new Image();
+			final Image ret = new Image();
 
-            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-            ImageIO.write(tmp, "PNG", byteArrayOutputStream);
+			ImageIO.write(tmp, "PNG", byteArrayOutputStream);
 
-            final byte[] data = byteArrayOutputStream.toByteArray();
+			final byte[] data = byteArrayOutputStream.toByteArray();
 
-            ret.setData(data);
+			ret.setData(data);
 
-            return ret;
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			return ret;
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    /**
-     * Splices the specified image1 and image2 horizontally.
-     *
-     * @param image1 the specified image1
-     * @param image2 the specified image2
-     * @return the spliced image
-     */
-    private static BufferedImage splice(final java.awt.Image image1, final java.awt.Image image2) {
-        final int[][] size = {{image1.getWidth(null), image1.getHeight(null)}, {image2.getWidth(null), image2.getHeight(null)}};
+	/**
+	 * Splices the specified image1 and image2 horizontally.
+	 *
+	 * @param image1
+	 *            the specified image1
+	 * @param image2
+	 *            the specified image2
+	 * @return the spliced image
+	 */
+	private static BufferedImage splice(final java.awt.Image image1, final java.awt.Image image2) {
+		final int[][] size = { { image1.getWidth(null), image1.getHeight(null) },
+				{ image2.getWidth(null), image2.getHeight(null) } };
 
-        final int width = size[0][0] + size[1][0];
-        final int height = Math.max(size[0][1], size[1][1]);
+		final int width = size[0][0] + size[1][0];
+		final int height = Math.max(size[0][1], size[1][1]);
 
-        final BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g2 = ret.createGraphics();
+		final BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D g2 = ret.createGraphics();
 
-        g2.drawImage(image1, 0, 0, null);
-        g2.drawImage(image2, size[0][0], 0, null);
+		g2.drawImage(image1, 0, 0, null);
+		g2.drawImage(image2, size[0][0], 0, null);
 
-        return ret;
-    }
+		return ret;
+	}
 }

@@ -25,9 +25,9 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
+import org.b3log.solo.util.Locales;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.b3log.solo.util.Locales;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,109 +39,112 @@ import org.springframework.stereotype.Service;
 @Service
 public class LangPropsService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(LangPropsService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(LangPropsService.class);
 
-    /**
-     * Language properties.
-     */
-    private static final Map<Locale, Map<String, String>> LANGS = new HashMap<Locale, Map<String, String>>();
+	/**
+	 * Language properties.
+	 */
+	private static final Map<Locale, Map<String, String>> LANGS = new HashMap<>();
 
-    
-    public Map<String, String> getAll(final Locale locale) {
-        Map<String, String> ret = LANGS.get(locale);
+	public Map<String, String> getAll(final Locale locale) {
+		Map<String, String> ret = LANGS.get(locale);
 
-        if (null == ret) {
-            ret = new HashMap<>();
-            ResourceBundle langBundle;
+		if (null == ret) {
+			ret = new HashMap<>();
+			ResourceBundle langBundle;
 
-            try {
-                langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
-            } catch (final MissingResourceException e) {
-                logger.warn("{0}, using default locale[{1}] instead", new Object[]{e.getMessage(), Latkes.getLocale()});
+			try {
+				langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+			} catch (final MissingResourceException e) {
+				logger.warn("{0}, using default locale[{1}] instead",
+						new Object[] { e.getMessage(), Latkes.getLocale() });
 
-                try {
-                    langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, Latkes.getLocale());
-                } catch (final MissingResourceException ex) {
-                    logger.warn("{0}, using default lang.properties instead", new Object[]{e.getMessage()});
-                    langBundle = ResourceBundle.getBundle(Keys.LANGUAGE);
-                }
-            }
+				try {
+					langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, Latkes.getLocale());
+				} catch (final MissingResourceException ex) {
+					logger.warn("{0}, using default lang.properties instead", new Object[] { e.getMessage() });
+					langBundle = ResourceBundle.getBundle(Keys.LANGUAGE);
+				}
+			}
 
-            final Enumeration<String> keys = langBundle.getKeys();
-            while (keys.hasMoreElements()) {
-                final String key = keys.nextElement();
-                final String value = replaceVars(langBundle.getString(key));
+			final Enumeration<String> keys = langBundle.getKeys();
+			while (keys.hasMoreElements()) {
+				final String key = keys.nextElement();
+				final String value = replaceVars(langBundle.getString(key));
 
-                ret.put(key, value);
-            }
+				ret.put(key, value);
+			}
 
-            LANGS.put(locale, ret);
-        }
+			LANGS.put(locale, ret);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    
-    public String get(final String key) {
-        return get(Keys.LANGUAGE, key, Locales.getLocale());
-    }
+	public String get(final String key) {
+		return get(Keys.LANGUAGE, key, Locales.getLocale());
+	}
 
-    
-    public String get(final String key, final Locale locale) {
-        return get(Keys.LANGUAGE, key, locale);
-    }
+	public String get(final String key, final Locale locale) {
+		return get(Keys.LANGUAGE, key, locale);
+	}
 
-    /**
-     * Gets a value from baseName_locale.properties file with the specified key. If not found
-     * baseName_(locale).properties configurations, using {@link Latkes#getLocale()} instead.
-     *
-     * @param baseName base name of resource bundle, options as the following:
-     * <ul>
-     * <li>{@link Keys#LANGUAGE}</li>
-     * </ul>
-     * @param key the specified key
-     * @param locale the specified locale
-     * @return the value of the specified key
-     */
-    private String get(final String baseName, final String key, final Locale locale) {
-        if (!Keys.LANGUAGE.equals(baseName)) {
-            final RuntimeException e = new RuntimeException("i18n resource[baseName=" + baseName + "] not found");
+	/**
+	 * Gets a value from baseName_locale.properties file with the specified key.
+	 * If not found baseName_(locale).properties configurations, using
+	 * {@link Latkes#getLocale()} instead.
+	 *
+	 * @param baseName
+	 *            base name of resource bundle, options as the following:
+	 *            <ul>
+	 *            <li>{@link Keys#LANGUAGE}</li>
+	 *            </ul>
+	 * @param key
+	 *            the specified key
+	 * @param locale
+	 *            the specified locale
+	 * @return the value of the specified key
+	 */
+	private String get(final String baseName, final String key, final Locale locale) {
+		if (!Keys.LANGUAGE.equals(baseName)) {
+			final RuntimeException e = new RuntimeException("i18n resource[baseName=" + baseName + "] not found");
 
-            logger.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 
-            throw e;
-        }
+			throw e;
+		}
 
-        try {
-            return replaceVars(ResourceBundle.getBundle(baseName, locale).getString(key));
-        } catch (final MissingResourceException e) {
-            logger.warn("{0}, get it from default locale[{1}]", new Object[]{e.getMessage(), Latkes.getLocale()});
+		try {
+			return replaceVars(ResourceBundle.getBundle(baseName, locale).getString(key));
+		} catch (final MissingResourceException e) {
+			logger.warn("{0}, get it from default locale[{1}]", new Object[] { e.getMessage(), Latkes.getLocale() });
 
-            return ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key);
-        }
-    }
+			return ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key);
+		}
+	}
 
-    /**
-     * Replaces all variables of the specified language value.
-     *
-     * <p>
-     * Variables:
-     * <ul>
-     * <li>${servePath}</li>
-     * <li>${staticServePath}</li>
-     * </ul>
-     * </p>
-     *
-     * @param langValue the specified language value
-     * @return replaced value
-     */
-    private String replaceVars(final String langValue) {
-        String ret = StringUtils.replace(langValue, "${servePath}", Latkes.getServePath());
-        ret = StringUtils.replace(ret, "${staticServePath}", Latkes.getStaticServePath());
+	/**
+	 * Replaces all variables of the specified language value.
+	 *
+	 * <p>
+	 * Variables:
+	 * <ul>
+	 * <li>${servePath}</li>
+	 * <li>${staticServePath}</li>
+	 * </ul>
+	 * </p>
+	 *
+	 * @param langValue
+	 *            the specified language value
+	 * @return replaced value
+	 */
+	private String replaceVars(final String langValue) {
+		String ret = StringUtils.replace(langValue, "${servePath}", Latkes.getServePath());
+		ret = StringUtils.replace(ret, "${staticServePath}", Latkes.getStaticServePath());
 
-        return ret;
-    }
+		return ret;
+	}
 }

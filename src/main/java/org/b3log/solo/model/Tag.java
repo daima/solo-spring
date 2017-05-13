@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all tag model relevant keys.
  *
@@ -24,33 +23,34 @@ package org.b3log.solo.model;
  */
 public final class Tag {
 
-    /**
-     * Tag.
-     */
-    public static final String TAG = "tag";
+	/**
+	 * Tag.
+	 */
+	public static final String TAG = "tag";
 
-    /**
-     * Tags.
-     */
-    public static final String TAGS = "tags";
+	/**
+	 * Tags.
+	 */
+	public static final String TAGS = "tags";
 
-    /**
-     * Key of title.
-     */
-    public static final String TAG_TITLE = "tagTitle";
+	/**
+	 * Key of title.
+	 */
+	public static final String TAG_TITLE = "tagTitle";
 
-    /**
-     * Key of tag reference count.
-     */
-    public static final String TAG_REFERENCE_COUNT = "tagReferenceCount";
+	/**
+	 * Key of tag reference count.
+	 */
+	public static final String TAG_REFERENCE_COUNT = "tagReferenceCount";
 
-    /**
-     * Key of tag reference(published article) count.
-     */
-    public static final String TAG_PUBLISHED_REFERENCE_COUNT = "tagPublishedRefCount";
+	/**
+	 * Key of tag reference(published article) count.
+	 */
+	public static final String TAG_PUBLISHED_REFERENCE_COUNT = "tagPublishedRefCount";
 
-    /**
-     * Private default constructor.
-     */
-    private Tag() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Tag() {
+	}
 }

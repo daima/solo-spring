@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.frame.thread;
 
-
 import java.util.concurrent.Future;
-
 
 /**
  * Thread service.
@@ -27,21 +25,26 @@ import java.util.concurrent.Future;
  */
 public interface ThreadService {
 
-    /**
-     * Creates a new thread that executes the specified runnable for the duration of the current request.
-     *
-     * @param runnable the specified runnable
-     * @return a new thread
-     */
-    Thread createThreadForCurrentRequest(final Runnable runnable);
-    
-    /**
-     * Submits the specified {@code Runnable} task for execution and returns a {@code Future} representing that task within
-     * the specified millseconds.
-     * 
-     * @param runnable the specified runnable task
-     * @param millseconds the specified millseconds timeout
-     * @return a {@code Future} representing pending completion of the task, returns {@code null} if the task executes failed
-     */
-    Future<?> submit(final Runnable runnable, final long millseconds);
+	/**
+	 * Creates a new thread that executes the specified runnable for the
+	 * duration of the current request.
+	 *
+	 * @param runnable
+	 *            the specified runnable
+	 * @return a new thread
+	 */
+	Thread createThreadForCurrentRequest(final Runnable runnable);
+
+	/**
+	 * Submits the specified {@code Runnable} task for execution and returns a
+	 * {@code Future} representing that task within the specified millseconds.
+	 * 
+	 * @param runnable
+	 *            the specified runnable task
+	 * @param millseconds
+	 *            the specified millseconds timeout
+	 * @return a {@code Future} representing pending completion of the task,
+	 *         returns {@code null} if the task executes failed
+	 */
+	Future<?> submit(final Runnable runnable, final long millseconds);
 }

@@ -24,77 +24,79 @@ package org.b3log.solo.model;
  */
 public enum PageTypes {
 
-    /**
-     * Article.
-     */
-    ARTICLE("articleLabel", "Article"),
-    /**
-     * Tag articles.
-     */
-    TAG_ARTICLES("tagArticlesLabel", "TagArticles"),
-    /**
-     * Date articles.
-     */
-    DATE_ARTICLES("dateArticlesLabel", "DateArticles"),
-    /**
-     * Index.
-     */
-    INDEX("indexArticleLabel", "Index"),
-    /**
-     * Tags.
-     */
-    TAGS("allTagsLabel", "Tags"),
-    /**
-     * Author articles.
-     */
-    AUTHOR_ARTICLES("authorArticlesLabel", "AuthorArticles"),
-    /**
-     * Page.
-     */
-    PAGE("customizedPageLabel", "Page"),
-    /**
-     * Kill browser page.
-     */
-    KILL_BROWSER("killBrowserPageLabel", "KillBrowser"),
-    /**
-     * User template.
-     */
-    USER_TEMPLATE("userTemplatePageLabel", "UserTemplate");
-    /**
-     * Language label.
-     */
-    private final String langLabel;
-    /**
-     * Type name.
-     */
-    private final String typeName;
-    
-    /**
-     * Gets the language label.
-     * 
-     * @return language label
-     */
-    public String getLangeLabel() {
-        return langLabel;
-    }
-    
-    /**
-     * Gets the type name.
-     * 
-     * @return type name
-     */
-    public String getTypeName() {
-        return typeName;
-    }
+	/**
+	 * Article.
+	 */
+	ARTICLE("articleLabel", "Article"),
+	/**
+	 * Tag articles.
+	 */
+	TAG_ARTICLES("tagArticlesLabel", "TagArticles"),
+	/**
+	 * Date articles.
+	 */
+	DATE_ARTICLES("dateArticlesLabel", "DateArticles"),
+	/**
+	 * Index.
+	 */
+	INDEX("indexArticleLabel", "Index"),
+	/**
+	 * Tags.
+	 */
+	TAGS("allTagsLabel", "Tags"),
+	/**
+	 * Author articles.
+	 */
+	AUTHOR_ARTICLES("authorArticlesLabel", "AuthorArticles"),
+	/**
+	 * Page.
+	 */
+	PAGE("customizedPageLabel", "Page"),
+	/**
+	 * Kill browser page.
+	 */
+	KILL_BROWSER("killBrowserPageLabel", "KillBrowser"),
+	/**
+	 * User template.
+	 */
+	USER_TEMPLATE("userTemplatePageLabel", "UserTemplate");
+	/**
+	 * Language label.
+	 */
+	private final String langLabel;
+	/**
+	 * Type name.
+	 */
+	private final String typeName;
 
-    /**
-     * Constructs a page type with the specified language label and type name.
-     * 
-     * @param langLabel the specified language label
-     * @param typeName the specified type name
-     */
-    PageTypes(final String langLabel, final String typeName) {
-        this.langLabel = langLabel;
-        this.typeName = typeName;
-    }
+	/**
+	 * Gets the language label.
+	 * 
+	 * @return language label
+	 */
+	public String getLangeLabel() {
+		return langLabel;
+	}
+
+	/**
+	 * Gets the type name.
+	 * 
+	 * @return type name
+	 */
+	public String getTypeName() {
+		return typeName;
+	}
+
+	/**
+	 * Constructs a page type with the specified language label and type name.
+	 * 
+	 * @param langLabel
+	 *            the specified language label
+	 * @param typeName
+	 *            the specified type name
+	 */
+	PageTypes(final String langLabel, final String typeName) {
+		this.langLabel = langLabel;
+		this.typeName = typeName;
+	}
 }

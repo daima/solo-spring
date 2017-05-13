@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.module.plugin.broadcast;
 
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Future;
@@ -26,8 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.HTTPResponse;
@@ -43,15 +40,16 @@ import org.b3log.solo.util.PropsUtil;
 import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
 /**
  * Broadcast chance processor.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.10, Nov 20, 2015
  * @since 0.6.0
@@ -59,275 +57,285 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ChanceProcessor {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ChanceProcessor.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ChanceProcessor.class);
 
-    /**
-     * Option management service.
-     */
-    @Autowired
-    private OptionMgmtService optionMgmtService;
+	/**
+	 * Option management service.
+	 */
+	@Autowired
+	private OptionMgmtService optionMgmtService;
 
-    /**
-     * Option query service.
-     */
-    @Autowired
-    private OptionQueryService optionQueryService;
+	/**
+	 * Option query service.
+	 */
+	@Autowired
+	private OptionQueryService optionQueryService;
 
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+	/**
+	 * URL fetch service.
+	 */
+	private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
-    /**
-     * User query service.
-     */
-    @Autowired
-    private UserQueryService userQueryService;
-    
-    /**
-     * Preference query service.
-     */
-    @Autowired
-    private PreferenceQueryService preferenceQueryService;
+	/**
+	 * User query service.
+	 */
+	@Autowired
+	private UserQueryService userQueryService;
 
-    /**
-     * URL of adding article to Rhythm.
-     */
-    private static final URL ADD_BROADCAST_URL;
+	/**
+	 * Preference query service.
+	 */
+	@Autowired
+	private PreferenceQueryService preferenceQueryService;
 
-    static {
-        try {
-            ADD_BROADCAST_URL = new URL(PropsUtil.getString("rhythm.servePath") + "/broadcast");
-        } catch (final MalformedURLException e) {
-            logger.error("Creates remote service address[rhythm add broadcast] error!");
-            throw new IllegalStateException(e);
-        }
-    }
+	/**
+	 * URL of adding article to Rhythm.
+	 */
+	private static final URL ADD_BROADCAST_URL;
 
-    /**
-     * Adds a broadcast chance to option repository.
-     * 
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": "" // optional
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception 
-     */
-    @RequestMapping(value = "/console/plugins/b3log-broadcast/chance", method=RequestMethod.POST)
-    public void addChance(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+	static {
+		try {
+			ADD_BROADCAST_URL = new URL(PropsUtil.getString("rhythm.servePath") + "/broadcast");
+		} catch (final MalformedURLException e) {
+			logger.error("Creates remote service address[rhythm add broadcast] error!");
+			throw new IllegalStateException(e);
+		}
+	}
 
-        final JSONObject ret = new JSONObject();
+	/**
+	 * Adds a broadcast chance to option repository.
+	 * 
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "msg": "" // optional
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param context
+	 *            the specified http request context
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/console/plugins/b3log-broadcast/chance", method = RequestMethod.POST)
+	public void addChance(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		final JSONRenderer renderer = new JSONRenderer();
 
-        renderer.setJSONObject(ret);
+		final JSONObject ret = new JSONObject();
 
-        try {
-            // TODO: verify b3 key
+		renderer.setJSONObject(ret);
 
-            final String time = request.getParameter("time");
+		try {
+			// TODO: verify b3 key
 
-            if (Strings.isEmptyOrNull(time)) {
-                ret.put(Keys.STATUS_CODE, false);
+			final String time = request.getParameter("time");
 
-                return;
-            }
+			if (Strings.isEmptyOrNull(time)) {
+				ret.put(Keys.STATUS_CODE, false);
 
-            final long expirationTime = Long.valueOf(time);
+				return;
+			}
 
-            final JSONObject option = new JSONObject();
+			final long expirationTime = Long.valueOf(time);
 
-            option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-            option.put(Option.OPTION_VALUE, expirationTime);
-            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+			final JSONObject option = new JSONObject();
 
-            optionMgmtService.addOrUpdateOption(option);
+			option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+			option.put(Option.OPTION_VALUE, expirationTime);
+			option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
 
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            final String msg = "Broadcast plugin exception";
+			optionMgmtService.addOrUpdateOption(option);
 
-            logger.error(msg, e);
+			ret.put(Keys.STATUS_CODE, true);
+		} catch (final Exception e) {
+			final String msg = "Broadcast plugin exception";
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			logger.error(msg, e);
 
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, msg);
-        }
-    }
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-    /**
-     * Dose the client has a broadcast chance.
-     * 
-     * <p>
-     * If the request come from a user not administrator, consider it is no broadcast chance.
-     * </p>
-     * 
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean, // if has a chance, the value will be true
-     *     "broadcastChanceExpirationTime": long, // if has a chance, the value will larger then 0L
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception 
-     */
-    @RequestMapping(value = "/console/plugins/b3log-broadcast/chance", method=RequestMethod.GET)
-    public void hasChance(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			renderer.setJSONObject(jsonObject);
+			jsonObject.put(Keys.MSG, msg);
+		}
+	}
 
-            return;
-        }
+	/**
+	 * Dose the client has a broadcast chance.
+	 * 
+	 * <p>
+	 * If the request come from a user not administrator, consider it is no
+	 * broadcast chance.
+	 * </p>
+	 * 
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean, // if has a chance, the value will be true
+	 *     "broadcastChanceExpirationTime": long, // if has a chance, the value will larger then 0L
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param context
+	 *            the specified http request context
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/console/plugins/b3log-broadcast/chance", method = RequestMethod.GET)
+	public void hasChance(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
-        final JSONRenderer renderer = new JSONRenderer();
+			return;
+		}
 
-        final JSONObject ret = new JSONObject();
+		final JSONRenderer renderer = new JSONRenderer();
 
-        renderer.setJSONObject(ret);
+		final JSONObject ret = new JSONObject();
 
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
-            ret.put(Keys.STATUS_CODE, false);
+		renderer.setJSONObject(ret);
 
-            return;
-        }
+		if (!userQueryService.isAdminLoggedIn(request)) {
+			ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
+			ret.put(Keys.STATUS_CODE, false);
 
-        try {
-            final JSONObject option = optionQueryService.getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+			return;
+		}
 
-            if (null == option) {
-                ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
-                ret.put(Keys.STATUS_CODE, false);
+		try {
+			final JSONObject option = optionQueryService.getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
 
-                return;
-            }
+			if (null == option) {
+				ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
+				ret.put(Keys.STATUS_CODE, false);
 
-            ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            logger.error("Broadcast plugin exception", e);
+				return;
+			}
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
+			ret.put(Keys.STATUS_CODE, true);
+		} catch (final Exception e) {
+			logger.error("Broadcast plugin exception", e);
 
-            renderer.setJSONObject(jsonObject);
-        }
-    }
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-    /**
-     * Submits a broadcast.
-     * 
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": "" // optional
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     * @param request the specified http servlet request, for example,
-     * <pre>
-     * {
-     *     "broadcast": {
-     *         "title": "",
-     *         "content": "",
-     *         "link": "" // optional
-     *     }
-     * }
-     * </pre>
-     * @param response the specified http servlet response
-     * @throws Exception 
-     */
-    @RequestMapping(value = "/console/plugins/b3log-broadcast", method=RequestMethod.POST)
-    public void submitBroadcast(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			renderer.setJSONObject(jsonObject);
+		}
+	}
 
-            return;
-        }
+	/**
+	 * Submits a broadcast.
+	 * 
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "msg": "" // optional
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param context
+	 *            the specified http request context
+	 * @param request
+	 *            the specified http servlet request, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "broadcast": {
+	 *         "title": "",
+	 *         "content": "",
+	 *         "link": "" // optional
+	 *     }
+	 * }
+	 *            </pre>
+	 * 
+	 * @param response
+	 *            the specified http servlet response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/console/plugins/b3log-broadcast", method = RequestMethod.POST)
+	public void submitBroadcast(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		if (!userQueryService.isAdminLoggedIn(request)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
-        final JSONRenderer renderer = new JSONRenderer();
+			return;
+		}
 
-        
+		final JSONRenderer renderer = new JSONRenderer();
 
-        final JSONObject ret = new JSONObject();
+		final JSONObject ret = new JSONObject();
 
-        renderer.setJSONObject(ret);
+		renderer.setJSONObject(ret);
 
-        try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+		try {
+			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-            final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
-            final JSONObject preference = preferenceQueryService.getPreference();
-            final String b3logKey = preference.getString(Option.ID_C_KEY_OF_SOLO);
-            final String email = preference.getString(Option.ID_C_ADMIN_EMAIL);
-            final String clientName = "B3log Solo";
-            final String clientVersion = SoloConstant.VERSION;
-            final String clientTitle = preference.getString(Option.ID_C_BLOG_TITLE);
-            final String clientRuntimeEnv = Latkes.getRuntimeEnv().name();
+			final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
+			final JSONObject preference = preferenceQueryService.getPreference();
+			final String b3logKey = preference.getString(Option.ID_C_KEY_OF_SOLO);
+			final String email = preference.getString(Option.ID_C_ADMIN_EMAIL);
+			final String clientName = "B3log Solo";
+			final String clientVersion = SoloConstant.VERSION;
+			final String clientTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+			final String clientRuntimeEnv = Latkes.getRuntimeEnv().name();
 
-            final JSONObject broadcastRequest = new JSONObject();
+			final JSONObject broadcastRequest = new JSONObject();
 
-            broadcastRequest.put("b3logKey", b3logKey);
-            broadcastRequest.put("email", email);
-            broadcastRequest.put("broadcast", broadcast);
-            broadcastRequest.put("clientRuntimeEnv", clientRuntimeEnv);
-            broadcastRequest.put("clientTitle", clientTitle);
-            broadcastRequest.put("clientVersion", clientVersion);
-            broadcastRequest.put("clientName", clientName);
-            broadcastRequest.put("clientHost", Latkes.getServePath());
+			broadcastRequest.put("b3logKey", b3logKey);
+			broadcastRequest.put("email", email);
+			broadcastRequest.put("broadcast", broadcast);
+			broadcastRequest.put("clientRuntimeEnv", clientRuntimeEnv);
+			broadcastRequest.put("clientTitle", clientTitle);
+			broadcastRequest.put("clientVersion", clientVersion);
+			broadcastRequest.put("clientName", clientName);
+			broadcastRequest.put("clientHost", Latkes.getServePath());
 
-            final HTTPRequest httpRequest = new HTTPRequest();
+			final HTTPRequest httpRequest = new HTTPRequest();
 
-            httpRequest.setURL(ADD_BROADCAST_URL);
-            httpRequest.setRequestMethod(RequestMethod.POST);
-            httpRequest.setPayload(broadcastRequest.toString().getBytes("UTF-8"));
+			httpRequest.setURL(ADD_BROADCAST_URL);
+			httpRequest.setRequestMethod(RequestMethod.POST);
+			httpRequest.setPayload(broadcastRequest.toString().getBytes("UTF-8"));
 
-            @SuppressWarnings("unchecked")
-            final Future<HTTPResponse> future = (Future<HTTPResponse>) urlFetchService.fetchAsync(httpRequest);
-            final HTTPResponse result = future.get();
+			@SuppressWarnings("unchecked")
+			final Future<HTTPResponse> future = (Future<HTTPResponse>) urlFetchService.fetchAsync(httpRequest);
+			final HTTPResponse result = future.get();
 
-            if (HttpServletResponse.SC_OK == result.getResponseCode()) {
-                ret.put(Keys.STATUS_CODE, true);
+			if (HttpServletResponse.SC_OK == result.getResponseCode()) {
+				ret.put(Keys.STATUS_CODE, true);
 
-                optionMgmtService.removeOption(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+				optionMgmtService.removeOption(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
 
-                logger.info("Submits broadcast successfully");
+				logger.info("Submits broadcast successfully");
 
-                return;
-            }
+				return;
+			}
 
-            ret.put(Keys.STATUS_CODE, false);
-        } catch (final Exception e) {
-            logger.error("Submits broadcast failed", e);
+			ret.put(Keys.STATUS_CODE, false);
+		} catch (final Exception e) {
+			logger.error("Submits broadcast failed", e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
-        }
-    }
+			renderer.setJSONObject(jsonObject);
+			jsonObject.put(Keys.MSG, e.getMessage());
+		}
+	}
 }

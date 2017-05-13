@@ -15,152 +15,157 @@
  */
 package org.b3log.solo.frame.repository.jdbc.util;
 
-
 /**
  * FieldDefinition of each Filed in *.json.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Mar 10, 2014
  */
 public class FieldDefinition {
 
-    /**
-     * field name.
-     */
-    private String name;
+	/**
+	 * field name.
+	 */
+	private String name;
 
-    /**
-     * field type.
-     */
-    private String type;
+	/**
+	 * field type.
+	 */
+	private String type;
 
-    /**
-     * the length of the type.
-     */
-    private Integer length;
-    
-    /**
-     * Precision.
-     */
-    private Integer precision;
+	/**
+	 * the length of the type.
+	 */
+	private Integer length;
 
-    /**
-     * if isKey.
-     */
-    private Boolean isKey;
+	/**
+	 * Precision.
+	 */
+	private Integer precision;
 
-    /**
-     * if null-able.
-     */
-    private Boolean nullable = true;
+	/**
+	 * if isKey.
+	 */
+	private Boolean isKey;
 
-    /**
-     * getName.
-     * 
-     * @return name.
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * if null-able.
+	 */
+	private Boolean nullable = true;
 
-    /**
-     * setName.
-     * 
-     * @param name name
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
+	/**
+	 * getName.
+	 * 
+	 * @return name.
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * getType.
-     * 
-     * @return type
-     */
-    public String getType() {
-        return type;
-    }
+	/**
+	 * setName.
+	 * 
+	 * @param name
+	 *            name
+	 */
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-    /**
-     * setType.
-     * 
-     * @param type type.
-     */
-    public void setType(final String type) {
-        this.type = type;
-    }
+	/**
+	 * getType.
+	 * 
+	 * @return type
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * getLength.
-     * 
-     * @return length
-     */
-    public Integer getLength() {
-        return length;
-    }
+	/**
+	 * setType.
+	 * 
+	 * @param type
+	 *            type.
+	 */
+	public void setType(final String type) {
+		this.type = type;
+	}
 
-    /**
-     * setLength.
-     * 
-     * @param length length.
-     */
-    public void setLength(final Integer length) {
-        this.length = length;
-    }
-    
-    /**
-     * Gets the precision.
-     * 
-     * @return precision
-     */
-    public Integer getPresision() {
-        return precision;
-    }
-    
-    /**
-     * Sets the precision with the specified precision.
-     * 
-     * @param presision the specified precision
-     */
-    public void setPresision(final Integer presision) {
-        this.precision = presision;
-    }
+	/**
+	 * getLength.
+	 * 
+	 * @return length
+	 */
+	public Integer getLength() {
+		return length;
+	}
 
-    /**
-     * getIsKey.
-     * 
-     * @return iskey
-     */
-    public Boolean getIsKey() {
-        return isKey;
-    }
+	/**
+	 * setLength.
+	 * 
+	 * @param length
+	 *            length.
+	 */
+	public void setLength(final Integer length) {
+		this.length = length;
+	}
 
-    /**
-     * setIsKey.
-     * 
-     * @param isKey isKey
-     */
-    public void setIsKey(final Boolean isKey) {
-        this.isKey = isKey;
-    }
+	/**
+	 * Gets the precision.
+	 * 
+	 * @return precision
+	 */
+	public Integer getPresision() {
+		return precision;
+	}
 
-    /**
-     * getNullable.
-     * 
-     * @return nullable
-     */
-    public Boolean getNullable() {
-        return nullable;
-    }
+	/**
+	 * Sets the precision with the specified precision.
+	 * 
+	 * @param presision
+	 *            the specified precision
+	 */
+	public void setPresision(final Integer presision) {
+		this.precision = presision;
+	}
 
-    /**
-     * setNullable.
-     * 
-     * @param nullable nullable
-     */
-    public void setNullable(final Boolean nullable) {
-        this.nullable = nullable;
-    }
+	/**
+	 * getIsKey.
+	 * 
+	 * @return iskey
+	 */
+	public Boolean getIsKey() {
+		return isKey;
+	}
+
+	/**
+	 * setIsKey.
+	 * 
+	 * @param isKey
+	 *            isKey
+	 */
+	public void setIsKey(final Boolean isKey) {
+		this.isKey = isKey;
+	}
+
+	/**
+	 * getNullable.
+	 * 
+	 * @return nullable
+	 */
+	public Boolean getNullable() {
+		return nullable;
+	}
+
+	/**
+	 * setNullable.
+	 * 
+	 * @param nullable
+	 *            nullable
+	 */
+	public void setNullable(final Boolean nullable) {
+		this.nullable = nullable;
+	}
 
 }

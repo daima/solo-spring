@@ -21,9 +21,9 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
 
 /**
  * <a href="http://json.org">JSON</a> HTTP response renderer.
@@ -33,130 +33,135 @@ import org.json.JSONObject;
  */
 public final class JSONRenderer extends AbstractHTTPResponseRenderer {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(JSONRenderer.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(JSONRenderer.class);
 
-    /**
-     * Pretty output.
-     */
-    private boolean pretty;
+	/**
+	 * Pretty output.
+	 */
+	private boolean pretty;
 
-    /**
-     * JSON object to render.
-     */
-    private JSONObject jsonObject;
+	/**
+	 * JSON object to render.
+	 */
+	private JSONObject jsonObject;
 
-    /**
-     * Determines whether render as JSONP.
-     */
-    private boolean jsonp;
+	/**
+	 * Determines whether render as JSONP.
+	 */
+	private boolean jsonp;
 
-    /**
-     * JSONP callback function name.
-     */
-    private String callback = "callback";
+	/**
+	 * JSONP callback function name.
+	 */
+	private String callback = "callback";
 
-    /**
-     * Determins whether pretty rendering.
-     *
-     * @return {@code true} for pretty rendering, returns {@code false} otherwise
-     */
-    public boolean isPretty() {
-        return pretty;
-    }
+	/**
+	 * Determins whether pretty rendering.
+	 *
+	 * @return {@code true} for pretty rendering, returns {@code false}
+	 *         otherwise
+	 */
+	public boolean isPretty() {
+		return pretty;
+	}
 
-    /**
-     * Sets whether pretty rendering.
-     *
-     * @param pretty {@code true} for pretty rendering, {@code false} otherwise
-     */
-    public void setPretty(final boolean pretty) {
-        this.pretty = pretty;
-    }
+	/**
+	 * Sets whether pretty rendering.
+	 *
+	 * @param pretty
+	 *            {@code true} for pretty rendering, {@code false} otherwise
+	 */
+	public void setPretty(final boolean pretty) {
+		this.pretty = pretty;
+	}
 
-    /**
-     * Gets the json object to render.
-     *
-     * @return the json object
-     */
-    public JSONObject getJSONObject() {
-        return jsonObject;
-    }
+	/**
+	 * Gets the json object to render.
+	 *
+	 * @return the json object
+	 */
+	public JSONObject getJSONObject() {
+		return jsonObject;
+	}
 
-    /**
-     * Sets the json object to render with the specified json object.
-     *
-     * @param jsonObject the specified json object
-     */
-    public void setJSONObject(final JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
+	/**
+	 * Sets the json object to render with the specified json object.
+	 *
+	 * @param jsonObject
+	 *            the specified json object
+	 */
+	public void setJSONObject(final JSONObject jsonObject) {
+		this.jsonObject = jsonObject;
+	}
 
-    /**
-     * Determines whether render as JSONP.
-     *
-     * @return {@code true} for JSONP, {@code false} otherwise
-     */
-    public boolean isJSONP() {
-        return jsonp;
-    }
+	/**
+	 * Determines whether render as JSONP.
+	 *
+	 * @return {@code true} for JSONP, {@code false} otherwise
+	 */
+	public boolean isJSONP() {
+		return jsonp;
+	}
 
-    /**
-     * Sets whether render as JSONP.
-     *
-     * @param isJSONP {@code true} for JSONP, {@code false} otherwise
-     * @return this
-     */
-    public JSONRenderer setJSONP(final boolean isJSONP) {
-        this.jsonp = isJSONP;
+	/**
+	 * Sets whether render as JSONP.
+	 *
+	 * @param isJSONP
+	 *            {@code true} for JSONP, {@code false} otherwise
+	 * @return this
+	 */
+	public JSONRenderer setJSONP(final boolean isJSONP) {
+		this.jsonp = isJSONP;
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Sets JSONP callback function.
-     * <p>
-     * Invokes this method will set {@link #isJSONP} to {@code true}
-     * automatically.
-     * </p>
-     *
-     * @param callback the specified callback function name
-     */
-    public void setCallback(final String callback) {
-        this.callback = callback;
+	/**
+	 * Sets JSONP callback function.
+	 * <p>
+	 * Invokes this method will set {@link #isJSONP} to {@code true}
+	 * automatically.
+	 * </p>
+	 *
+	 * @param callback
+	 *            the specified callback function name
+	 */
+	public void setCallback(final String callback) {
+		this.callback = callback;
 
-        setJSONP(true);
-    }
+		setJSONP(true);
+	}
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8");
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		response.setCharacterEncoding("UTF-8");
 
-        try {
-            final PrintWriter writer = response.getWriter();
+		try {
+			final PrintWriter writer = response.getWriter();
 
-            final int indent = 4;
-            final String output = pretty ? jsonObject.toString(indent) : jsonObject.toString();
+			final int indent = 4;
+			final String output = pretty ? jsonObject.toString(indent) : jsonObject.toString();
 
-            if (!jsonp) {
-                response.setContentType("application/json");
-                writer.println(output);
-            } else {
-                response.setContentType("application/javascript");
-                writer.print(callback + "(" + output + ")");
-            }
+			if (!jsonp) {
+				response.setContentType("application/json");
+				writer.println(output);
+			} else {
+				response.setContentType("application/javascript");
+				writer.print(callback + "(" + output + ")");
+			}
 
-            writer.close();
-        } catch (final Exception e) {
-            logger.error("FreeMarker renders error", e);
+			writer.close();
+		} catch (final Exception e) {
+			logger.error("FreeMarker renders error", e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } catch (final IOException ex) {
-                logger.error("Can not send error 500!", ex);
-            }
-        }
-    }
+			try {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (final IOException ex) {
+				logger.error("Can not send error 500!", ex);
+			}
+		}
+	}
 }

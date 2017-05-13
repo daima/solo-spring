@@ -15,43 +15,42 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 import java.io.Serializable;
-
 
 /**
  * Blob.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, Jan 18, 2011
  */
 public final class Blob implements Serializable {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * Default serial version uid.
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Bytes.
-     */
-    private byte[] bytes;
+	/**
+	 * Bytes.
+	 */
+	private byte[] bytes;
 
-    /**
-     * Constructs a blob with the specified bytes.
-     * 
-     * @param bytes the specified bytes 
-     */
-    public Blob(final byte[] bytes) {
-        this.bytes = bytes;
-    }
+	/**
+	 * Constructs a blob with the specified bytes.
+	 * 
+	 * @param bytes
+	 *            the specified bytes
+	 */
+	public Blob(final byte[] bytes) {
+		this.bytes = bytes;
+	}
 
-    /**
-     * Gets bytes.
-     * 
-     * @return bytes
-     */
-    public byte[] getBytes() {
-        return bytes;
-    }
+	/**
+	 * Gets bytes.
+	 * 
+	 * @return bytes
+	 */
+	public byte[] getBytes() {
+		return bytes;
+	}
 }

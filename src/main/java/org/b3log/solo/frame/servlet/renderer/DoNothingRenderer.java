@@ -15,14 +15,12 @@
  */
 package org.b3log.solo.frame.servlet.renderer;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * Do nothing HTTP response renderer.
- * 
+ *
  * <p>
  * Returns HTTP status code 200 only.
  * </p>
@@ -32,8 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class DoNothingRenderer extends AbstractHTTPResponseRenderer {
 
-    @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
+	@Override
+	public void render(final HttpServletRequest request, final HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
 }

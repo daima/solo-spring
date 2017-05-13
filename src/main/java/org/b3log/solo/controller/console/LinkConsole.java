@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.module.util.QueryResults;
@@ -31,6 +29,8 @@ import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,10 +77,10 @@ public class LinkConsole {
 
 	/**
 	 * Removes a link by the specified request.
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -132,10 +132,10 @@ public class LinkConsole {
 
 	/**
 	 * Updates a link by the specified request.
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -146,7 +146,7 @@ public class LinkConsole {
 	 *
 	 * @param request
 	 *            the specified http servlet request, for example,
-	 * 
+	 *
 	 *            <pre>
 	 * {
 	 *     "link": {
@@ -157,7 +157,7 @@ public class LinkConsole {
 	 *     }
 	 * }, see {@link org.b3log.solo.model.Link} for more details
 	 *            </pre>
-	 * 
+	 *
 	 * @param context
 	 *            the specified http request context
 	 * @param response
@@ -198,10 +198,10 @@ public class LinkConsole {
 
 	/**
 	 * Changes a link order by the specified link id and direction.
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -212,14 +212,14 @@ public class LinkConsole {
 	 *
 	 * @param request
 	 *            the specified http servlet request, for example,
-	 * 
+	 *
 	 *            <pre>
 	 * {
 	 *     "oId": "",
 	 *     "direction": "" // "up"/"down"
 	 * }
 	 *            </pre>
-	 * 
+	 *
 	 * @param response
 	 *            the specified http servlet response
 	 * @param context
@@ -262,10 +262,10 @@ public class LinkConsole {
 
 	/**
 	 * Adds a link with the specified request.
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -274,10 +274,10 @@ public class LinkConsole {
 	 * }
 	 * </pre>
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 *            the specified http servlet request, for example,
-	 * 
+	 *
 	 *            <pre>
 	 * {
 	 *     "link": {
@@ -287,7 +287,7 @@ public class LinkConsole {
 	 *     }
 	 * }
 	 *            </pre>
-	 * 
+	 *
 	 * @param response
 	 *            the specified http servlet response
 	 * @param context
@@ -329,16 +329,16 @@ public class LinkConsole {
 
 	/**
 	 * Gets links by the specified request.
-	 * 
+	 *
 	 * <p>
 	 * The request URI contains the pagination arguments. For example, the
 	 * request URI is /console/links/1/10/20, means the current page is 1, the
 	 * page size is 10, and the window size is 20.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -400,10 +400,10 @@ public class LinkConsole {
 
 	/**
 	 * Gets the file with the specified request.
-	 * 
+	 *
 	 * <p>
 	 * Renders the response with a json object, for example,
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *     "sc": boolean,
@@ -416,7 +416,7 @@ public class LinkConsole {
 	 * }
 	 * </pre>
 	 * </p>
-	 * 
+	 *
 	 * @param request
 	 *            the specified http servlet request
 	 * @param response

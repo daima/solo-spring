@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.util;
 
-
 import java.util.Arrays;
-
 
 /**
  * Array utilities.
@@ -27,34 +25,38 @@ import java.util.Arrays;
  */
 public final class ArrayUtils {
 
-    /**
-     * Concatenates the specified arrays.
-     * 
-     * @param <T> the type of array element
-     * @param first the specified first array
-     * @param rest the specified rest arrays
-     * @return concatenated array
-     */
-    public static <T> T[] concatenate(final T[] first, final T[]... rest) {
-        int totalLength = first.length;
+	/**
+	 * Concatenates the specified arrays.
+	 * 
+	 * @param <T>
+	 *            the type of array element
+	 * @param first
+	 *            the specified first array
+	 * @param rest
+	 *            the specified rest arrays
+	 * @return concatenated array
+	 */
+	public static <T> T[] concatenate(final T[] first, final T[]... rest) {
+		int totalLength = first.length;
 
-        for (final T[] array : rest) {
-            totalLength += array.length;
-        }
-        
-        final T[] ret = Arrays.copyOf(first, totalLength);
-        int offset = first.length;
+		for (final T[] array : rest) {
+			totalLength += array.length;
+		}
 
-        for (final T[] array : rest) {
-            System.arraycopy(array, 0, ret, offset, array.length);
-            offset += array.length;
-        }
-        
-        return ret;
-    }
+		final T[] ret = Arrays.copyOf(first, totalLength);
+		int offset = first.length;
 
-    /**
-     * Private constructor.
-     */
-    private ArrayUtils() {}
+		for (final T[] array : rest) {
+			System.arraycopy(array, 0, ret, offset, array.length);
+			offset += array.length;
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Private constructor.
+	 */
+	private ArrayUtils() {
+	}
 }

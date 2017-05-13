@@ -15,21 +15,21 @@
  */
 package org.b3log.solo.frame.user.local;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.user.GeneralUser;
 import org.b3log.solo.frame.user.UserService;
 import org.b3log.solo.util.Sessions;
 import org.json.JSONObject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Local user service.
@@ -40,67 +40,67 @@ import org.json.JSONObject;
  */
 public final class LocalUserService implements UserService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(LocalUserService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(LocalUserService.class);
 
-    @Override
-    public GeneralUser getCurrentUser(final HttpServletRequest request) {
-        final JSONObject currentUser = Sessions.currentUser(request);
+	@Override
+	public GeneralUser getCurrentUser(final HttpServletRequest request) {
+		final JSONObject currentUser = Sessions.currentUser(request);
 
-        if (null == currentUser) {
-            return null;
-        }
+		if (null == currentUser) {
+			return null;
+		}
 
-        final GeneralUser ret = new GeneralUser();
+		final GeneralUser ret = new GeneralUser();
 
-        ret.setEmail(currentUser.optString(User.USER_EMAIL));
-        ret.setId(currentUser.optString(Keys.OBJECT_ID));
-        ret.setNickname(currentUser.optString(User.USER_NAME));
+		ret.setEmail(currentUser.optString(User.USER_EMAIL));
+		ret.setId(currentUser.optString(Keys.OBJECT_ID));
+		ret.setNickname(currentUser.optString(User.USER_NAME));
 
-        return ret;
-    }
+		return ret;
+	}
 
-    @Override
-    public boolean isUserLoggedIn(final HttpServletRequest request) {
-        return null != Sessions.currentUser(request);
-    }
+	@Override
+	public boolean isUserLoggedIn(final HttpServletRequest request) {
+		return null != Sessions.currentUser(request);
+	}
 
-    @Override
-    public boolean isUserAdmin(final HttpServletRequest request) {
-        final JSONObject currentUser = Sessions.currentUser(request);
+	@Override
+	public boolean isUserAdmin(final HttpServletRequest request) {
+		final JSONObject currentUser = Sessions.currentUser(request);
 
-        if (null == currentUser) {
-            return false;
-        }
+		if (null == currentUser) {
+			return false;
+		}
 
-        return Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE));
-    }
+		return Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE));
+	}
 
-    @Override
-    public String createLoginURL(final String destinationURL) {
-        String to = Latkes.getServePath();
+	@Override
+	public String createLoginURL(final String destinationURL) {
+		String to = Latkes.getServePath();
 
-        try {
-            to = URLEncoder.encode(to + destinationURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            logger.error("URL encode[string={0}]", destinationURL);
-        }
+		try {
+			to = URLEncoder.encode(to + destinationURL, "UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			logger.error("URL encode[string={0}]", destinationURL);
+		}
 
-        return Latkes.getContextPath() + "/login?goto=" + to;
-    }
+		return Latkes.getContextPath() + "/login?goto=" + to;
+	}
 
-    @Override
-    public String createLogoutURL(final String destinationURL) {
-        String to = Latkes.getServePath();
+	@Override
+	public String createLogoutURL(final String destinationURL) {
+		String to = Latkes.getServePath();
 
-        try {
-            to = URLEncoder.encode(to + destinationURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            logger.error("URL encode[string={0}]", destinationURL);
-        }
+		try {
+			to = URLEncoder.encode(to + destinationURL, "UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			logger.error("URL encode[string={0}]", destinationURL);
+		}
 
-        return Latkes.getContextPath() + "/logout?goto=" + to;
-    }
+		return Latkes.getContextPath() + "/logout?goto=" + to;
+	}
 }

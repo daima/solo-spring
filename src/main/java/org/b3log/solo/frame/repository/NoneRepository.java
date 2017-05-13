@@ -17,6 +17,7 @@ package org.b3log.solo.frame.repository;
 
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONObject;
 
 /**
@@ -27,92 +28,90 @@ import org.json.JSONObject;
  */
 public final class NoneRepository implements Repository {
 
-    /**
-     * Constructs a none repository with the specified name.
-     *
-     * @param name the specified name
-     */
-    public NoneRepository(final String name) {
-    }
+	/**
+	 * Constructs a none repository with the specified name.
+	 *
+	 * @param name
+	 *            the specified name
+	 */
+	public NoneRepository(final String name) {
+	}
 
-    @Override
-    public String add(final JSONObject jsonObject) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public String add(final JSONObject jsonObject) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public void remove(final String id) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public void remove(final String id) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public JSONObject get(final String id) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public JSONObject get(final String id) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public Map<String, JSONObject> get(final Iterable<String> ids) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public Map<String, JSONObject> get(final Iterable<String> ids) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public boolean has(final String id) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public boolean has(final String id) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public JSONObject get(final Query query) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public JSONObject get(final Query query) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public List<JSONObject> select(final String statement, final Object... params) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public List<JSONObject> select(final String statement, final Object... params) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public long count() throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public long count() throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public long count(final Query query) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public long count(final Query query) throws RepositoryException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public String getTableName() {
-        return "None Repository";
-    }
+	@Override
+	public String getTableName() {
+		return "None Repository";
+	}
 
-   /* @Override
-    public Transaction beginTransaction() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/*
+	 * @Override public Transaction beginTransaction() { throw new
+	 * UnsupportedOperationException("Not supported yet."); }
+	 * 
+	 * @Override public boolean hasTransactionBegun() { return false; }
+	 */
 
-    @Override
-    public boolean hasTransactionBegun() {
-        return false;
-    }*/
+	@Override
+	public boolean isWritable() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    @Override
-    public boolean isWritable() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void setWritable(final boolean writable) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public void setWritable(final boolean writable) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }

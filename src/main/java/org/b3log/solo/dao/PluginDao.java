@@ -15,10 +15,8 @@
  */
 package org.b3log.solo.dao;
 
-
 import org.b3log.solo.frame.model.Plugin;
 import org.springframework.stereotype.Repository;
-
 
 /**
  * Plugin repository.
@@ -32,7 +30,7 @@ public class PluginDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return Plugin.PLUGIN;
-    }
+		return Plugin.PLUGIN;
+	}
 
 }

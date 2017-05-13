@@ -28,52 +28,53 @@ import org.slf4j.LoggerFactory;
  */
 public final class ThreadServiceFactory {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(ThreadServiceFactory.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ThreadServiceFactory.class);
 
-    /**
-     * Thread service.
-     */
-    private static final ThreadService THREAD_SERVICE;
+	/**
+	 * Thread service.
+	 */
+	private static final ThreadService THREAD_SERVICE;
 
-    static {
-        logger.info("Constructing Thread Service....");
+	static {
+		logger.info("Constructing Thread Service....");
 
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        try {
-            Class<ThreadService> serviceClass = null;
+		try {
+			Class<ThreadService> serviceClass = null;
 
-            switch (runtimeEnv) {
-                case LOCAL:
-                	serviceClass = (Class<ThreadService>) Class.forName("org.b3log.solo.frame.thread.local.LocalThreadService");
-                	THREAD_SERVICE = serviceClass.newInstance();
+			switch (runtimeEnv) {
+			case LOCAL:
+				serviceClass = (Class<ThreadService>) Class
+						.forName("org.b3log.solo.frame.thread.local.LocalThreadService");
+				THREAD_SERVICE = serviceClass.newInstance();
 
-                    break;
-                default:
-                    throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException("Can not initialize Thread Service!", e);
-        }
+				break;
+			default:
+				throw new RuntimeException("Latke runs in the hell.... Please set the enviornment correctly");
+			}
+		} catch (final Exception e) {
+			throw new RuntimeException("Can not initialize Thread Service!", e);
+		}
 
-        logger.info("Constructed Thread Service");
-    }
+		logger.info("Constructed Thread Service");
+	}
 
-    /**
-     * Gets thread service.
-     *
-     * @return thread service
-     */
-    public static ThreadService getThreadService() {
-        return THREAD_SERVICE;
-    }
+	/**
+	 * Gets thread service.
+	 *
+	 * @return thread service
+	 */
+	public static ThreadService getThreadService() {
+		return THREAD_SERVICE;
+	}
 
-    /**
-     * Private default constructor.
-     */
-    private ThreadServiceFactory() {
-    }
+	/**
+	 * Private default constructor.
+	 */
+	private ThreadServiceFactory() {
+	}
 }

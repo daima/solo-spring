@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 /**
  * A dummy key generator.
  *
@@ -25,11 +24,11 @@ package org.b3log.solo.frame.repository;
  */
 public final class DBKeyGenerator implements KeyGenerator<Void> {
 
-    @Override
-    public Void gen() {
-        // Do nothing
+	@Override
+	public Void gen() {
+		// Do nothing
 
-        return null;
-    }
+		return null;
+	}
 
 }

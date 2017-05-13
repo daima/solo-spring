@@ -26,29 +26,33 @@ import java.util.Map;
  */
 public interface LangPropsService {
 
-    /**
-     * Gets a value from {@link org.b3log.solo.Latkes#getLocale() the current locale} specified language properties
-     * file with the specified key.
-     *
-     * @param key the specified key
-     * @return value
-     */
-    String get(final String key);
+	/**
+	 * Gets a value from {@link org.b3log.solo.Latkes#getLocale() the current
+	 * locale} specified language properties file with the specified key.
+	 *
+	 * @param key
+	 *            the specified key
+	 * @return value
+	 */
+	String get(final String key);
 
-    /**
-     * Gets a value with the specified key and locale.
-     *
-     * @param key the specified key
-     * @param locale the specified locale
-     * @return value
-     */
-    String get(final String key, final Locale locale);
+	/**
+	 * Gets a value with the specified key and locale.
+	 *
+	 * @param key
+	 *            the specified key
+	 * @param locale
+	 *            the specified locale
+	 * @return value
+	 */
+	String get(final String key, final Locale locale);
 
-    /**
-     * Gets all language properties as a map by the specified locale.
-     *
-     * @param locale the specified locale
-     * @return a map of language configurations
-     */
-    Map<String, String> getAll(final Locale locale);
+	/**
+	 * Gets all language properties as a map by the specified locale.
+	 *
+	 * @param locale
+	 *            the specified locale
+	 * @return a map of language configurations
+	 */
+	Map<String, String> getAll(final Locale locale);
 }

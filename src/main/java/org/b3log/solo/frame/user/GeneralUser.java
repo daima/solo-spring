@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.frame.user;
 
-
 /**
  * User.
  *
@@ -24,72 +23,75 @@ package org.b3log.solo.frame.user;
  */
 public final class GeneralUser {
 
-    /**
-     * Id.
-     */
-    private String id;
+	/**
+	 * Id.
+	 */
+	private String id;
 
-    /**
-     * Email.
-     */
-    private String email;
+	/**
+	 * Email.
+	 */
+	private String email;
 
-    /**
-     * Nickname.
-     */
-    private String nickname;
+	/**
+	 * Nickname.
+	 */
+	private String nickname;
 
-    /**
-     * Gets the email.
-     * 
-     * @return email
-     */
-    public String getEmail() {
-        return email;
-    }
+	/**
+	 * Gets the email.
+	 * 
+	 * @return email
+	 */
+	public String getEmail() {
+		return email;
+	}
 
-    /**
-     * Sets the email with the specified email.
-     * 
-     * @param email the specified email
-     */
-    public void setEmail(final String email) {
-        this.email = email;
-    }
+	/**
+	 * Sets the email with the specified email.
+	 * 
+	 * @param email
+	 *            the specified email
+	 */
+	public void setEmail(final String email) {
+		this.email = email;
+	}
 
-    /**
-     * Gets the id.
-     * 
-     * @return id
-     */
-    public String getId() {
-        return id;
-    }
+	/**
+	 * Gets the id.
+	 * 
+	 * @return id
+	 */
+	public String getId() {
+		return id;
+	}
 
-    /**
-     * Sets the id with the specified id.
-     * 
-     * @param id the specified id
-     */
-    public void setId(final String id) {
-        this.id = id;
-    }
+	/**
+	 * Sets the id with the specified id.
+	 * 
+	 * @param id
+	 *            the specified id
+	 */
+	public void setId(final String id) {
+		this.id = id;
+	}
 
-    /**
-     * Gets the nickname.
-     * 
-     * @return nickname
-     */
-    public String getNickname() {
-        return nickname;
-    }
+	/**
+	 * Gets the nickname.
+	 * 
+	 * @return nickname
+	 */
+	public String getNickname() {
+		return nickname;
+	}
 
-    /**
-     * Sets the nickname with the specified nickname.
-     * 
-     * @param nickname the specified nickname
-     */
-    public void setNickname(final String nickname) {
-        this.nickname = nickname;
-    }
+	/**
+	 * Sets the nickname with the specified nickname.
+	 * 
+	 * @param nickname
+	 *            the specified nickname
+	 */
+	public void setNickname(final String nickname) {
+		this.nickname = nickname;
+	}
 }

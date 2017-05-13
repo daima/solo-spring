@@ -22,20 +22,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.b3log.solo.dao.UserDao;
 import org.b3log.solo.frame.model.Role;
 import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.Transaction;
 import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.model.UserExt;
+import org.b3log.solo.module.util.Thumbnails;
 import org.b3log.solo.util.MD5;
 import org.b3log.solo.util.Sessions;
 import org.b3log.solo.util.Strings;
-import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.model.UserExt;
-import org.b3log.solo.module.util.Thumbnails;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,320 +49,344 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMgmtService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(UserMgmtService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(UserMgmtService.class);
 
-    /**
-     * User repository.
-     */
-    @Autowired
-    private UserDao userDao;
+	/**
+	 * User repository.
+	 */
+	@Autowired
+	private UserDao userDao;
 
-    /**
-     * Language service.
-     */
-    @Autowired
-    private LangPropsService langPropsService;
-    
-    @Autowired
-    private UserQueryService userQueryService;
+	/**
+	 * Language service.
+	 */
+	@Autowired
+	private LangPropsService langPropsService;
 
-    /**
-     * Length of hashed password.
-     */
-    private static final int HASHED_PASSWORD_LENGTH = 32;
+	@Autowired
+	private UserQueryService userQueryService;
 
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     */
-    public void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
+	/**
+	 * Length of hashed password.
+	 */
+	private static final int HASHED_PASSWORD_LENGTH = 32;
 
-        if (null == cookies || 0 == cookies.length) {
-            return;
-        }
+	/**
+	 * Tries to login with cookie.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @param response
+	 *            the specified response
+	 */
+	public void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
+		final Cookie[] cookies = request.getCookies();
 
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
+		if (null == cookies || 0 == cookies.length) {
+			return;
+		}
 
-                if (!"b3log-latke".equals(cookie.getName())) {
-                    continue;
-                }
+		try {
+			for (int i = 0; i < cookies.length; i++) {
+				final Cookie cookie = cookies[i];
 
-                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+				if (!"b3log-latke".equals(cookie.getName())) {
+					continue;
+				}
 
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+				final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                if (Strings.isEmptyOrNull(userEmail)) {
-                    break;
-                }
+				final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
 
-                final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
+				if (Strings.isEmptyOrNull(userEmail)) {
+					break;
+				}
 
-                if (null == user) {
-                    break;
-                }
+				final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
 
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
+				if (null == user) {
+					break;
+				}
 
-                if (userPassword.equals(hashPassword)) {
-                    Sessions.login(request, response, user);
-                    logger.debug( "Logged in with cookie[email={0}]", userEmail);
-                }
-            }
-        } catch (final Exception e) {
-            logger.warn("Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+				final String userPassword = user.optString(User.USER_PASSWORD);
+				final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
 
-            final Cookie cookie = new Cookie("b3log-latke", null);
+				if (userPassword.equals(hashPassword)) {
+					Sessions.login(request, response, user);
+					logger.debug("Logged in with cookie[email={0}]", userEmail);
+				}
+			}
+		} catch (final Exception e) {
+			logger.warn("Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
+			final Cookie cookie = new Cookie("b3log-latke", null);
 
-            response.addCookie(cookie);
-        }
-    }
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
 
-    /**
-     * Updates a user by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "", // Unhashed
-     *     "userRole": "", // optional
-     *     "userURL": "", // optional
-     * }
-     * </pre>
-     *
-     * @throws ServiceException service exception
-     */
-    public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
-//        final Transaction transaction = userDao.beginTransaction();
+			response.addCookie(cookie);
+		}
+	}
 
-        try {
-            final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
-            final JSONObject oldUser = userDao.get(oldUserId);
+	/**
+	 * Updates a user by the specified request json object.
+	 *
+	 * @param requestJSONObject
+	 *            the specified request json object, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "oId": "",
+	 *     "userName": "",
+	 *     "userEmail": "",
+	 *     "userPassword": "", // Unhashed
+	 *     "userRole": "", // optional
+	 *     "userURL": "", // optional
+	 * }
+	 *            </pre>
+	 *
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
+		// final Transaction transaction = userDao.beginTransaction();
 
-            if (null == oldUser) {
-                throw new ServiceException(langPropsService.get("updateFailLabel"));
-            }
+		try {
+			final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
+			final JSONObject oldUser = userDao.get(oldUserId);
 
-            final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
-            // Check email is whether duplicated
-            final JSONObject mayBeAnother = userDao.getByEmail(userNewEmail);
+			if (null == oldUser) {
+				throw new ServiceException(langPropsService.get("updateFailLabel"));
+			}
 
-            if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
-                // Exists someone else has the save email as requested
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
-            }
+			final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
+			// Check email is whether duplicated
+			final JSONObject mayBeAnother = userDao.getByEmail(userNewEmail);
 
-            // Update
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
+			if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
+				// Exists someone else has the save email as requested
+				throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
+			}
 
-            oldUser.put(User.USER_EMAIL, userNewEmail);
-            oldUser.put(User.USER_NAME, userName);
+			// Update
+			final String userName = requestJSONObject.optString(User.USER_NAME);
+			final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
-            final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
-            final String newHashedPassword = MD5.hash(userPassword);
-            final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
+			oldUser.put(User.USER_EMAIL, userNewEmail);
+			oldUser.put(User.USER_NAME, userName);
 
-            if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the Solo Online Demo (http://demo.b3log.org)
-                if (!maybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
-                    oldUser.put(User.USER_PASSWORD, newHashedPassword);
-                }
-            }
+			final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
+			final String newHashedPassword = MD5.hash(userPassword);
+			final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
 
-            final String userRole = requestJSONObject.optString(User.USER_ROLE);
-            if (!Strings.isEmptyOrNull(userRole)) {
-                oldUser.put(User.USER_ROLE, userRole);
-            }
+			if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the
+																	// Solo
+																	// Online
+																	// Demo
+																	// (http://demo.b3log.org)
+				if (!maybeHashed
+						|| (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
+					oldUser.put(User.USER_PASSWORD, newHashedPassword);
+				}
+			}
 
-            final String userURL = requestJSONObject.optString(User.USER_URL);
-            if (!Strings.isEmptyOrNull(userURL)) {
-                oldUser.put(User.USER_URL, userURL);
-            }
-            
-            final String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (!StringUtils.equals(userAvatar, oldUser.optString(UserExt.USER_AVATAR))) {
-                oldUser.put(UserExt.USER_AVATAR, userAvatar);
-            }
+			final String userRole = requestJSONObject.optString(User.USER_ROLE);
+			if (!Strings.isEmptyOrNull(userRole)) {
+				oldUser.put(User.USER_ROLE, userRole);
+			}
 
-            userDao.update(oldUserId, oldUser);
-//            transaction.commit();
-        } catch (final RepositoryException e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			final String userURL = requestJSONObject.optString(User.USER_URL);
+			if (!Strings.isEmptyOrNull(userURL)) {
+				oldUser.put(User.USER_URL, userURL);
+			}
 
-            logger.error("Updates a user failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			final String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
+			if (!StringUtils.equals(userAvatar, oldUser.optString(UserExt.USER_AVATAR))) {
+				oldUser.put(UserExt.USER_AVATAR, userAvatar);
+			}
 
-    /**
-     * Switches the user role between "defaultRole" and "visitorRole" by the specified user id.
-     *
-     * @param userId the specified user id
-     * @throws ServiceException exception
-     * @see User
-     */
-    public void changeRole(final String userId) throws ServiceException {
-//        final Transaction transaction = userDao.beginTransaction();
+			userDao.update(oldUserId, oldUser);
+			// transaction.commit();
+		} catch (final RepositoryException e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-        try {
-            final JSONObject oldUser = userDao.get(userId);
+			logger.error("Updates a user failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-            if (null == oldUser) {
-                throw new ServiceException(langPropsService.get("updateFailLabel"));
-            }
+	/**
+	 * Switches the user role between "defaultRole" and "visitorRole" by the
+	 * specified user id.
+	 *
+	 * @param userId
+	 *            the specified user id
+	 * @throws ServiceException
+	 *             exception
+	 * @see User
+	 */
+	public void changeRole(final String userId) throws ServiceException {
+		// final Transaction transaction = userDao.beginTransaction();
 
-            final String role = oldUser.optString(User.USER_ROLE);
+		try {
+			final JSONObject oldUser = userDao.get(userId);
 
-            if (Role.VISITOR_ROLE.equals(role)) {
-                oldUser.put(User.USER_ROLE, Role.DEFAULT_ROLE);
-            } else if (Role.DEFAULT_ROLE.equals(role)) {
-                oldUser.put(User.USER_ROLE, Role.VISITOR_ROLE);
-            }
+			if (null == oldUser) {
+				throw new ServiceException(langPropsService.get("updateFailLabel"));
+			}
 
-            userDao.update(userId, oldUser);
-//            transaction.commit();
-        } catch (final RepositoryException e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			final String role = oldUser.optString(User.USER_ROLE);
 
-            logger.error("Updates a user failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			if (Role.VISITOR_ROLE.equals(role)) {
+				oldUser.put(User.USER_ROLE, Role.DEFAULT_ROLE);
+			} else if (Role.DEFAULT_ROLE.equals(role)) {
+				oldUser.put(User.USER_ROLE, Role.VISITOR_ROLE);
+			}
 
-    /**
-     * Adds a user with the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "", // Unhashed
-     *     "userURL": "", // optional, uses 'servePath' instead if not specified
-     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
-     *     "userAvatar": "" // optional, users generated gravatar url instead if not specified
-     * }
-     * </pre>,see {@link User} for more details
-     *
-     * @return generated user id
-     * @throws ServiceException service exception
-     */
-    public String addUser(final JSONObject requestJSONObject) throws ServiceException {
-//        final Transaction transaction = userDao.beginTransaction();
+			userDao.update(userId, oldUser);
+			// transaction.commit();
+		} catch (final RepositoryException e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-        try {
-            final JSONObject user = new JSONObject();
-            final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
-            final JSONObject duplicatedUser = userDao.getByEmail(userEmail);
+			logger.error("Updates a user failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-            if (null != duplicatedUser) {
-//                if (transaction.isActive()) {
-//                    transaction.rollback();
-//                }
+	/**
+	 * Adds a user with the specified request json object.
+	 *
+	 * @param requestJSONObject
+	 *            the specified request json object, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "userName": "",
+	 *     "userEmail": "",
+	 *     "userPassword": "", // Unhashed
+	 *     "userURL": "", // optional, uses 'servePath' instead if not specified
+	 *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
+	 *     "userAvatar": "" // optional, users generated gravatar url instead if not specified
+	 * }
+	 *            </pre>
+	 * 
+	 *            ,see {@link User} for more details
+	 *
+	 * @return generated user id
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public String addUser(final JSONObject requestJSONObject) throws ServiceException {
+		// final Transaction transaction = userDao.beginTransaction();
 
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
-            }
+		try {
+			final JSONObject user = new JSONObject();
+			final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
+			final JSONObject duplicatedUser = userDao.getByEmail(userEmail);
 
-            user.put(User.USER_EMAIL, userEmail);
+			if (null != duplicatedUser) {
+				// if (transaction.isActive()) {
+				// transaction.rollback();
+				// }
 
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            user.put(User.USER_NAME, userName);
+				throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
+			}
 
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, MD5.hash(userPassword));
+			user.put(User.USER_EMAIL, userEmail);
 
-            String userURL = requestJSONObject.optString(User.USER_URL);
-            if (Strings.isEmptyOrNull(userURL)) {
-                userURL = Latkes.getServePath();
-            }
+			final String userName = requestJSONObject.optString(User.USER_NAME);
+			user.put(User.USER_NAME, userName);
 
-            if (!Strings.isURL(userURL)) {
-                throw new ServiceException(langPropsService.get("urlInvalidLabel"));
-            }
+			final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
+			user.put(User.USER_PASSWORD, MD5.hash(userPassword));
 
-            user.put(User.USER_URL, userURL);
+			String userURL = requestJSONObject.optString(User.USER_URL);
+			if (Strings.isEmptyOrNull(userURL)) {
+				userURL = Latkes.getServePath();
+			}
 
-            final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
-            user.put(User.USER_ROLE, roleName);
+			if (!Strings.isURL(userURL)) {
+				throw new ServiceException(langPropsService.get("urlInvalidLabel"));
+			}
 
-            user.put(UserExt.USER_ARTICLE_COUNT, 0);
-            user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+			user.put(User.USER_URL, userURL);
 
-            String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (Strings.isEmptyOrNull(userAvatar)) {
-                userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
-            }
-            user.put(UserExt.USER_AVATAR, userAvatar);
+			final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
+			user.put(User.USER_ROLE, roleName);
 
-            userDao.add(user);
+			user.put(UserExt.USER_ARTICLE_COUNT, 0);
+			user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
-//            transaction.commit();
+			String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
+			if (Strings.isEmptyOrNull(userAvatar)) {
+				userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
+			}
+			user.put(UserExt.USER_AVATAR, userAvatar);
 
-            return user.optString(Keys.OBJECT_ID);
-        } catch (final RepositoryException e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+			userDao.add(user);
 
-            logger.error("Adds a user failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			// transaction.commit();
 
-    /**
-     * Removes a user specified by the given user id.
-     *
-     * @param userId the given user id
-     * @throws ServiceException service exception
-     */
-    public void removeUser(final String userId) throws ServiceException {
-//        final Transaction transaction = userDao.beginTransaction();
+			return user.optString(Keys.OBJECT_ID);
+		} catch (final RepositoryException e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-        try {
-            userDao.remove(userId);
+			logger.error("Adds a user failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-//            transaction.commit();
-        } catch (final RepositoryException e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
+	/**
+	 * Removes a user specified by the given user id.
+	 *
+	 * @param userId
+	 *            the given user id
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public void removeUser(final String userId) throws ServiceException {
+		// final Transaction transaction = userDao.beginTransaction();
 
-            logger.error("Removes a user[id=" + userId + "] failed", e);
-            throw new ServiceException(e);
-        }
-    }
+		try {
+			userDao.remove(userId);
 
-    /**
-     * Sets the user repository with the specified user repository.
-     *
-     * @param userDao the specified user repository
-     */
-    public void setUserRepository(final UserDao userDao) {
-        this.userDao = userDao;
-    }
+			// transaction.commit();
+		} catch (final RepositoryException e) {
+			// if (transaction.isActive()) {
+			// transaction.rollback();
+			// }
 
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
+			logger.error("Removes a user[id=" + userId + "] failed", e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * Sets the user repository with the specified user repository.
+	 *
+	 * @param userDao
+	 *            the specified user repository
+	 */
+	public void setUserRepository(final UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	/**
+	 * Sets the language service with the specified language service.
+	 *
+	 * @param langPropsService
+	 *            the specified language service
+	 */
+	public void setLangPropsService(final LangPropsService langPropsService) {
+		this.langPropsService = langPropsService;
+	}
 }

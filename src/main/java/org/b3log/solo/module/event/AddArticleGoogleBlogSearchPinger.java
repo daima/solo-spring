@@ -21,8 +21,6 @@ import java.net.URLEncoder;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
@@ -30,6 +28,8 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

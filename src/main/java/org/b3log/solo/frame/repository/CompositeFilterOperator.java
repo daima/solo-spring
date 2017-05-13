@@ -26,32 +26,34 @@ import java.util.Arrays;
  */
 public enum CompositeFilterOperator {
 
-    /**
-     * And.
-     */
-    AND,
-    /**
-     * Or.
-     */
-    OR;
+	/**
+	 * And.
+	 */
+	AND,
+	/**
+	 * Or.
+	 */
+	OR;
 
-    /**
-     * Builds an composite filter with 'AND' all the specified sub filters.
-     * 
-     * @param subFilters the specified sub filters
-     * @return composite filter
-     */
-    public static CompositeFilter and(final Filter... subFilters) {
-        return new CompositeFilter(AND, Arrays.asList(subFilters));
-    }
+	/**
+	 * Builds an composite filter with 'AND' all the specified sub filters.
+	 * 
+	 * @param subFilters
+	 *            the specified sub filters
+	 * @return composite filter
+	 */
+	public static CompositeFilter and(final Filter... subFilters) {
+		return new CompositeFilter(AND, Arrays.asList(subFilters));
+	}
 
-    /**
-     * Builds an composite filter with 'OR' all the specified sub filters.
-     * 
-     * @param subFilters the specified sub filters
-     * @return composite filter
-     */
-    public static CompositeFilter or(final Filter... subFilters) {
-        return new CompositeFilter(OR, Arrays.asList(subFilters));
-    }
+	/**
+	 * Builds an composite filter with 'OR' all the specified sub filters.
+	 * 
+	 * @param subFilters
+	 *            the specified sub filters
+	 * @return composite filter
+	 */
+	public static CompositeFilter or(final Filter... subFilters) {
+		return new CompositeFilter(OR, Arrays.asList(subFilters));
+	}
 }

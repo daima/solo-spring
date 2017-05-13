@@ -15,16 +15,15 @@
  */
 package org.b3log.solo.util;
 
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.b3log.solo.frame.model.User;
 import org.json.JSONObject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Session utilities.
@@ -34,158 +33,170 @@ import org.json.JSONObject;
  */
 public final class Sessions {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(Sessions.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Sessions.class);
 
-    /**
-     * Cookie expiry: one year.
-     */
-    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 365;
+	/**
+	 * Cookie expiry: one year.
+	 */
+	private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 365;
 
-    /**
-     * Private default constructor.
-     */
-    private Sessions() {}
+	/**
+	 * Private default constructor.
+	 */
+	private Sessions() {
+	}
 
-    /**
-     * Logins the specified user from the specified request.
-     * 
-     * <p>
-     * If no session of the specified request, do nothing.
-     * </p>
-     *
-     * @param request the specified request
-     * @param response the specified response
-     * @param user the specified user, for example,
-     * <pre>
-     * {
-     *     "userEmail": "",
-     *     "userPassword": ""
-     * }
-     * </pre>
-     */
-    public static void login(final HttpServletRequest request, final HttpServletResponse response, final JSONObject user) {
-        final HttpSession session = request.getSession();
+	/**
+	 * Logins the specified user from the specified request.
+	 * 
+	 * <p>
+	 * If no session of the specified request, do nothing.
+	 * </p>
+	 *
+	 * @param request
+	 *            the specified request
+	 * @param response
+	 *            the specified response
+	 * @param user
+	 *            the specified user, for example,
+	 * 
+	 *            <pre>
+	 * {
+	 *     "userEmail": "",
+	 *     "userPassword": ""
+	 * }
+	 *            </pre>
+	 */
+	public static void login(final HttpServletRequest request, final HttpServletResponse response,
+			final JSONObject user) {
+		final HttpSession session = request.getSession();
 
-        if (null == session) {
-            logger.warn("The session is null");
-            return;
-        }
+		if (null == session) {
+			logger.warn("The session is null");
+			return;
+		}
 
-        session.setAttribute(User.USER, user);
+		session.setAttribute(User.USER, user);
 
-        try {
-            final JSONObject cookieJSONObject = new JSONObject();
+		try {
+			final JSONObject cookieJSONObject = new JSONObject();
 
-            cookieJSONObject.put(User.USER_EMAIL, user.optString(User.USER_EMAIL));
-            cookieJSONObject.put(User.USER_PASSWORD, user.optString(User.USER_PASSWORD));
+			cookieJSONObject.put(User.USER_EMAIL, user.optString(User.USER_EMAIL));
+			cookieJSONObject.put(User.USER_PASSWORD, user.optString(User.USER_PASSWORD));
 
-            final Cookie cookie = new Cookie("b3log-latke", cookieJSONObject.toString());
+			final Cookie cookie = new Cookie("b3log-latke", cookieJSONObject.toString());
 
-            cookie.setPath("/");
-            cookie.setMaxAge(COOKIE_EXPIRY);
-            
-            response.addCookie(cookie);
-        } catch (final Exception e) {
-            logger.warn("Can not write cookie", e);
-        }
-    }
+			cookie.setPath("/");
+			cookie.setMaxAge(COOKIE_EXPIRY);
 
-    /**
-     * Logouts a user with the specified request.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     * @return {@code true} if succeed, otherwise returns {@code false}
-     */
-    public static boolean logout(final HttpServletRequest request, final HttpServletResponse response) {
-        final HttpSession session = request.getSession(false);
+			response.addCookie(cookie);
+		} catch (final Exception e) {
+			logger.warn("Can not write cookie", e);
+		}
+	}
 
-        if (null != session) {
-            final Cookie cookie = new Cookie("b3log-latke", null);
+	/**
+	 * Logouts a user with the specified request.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @param response
+	 *            the specified response
+	 * @return {@code true} if succeed, otherwise returns {@code false}
+	 */
+	public static boolean logout(final HttpServletRequest request, final HttpServletResponse response) {
+		final HttpSession session = request.getSession(false);
 
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
+		if (null != session) {
+			final Cookie cookie = new Cookie("b3log-latke", null);
 
-            response.addCookie(cookie);
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
 
-            session.invalidate();
+			response.addCookie(cookie);
 
-            return true;
-        }
+			session.invalidate();
 
-        return false;
-    }
+			return true;
+		}
 
-    /**
-     * Gets the current user with the specified request.
-     * 
-     * @param request the specified request
-     * @return the current user, returns {@code null} if not logged in 
-     */
-    public static JSONObject currentUser(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
+		return false;
+	}
 
-        if (null != session) {
-            return (JSONObject) session.getAttribute(User.USER);
-        }
+	/**
+	 * Gets the current user with the specified request.
+	 * 
+	 * @param request
+	 *            the specified request
+	 * @return the current user, returns {@code null} if not logged in
+	 */
+	public static JSONObject currentUser(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
 
-        return null;
-    }
+		if (null != session) {
+			return (JSONObject) session.getAttribute(User.USER);
+		}
 
-    /**
-     * Gets the current logged in user password with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user password or {@code null}
-     */
-    public static String currentUserPwd(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
+		return null;
+	}
 
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
+	/**
+	 * Gets the current logged in user password with the specified request.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @return the current user password or {@code null}
+	 */
+	public static String currentUserPwd(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
 
-            return user.optString(User.USER_PASSWORD);
-        }
+		if (null != session) {
+			final JSONObject user = (JSONObject) session.getAttribute(User.USER);
 
-        return null;
-    }
+			return user.optString(User.USER_PASSWORD);
+		}
 
-    /**
-     * Gets the current logged in user name with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user name or {@code null}
-     */
-    public static String currentUserName(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
+		return null;
+	}
 
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
+	/**
+	 * Gets the current logged in user name with the specified request.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @return the current user name or {@code null}
+	 */
+	public static String currentUserName(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
 
-            return user.optString(User.USER_NAME);
-        }
+		if (null != session) {
+			final JSONObject user = (JSONObject) session.getAttribute(User.USER);
 
-        return null;
-    }
+			return user.optString(User.USER_NAME);
+		}
 
-    /**
-     * Gets the current logged in user email with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user name or {@code null}
-     */
-    public static String currentUserEmail(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
+		return null;
+	}
 
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
+	/**
+	 * Gets the current logged in user email with the specified request.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @return the current user name or {@code null}
+	 */
+	public static String currentUserEmail(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
 
-            return user.optString(User.USER_EMAIL);
-        }
+		if (null != session) {
+			final JSONObject user = (JSONObject) session.getAttribute(User.USER);
 
-        return null;
-    }
+			return user.optString(User.USER_EMAIL);
+		}
+
+		return null;
+	}
 }

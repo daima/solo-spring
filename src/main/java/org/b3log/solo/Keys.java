@@ -15,11 +15,9 @@
  */
 package org.b3log.solo;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
-
 
 /**
  * This class defines framework (non-functional) keys.
@@ -29,282 +27,286 @@ import java.util.Map;
  */
 public final class Keys {
 
-    /**
-     * Key of message.
-     */
-    public static final String MSG = "msg";
+	/**
+	 * Key of message.
+	 */
+	public static final String MSG = "msg";
 
-    /**
-     * Key of event.
-     */
-    public static final String EVENTS = "events";
+	/**
+	 * Key of event.
+	 */
+	public static final String EVENTS = "events";
 
-    /**
-     * Key of code.
-     */
-    public static final String CODE = "code";
+	/**
+	 * Key of code.
+	 */
+	public static final String CODE = "code";
 
-    /**
-     * Key of action status code.
-     */
-    public static final String STATUS_CODE = "sc";
+	/**
+	 * Key of action status code.
+	 */
+	public static final String STATUS_CODE = "sc";
 
-    /**
-     * Key of session id.
-     */
-    public static final String SESSION_ID = "sId";
+	/**
+	 * Key of session id.
+	 */
+	public static final String SESSION_ID = "sId";
 
-    /**
-     * Key of results.
-     */
-    public static final String RESULTS = "rslts";
+	/**
+	 * Key of results.
+	 */
+	public static final String RESULTS = "rslts";
 
-    /**
-     * Key of id of an entity json object.
-     */
-    public static final String OBJECT_ID = SoloConstant.JDBC_DEFAULTKEYNAME;
+	/**
+	 * Key of id of an entity json object.
+	 */
+	public static final String OBJECT_ID = SoloConstant.JDBC_DEFAULTKEYNAME;
 
-    /**
-     * Key of ids.
-     */
-    public static final String OBJECT_IDS = "oIds";
+	/**
+	 * Key of ids.
+	 */
+	public static final String OBJECT_IDS = "oIds";
 
-    /**
-     * Key of locale.
-     */
-    public static final String LOCALE = "locale";
+	/**
+	 * Key of locale.
+	 */
+	public static final String LOCALE = "locale";
 
-    /**
-     * Key of language.
-     */
-    public static final String LANGUAGE = "lang";
+	/**
+	 * Key of language.
+	 */
+	public static final String LANGUAGE = "lang";
 
-    /**
-     * Simple date format. (yyyy-MM-dd HH:mm:ss)
-     */
-    public static final DateFormat SIMPLE_DATE_FORMAT1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	/**
+	 * Simple date format. (yyyy-MM-dd HH:mm:ss)
+	 */
+	public static final DateFormat SIMPLE_DATE_FORMAT1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Key of template directory name.
-     */
-    public static final String TEMAPLTE_DIR_NAME = "templateDirName";
+	/**
+	 * Key of template directory name.
+	 */
+	public static final String TEMAPLTE_DIR_NAME = "templateDirName";
 
-    /**
-     * Key of exclusion.
-     */
-    public static final String EXCLUDES = "excludes";
+	/**
+	 * Key of exclusion.
+	 */
+	public static final String EXCLUDES = "excludes";
 
-    /**
-     * Key of request.
-     */
-    public static final String REQUEST = "request";
+	/**
+	 * Key of request.
+	 */
+	public static final String REQUEST = "request";
 
-    /**
-     * Key of FreeMarker render.
-     */
-    public static final String FREEMARKER_ACTION = "FreeMarkerAction";
+	/**
+	 * Key of FreeMarker render.
+	 */
+	public static final String FREEMARKER_ACTION = "FreeMarkerAction";
 
-    /**
-     * Fills the server info into the specified data model.
-     * 
-     * <p>
-     *   <ul>
-     *     <li>{@value org.b3log.solo.Keys.Server#SERVER_SCHEME}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#SERVER_HOST}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#SERVER_PORT}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#SERVER}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#CONTEXT_PATH}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#SERVE_PATH}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_SCHEME}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_HOST}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_PORT}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_PATH}</li>
-     *     <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVE_PATH}</li>
-     *   </ul>
-     * </p>
-     * 
-     * @param dataModel the specified data model
-     */
-    public static void fillServer(final Map<String, Object> dataModel) {
-        dataModel.put(Server.SERVER_SCHEME, Latkes.getServerScheme());
-        dataModel.put(Server.SERVER_HOST, Latkes.getServerHost());
-        dataModel.put(Server.SERVER_PORT, Latkes.getServerPort());
-        dataModel.put(Server.SERVER, Latkes.getServer());
-        dataModel.put(Server.CONTEXT_PATH, Latkes.getContextPath());
-        dataModel.put(Server.SERVE_PATH, Latkes.getServePath());
+	/**
+	 * Fills the server info into the specified data model.
+	 * 
+	 * <p>
+	 * <ul>
+	 * <li>{@value org.b3log.solo.Keys.Server#SERVER_SCHEME}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#SERVER_HOST}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#SERVER_PORT}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#SERVER}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#CONTEXT_PATH}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#SERVE_PATH}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_SCHEME}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_HOST}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER_PORT}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVER}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_PATH}</li>
+	 * <li>{@value org.b3log.solo.Keys.Server#STATIC_SERVE_PATH}</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param dataModel
+	 *            the specified data model
+	 */
+	public static void fillServer(final Map<String, Object> dataModel) {
+		dataModel.put(Server.SERVER_SCHEME, Latkes.getServerScheme());
+		dataModel.put(Server.SERVER_HOST, Latkes.getServerHost());
+		dataModel.put(Server.SERVER_PORT, Latkes.getServerPort());
+		dataModel.put(Server.SERVER, Latkes.getServer());
+		dataModel.put(Server.CONTEXT_PATH, Latkes.getContextPath());
+		dataModel.put(Server.SERVE_PATH, Latkes.getServePath());
 
-        dataModel.put(Server.STATIC_SERVER_SCHEME, Latkes.getStaticServerScheme());
-        dataModel.put(Server.STATIC_SERVER_HOST, Latkes.getStaticServerHost());
-        dataModel.put(Server.STATIC_SERVER_PORT, Latkes.getStaticServerPort());
-        dataModel.put(Server.STATIC_SERVER, Latkes.getStaticServer());
-        dataModel.put(Server.STATIC_PATH, Latkes.getStaticPath());
-        dataModel.put(Server.STATIC_SERVE_PATH, Latkes.getStaticServePath());
-    }
+		dataModel.put(Server.STATIC_SERVER_SCHEME, Latkes.getStaticServerScheme());
+		dataModel.put(Server.STATIC_SERVER_HOST, Latkes.getStaticServerHost());
+		dataModel.put(Server.STATIC_SERVER_PORT, Latkes.getStaticServerPort());
+		dataModel.put(Server.STATIC_SERVER, Latkes.getStaticServer());
+		dataModel.put(Server.STATIC_PATH, Latkes.getStaticPath());
+		dataModel.put(Server.STATIC_SERVE_PATH, Latkes.getStaticServePath());
+	}
 
-    /**
-     * Fills the runtime info into the specified data model.
-     * 
-     * <p>
-     *   <ul>
-     *     <li>{@value org.b3log.solo.Keys.Runtime#RUNTIME_ENV}</li>
-     *     <li>{@value org.b3log.solo.Keys.Runtime#RUNTIME_MODE}</li>
-     *   </ul>
-     * </p>
-     * 
-     * @param dataModel the specified data model
-     */
-    public static void fillRuntime(final Map<String, Object> dataModel) {
-        dataModel.put(Runtime.RUNTIME_ENV, Latkes.getRuntimeEnv().name());
-        dataModel.put(Runtime.RUNTIME_MODE, Latkes.getRuntimeMode().name());
-    }
+	/**
+	 * Fills the runtime info into the specified data model.
+	 * 
+	 * <p>
+	 * <ul>
+	 * <li>{@value org.b3log.solo.Keys.Runtime#RUNTIME_ENV}</li>
+	 * <li>{@value org.b3log.solo.Keys.Runtime#RUNTIME_MODE}</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param dataModel
+	 *            the specified data model
+	 */
+	public static void fillRuntime(final Map<String, Object> dataModel) {
+		dataModel.put(Runtime.RUNTIME_ENV, Latkes.getRuntimeEnv().name());
+		dataModel.put(Runtime.RUNTIME_MODE, Latkes.getRuntimeMode().name());
+	}
 
-    /**
-     * This class defines HTTP request keys.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.1, May 17, 2012
-     */
-    public static final class HttpRequest {
+	/**
+	 * This class defines HTTP request keys.
+	 *
+	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @version 1.0.0.1, May 17, 2012
+	 */
+	public static final class HttpRequest {
 
-        /**
-         * Key of is search engine bot.
-         */
-        public static final String IS_SEARCH_ENGINE_BOT = "isSearchEngineBot";
+		/**
+		 * Key of is search engine bot.
+		 */
+		public static final String IS_SEARCH_ENGINE_BOT = "isSearchEngineBot";
 
-        /**
-         * Key of static resource checked.
-         */
-        public static final String REQUEST_STATIC_RESOURCE_CHECKED = "requestStaticResourceChecked";
+		/**
+		 * Key of static resource checked.
+		 */
+		public static final String REQUEST_STATIC_RESOURCE_CHECKED = "requestStaticResourceChecked";
 
-        /**
-         * Key of static resource requesting.
-         */
-        public static final String IS_REQUEST_STATIC_RESOURCE = "isRequestStaticResource";
+		/**
+		 * Key of static resource requesting.
+		 */
+		public static final String IS_REQUEST_STATIC_RESOURCE = "isRequestStaticResource";
 
-        /**
-         * Key of start time millis.
-         */
-        public static final String START_TIME_MILLIS = "startTimeMillis";
+		/**
+		 * Key of start time millis.
+		 */
+		public static final String START_TIME_MILLIS = "startTimeMillis";
 
-        /**
-         * Key of request URI.
-         */
-        public static final String REQUEST_URI = "requestURI";
+		/**
+		 * Key of request URI.
+		 */
+		public static final String REQUEST_URI = "requestURI";
 
-        /**
-         * Key of request method.
-         */
-        public static final String REQUEST_METHOD = "requestMethod";
+		/**
+		 * Key of request method.
+		 */
+		public static final String REQUEST_METHOD = "requestMethod";
 
-        /**
-         * Privates constructor.
-         */
-        private HttpRequest() {}
-    }
+		/**
+		 * Privates constructor.
+		 */
+		private HttpRequest() {
+		}
+	}
 
+	/**
+	 * This class defines server keys.
+	 *
+	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @version 1.0.0.0, May 4, 2012
+	 */
+	public static final class Server {
 
-    /**
-     * This class defines server keys.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, May 4, 2012
-     */
-    public static final class Server {
+		/**
+		 * Key of server scheme.
+		 */
+		public static final String SERVER_SCHEME = "serverScheme";
 
-        /**
-         * Key of server scheme.
-         */
-        public static final String SERVER_SCHEME = "serverScheme";
+		/**
+		 * Key of server host.
+		 */
+		public static final String SERVER_HOST = "serverHost";
 
-        /**
-         * Key of server host.
-         */
-        public static final String SERVER_HOST = "serverHost";
+		/**
+		 * Key of server port.
+		 */
+		public static final String SERVER_PORT = "serverPort";
 
-        /**
-         * Key of server port.
-         */
-        public static final String SERVER_PORT = "serverPort";
+		/**
+		 * Key of server.
+		 */
+		public static final String SERVER = "server";
 
-        /**
-         * Key of server.
-         */
-        public static final String SERVER = "server";
+		/**
+		 * Key of static server scheme.
+		 */
+		public static final String STATIC_SERVER_SCHEME = "staticServerScheme";
 
-        /**
-         * Key of static server scheme.
-         */
-        public static final String STATIC_SERVER_SCHEME = "staticServerScheme";
+		/**
+		 * Key of static server host.
+		 */
+		public static final String STATIC_SERVER_HOST = "staticServerHost";
 
-        /**
-         * Key of static server host.
-         */
-        public static final String STATIC_SERVER_HOST = "staticServerHost";
+		/**
+		 * Key of static server port.
+		 */
+		public static final String STATIC_SERVER_PORT = "staticServerPort";
 
-        /**
-         * Key of static server port.
-         */
-        public static final String STATIC_SERVER_PORT = "staticServerPort";
+		/**
+		 * Key of static server.
+		 */
+		public static final String STATIC_SERVER = "staticServer";
 
-        /**
-         * Key of static server.
-         */
-        public static final String STATIC_SERVER = "staticServer";
+		/**
+		 * Key of context path.
+		 */
+		public static final String CONTEXT_PATH = "contextPath";
 
-        /**
-         * Key of context path.
-         */
-        public static final String CONTEXT_PATH = "contextPath";
+		/**
+		 * Key of static path.
+		 */
+		public static final String STATIC_PATH = "staticPath";
 
-        /**
-         * Key of static path.
-         */
-        public static final String STATIC_PATH = "staticPath";
+		/**
+		 * Key of serve path.
+		 */
+		public static final String SERVE_PATH = "servePath";
 
-        /**
-         * Key of serve path.
-         */
-        public static final String SERVE_PATH = "servePath";
+		/**
+		 * Key of static serve path.
+		 */
+		public static final String STATIC_SERVE_PATH = "staticServePath";
 
-        /**
-         * Key of static serve path.
-         */
-        public static final String STATIC_SERVE_PATH = "staticServePath";
+		/**
+		 * Private constructor.
+		 */
+		private Server() {
+		}
+	}
 
-        /**
-         * Private constructor.
-         */
-        private Server() {}
-    }
+	/**
+	 * This class defines runtime keys.
+	 *
+	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @version 1.0.0.0, Sep 6, 2012
+	 */
+	public static final class Runtime {
 
+		/**
+		 * Key of runtime environment.
+		 */
+		public static final String RUNTIME_ENV = "runtimeEnv";
 
-    /**
-     * This class defines runtime keys.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Sep 6, 2012
-     */
-    public static final class Runtime {
+		/**
+		 * Key of runtime mode.
+		 */
+		public static final String RUNTIME_MODE = "runtimeMode";
 
-        /**
-         * Key of runtime environment.
-         */
-        public static final String RUNTIME_ENV = "runtimeEnv";
+		/**
+		 * Private constructor.
+		 */
+		private Runtime() {
+		}
+	}
 
-        /**
-         * Key of runtime mode.
-         */
-        public static final String RUNTIME_MODE = "runtimeMode";
-
-        /**
-         * Private constructor.
-         */
-        private Runtime() {}
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Keys() {}
+	/**
+	 * Private constructor.
+	 */
+	private Keys() {
+	}
 }

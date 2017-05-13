@@ -15,13 +15,6 @@
  */
 package org.b3log.solo.module.event;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-
-import org.b3log.solo.frame.event.Event;
-import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.thread.local.LocalThreadService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,61 +25,70 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventManager {
-/*
-    *//**
-     * Synchronized event queue.
-     *//*
-    private SynchronizedEventQueue synchronizedEventQueue = new SynchronizedEventQueue(this);
-
-    *//**
-     * Fire the specified event synchronously.
-     *
-     * @param event the specified event
-     * @throws EventException event exception
-     *//*
-    public void fireEventSynchronously(final Event<?> event) throws EventException {
-        synchronizedEventQueue.fireEvent(event);
-    }
-
-    *//**
-     * Fire the specified event asynchronously.
-     *
-     * @param <T> the result type
-     * @param event the specified event
-     * @return future result
-     * @throws EventException event exception
-     *//*
-    public <T> Future<T> fireEventAsynchronously(final Event<?> event) throws EventException {
-        final FutureTask<T> futureTask = new FutureTask<T>(new Callable<T>() {
-            @Override
-            public T call() throws Exception {
-                synchronizedEventQueue.fireEvent(event);
-
-
-                return null; // XXX: Our future????
-            }
-        });
-
-        LocalThreadService.EXECUTOR_SERVICE.execute(futureTask);
-
-        return futureTask;
-    }
-
-    *//**
-     * Registers the specified event listener.
-     *
-     * @param eventListener the specified event listener
-     *//*
-    public void registerListener(final AbstractEventListener<?> eventListener) {
-        synchronizedEventQueue.addListener(eventListener);
-    }
-
-    *//**
-     * Unregisters the specified event listener.
-     *
-     * @param eventListener the specified event listener
-     *//*
-    public void unregisterListener(final AbstractEventListener<?> eventListener) {
-        synchronizedEventQueue.deleteListener(eventListener);
-    }*/
+	/*
+	*//**
+		 * Synchronized event queue.
+		 */
+	/*
+	 * private SynchronizedEventQueue synchronizedEventQueue = new
+	 * SynchronizedEventQueue(this);
+	 * 
+	 *//**
+		 * Fire the specified event synchronously.
+		 *
+		 * @param event
+		 *            the specified event
+		 * @throws EventException
+		 *             event exception
+		 */
+	/*
+	 * public void fireEventSynchronously(final Event<?> event) throws
+	 * EventException { synchronizedEventQueue.fireEvent(event); }
+	 * 
+	 *//**
+		 * Fire the specified event asynchronously.
+		 *
+		 * @param <T>
+		 *            the result type
+		 * @param event
+		 *            the specified event
+		 * @return future result
+		 * @throws EventException
+		 *             event exception
+		 */
+	/*
+	 * public <T> Future<T> fireEventAsynchronously(final Event<?> event) throws
+	 * EventException { final FutureTask<T> futureTask = new FutureTask<T>(new
+	 * Callable<T>() {
+	 * 
+	 * @Override public T call() throws Exception {
+	 * synchronizedEventQueue.fireEvent(event);
+	 * 
+	 * 
+	 * return null; // XXX: Our future???? } });
+	 * 
+	 * LocalThreadService.EXECUTOR_SERVICE.execute(futureTask);
+	 * 
+	 * return futureTask; }
+	 * 
+	 *//**
+		 * Registers the specified event listener.
+		 *
+		 * @param eventListener
+		 *            the specified event listener
+		 */
+	/*
+	 * public void registerListener(final AbstractEventListener<?>
+	 * eventListener) { synchronizedEventQueue.addListener(eventListener); }
+	 * 
+	 *//**
+		 * Unregisters the specified event listener.
+		 *
+		 * @param eventListener
+		 *            the specified event listener
+		 *//*
+		 * public void unregisterListener(final AbstractEventListener<?>
+		 * eventListener) {
+		 * synchronizedEventQueue.deleteListener(eventListener); }
+		 */
 }

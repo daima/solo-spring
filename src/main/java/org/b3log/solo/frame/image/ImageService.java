@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.frame.image;
 
-
 import java.util.List;
-
 
 /**
  * Image service.
@@ -27,23 +25,25 @@ import java.util.List;
  */
 public interface ImageService {
 
-    /**
-     * Makes an image with the specified data.
-     * 
-     * @param data the specified data
-     * @return image
-     */
-    Image makeImage(final byte[] data);
+	/**
+	 * Makes an image with the specified data.
+	 * 
+	 * @param data
+	 *            the specified data
+	 * @return image
+	 */
+	Image makeImage(final byte[] data);
 
-    /**
-     * Makes an image with the specified images from left to right respectively.
-     * 
-     * <p>
-     * Each of image of the specified images should have the same dimension.
-     * </p>
-     * 
-     * @param images the specified images
-     * @return image
-     */
-    Image makeImage(final List<Image> images);
+	/**
+	 * Makes an image with the specified images from left to right respectively.
+	 * 
+	 * <p>
+	 * Each of image of the specified images should have the same dimension.
+	 * </p>
+	 * 
+	 * @param images
+	 *            the specified images
+	 * @return image
+	 */
+	Image makeImage(final List<Image> images);
 }

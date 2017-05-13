@@ -15,20 +15,18 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.solo.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.b3log.solo.dao.OptionDao;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.service.ServiceException;
-import org.springframework.stereotype.Service;
-import org.b3log.solo.dao.OptionDao;
 import org.b3log.solo.model.Option;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Option query service.
@@ -40,77 +38,86 @@ import org.json.JSONObject;
 @Service
 public class OptionQueryService {
 
-    /**
-     * Option repository.
-     */
-    @Autowired
-    private OptionDao optionRepository;
+	/**
+	 * Option repository.
+	 */
+	@Autowired
+	private OptionDao optionRepository;
 
-    /**
-     * Gets an option with the specified option id.
-     * 
-     * @param optionId the specified option id
-     * @return an option, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getOptionById(final String optionId) throws ServiceException {
-        try {
-            return optionRepository.get(optionId);
-        } catch (final RepositoryException e) {
-            throw new ServiceException(e);
-        }
-    }
+	/**
+	 * Gets an option with the specified option id.
+	 * 
+	 * @param optionId
+	 *            the specified option id
+	 * @return an option, returns {@code null} if not found
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getOptionById(final String optionId) throws ServiceException {
+		try {
+			return optionRepository.get(optionId);
+		} catch (final RepositoryException e) {
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets options with the specified category.
-     * 
-     * <p>
-     * All options with the specified category will be merged into one json object as the return value.
-     * </p>
-     * 
-     * @param category the specified category
-     * @return all options with the specified category, for example,
-     * <pre>
-     * {
-     *     "${optionId}": "${optionValue}",
-     *     ....
-     * }
-     * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getOptions(final String category) throws ServiceException {
-        final Query query = new Query();
+	/**
+	 * Gets options with the specified category.
+	 * 
+	 * <p>
+	 * All options with the specified category will be merged into one json
+	 * object as the return value.
+	 * </p>
+	 * 
+	 * @param category
+	 *            the specified category
+	 * @return all options with the specified category, for example,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "${optionId}": "${optionValue}",
+	 *     ....
+	 * }
+	 *         </pre>
+	 * 
+	 *         , returns {@code null} if not found
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getOptions(final String category) throws ServiceException {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category));
+		query.setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category));
 
-        try {
-            final JSONObject result = optionRepository.get(query);
-            final JSONArray options = result.getJSONArray(Keys.RESULTS);
+		try {
+			final JSONObject result = optionRepository.get(query);
+			final JSONArray options = result.getJSONArray(Keys.RESULTS);
 
-            if (0 == options.length()) {
-                return null;
-            }
+			if (0 == options.length()) {
+				return null;
+			}
 
-            final JSONObject ret = new JSONObject();
+			final JSONObject ret = new JSONObject();
 
-            for (int i = 0; i < options.length(); i++) {
-                final JSONObject option = options.getJSONObject(i);
+			for (int i = 0; i < options.length(); i++) {
+				final JSONObject option = options.getJSONObject(i);
 
-                ret.put(option.getString(Keys.OBJECT_ID), option.getString(Option.OPTION_VALUE));
-            }
+				ret.put(option.getString(Keys.OBJECT_ID), option.getString(Option.OPTION_VALUE));
+			}
 
-            return ret;
-        } catch (final Exception e) {
-            throw new ServiceException(e);
-        }
-    }
+			return ret;
+		} catch (final Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Sets the option repository with the specified option repository.
-     * 
-     * @param optionRepository the specified option repository
-     */
-    public void setOptionRepository(final OptionDao optionRepository) {
-        this.optionRepository = optionRepository;
-    }
+	/**
+	 * Sets the option repository with the specified option repository.
+	 * 
+	 * @param optionRepository
+	 *            the specified option repository
+	 */
+	public void setOptionRepository(final OptionDao optionRepository) {
+		this.optionRepository = optionRepository;
+	}
 }

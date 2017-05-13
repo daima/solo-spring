@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.model.sitemap;
 
-
 import org.b3log.solo.util.Strings;
-
 
 /**
  * Sitemap URL.
@@ -28,100 +26,102 @@ import org.b3log.solo.util.Strings;
  */
 public final class URL {
 
-    /**
-     * Start URL element.
-     */
-    private static final String START_URL_ELEMENT = "<url>";
+	/**
+	 * Start URL element.
+	 */
+	private static final String START_URL_ELEMENT = "<url>";
 
-    /**
-     * End URL element.
-     */
-    private static final String END_URL_ELEMENT = "</url>";
+	/**
+	 * End URL element.
+	 */
+	private static final String END_URL_ELEMENT = "</url>";
 
-    /**
-     * Start loc element.
-     */
-    private static final String START_LOC_ELEMENT = "<loc>";
+	/**
+	 * Start loc element.
+	 */
+	private static final String START_LOC_ELEMENT = "<loc>";
 
-    /**
-     * End loc element.
-     */
-    private static final String END_LOC_ELEMENT = "</loc>";
+	/**
+	 * End loc element.
+	 */
+	private static final String END_LOC_ELEMENT = "</loc>";
 
-    /**
-     * Start last mod element.
-     */
-    private static final String START_LAST_MOD_ELEMENT = "<lastmod>";
+	/**
+	 * Start last mod element.
+	 */
+	private static final String START_LAST_MOD_ELEMENT = "<lastmod>";
 
-    /**
-     * End last mod element.
-     */
-    private static final String END_LAST_MOD_ELEMENT = "</lastmod>";
+	/**
+	 * End last mod element.
+	 */
+	private static final String END_LAST_MOD_ELEMENT = "</lastmod>";
 
-    /**
-     * Loc.
-     */
-    private String loc;
+	/**
+	 * Loc.
+	 */
+	private String loc;
 
-    /**
-     * Last mod.
-     */
-    private String lastMod;
+	/**
+	 * Last mod.
+	 */
+	private String lastMod;
 
-    /**
-     * Gets the last modified.
-     * 
-     * @return last modified
-     */
-    public String getLastMod() {
-        return lastMod;
-    }
+	/**
+	 * Gets the last modified.
+	 * 
+	 * @return last modified
+	 */
+	public String getLastMod() {
+		return lastMod;
+	}
 
-    /**
-     * Sets the last modified with the specified last modified.
-     * 
-     * @param lastMod the specified modified
-     */
-    public void setLastMod(final String lastMod) {
-        this.lastMod = lastMod;
-    }
+	/**
+	 * Sets the last modified with the specified last modified.
+	 * 
+	 * @param lastMod
+	 *            the specified modified
+	 */
+	public void setLastMod(final String lastMod) {
+		this.lastMod = lastMod;
+	}
 
-    /**
-     * Gets the loc.
-     * 
-     * @return loc
-     */
-    public String getLoc() {
-        return loc;
-    }
+	/**
+	 * Gets the loc.
+	 * 
+	 * @return loc
+	 */
+	public String getLoc() {
+		return loc;
+	}
 
-    /**
-     * Sets the loc with the specified loc.
-     * 
-     * @param loc the specified loc
-     */
-    public void setLoc(final String loc) {
-        this.loc = loc;
-    }
+	/**
+	 * Sets the loc with the specified loc.
+	 * 
+	 * @param loc
+	 *            the specified loc
+	 */
+	public void setLoc(final String loc) {
+		this.loc = loc;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder();
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(START_URL_ELEMENT);
+		stringBuilder.append(START_URL_ELEMENT);
 
-        stringBuilder.append(START_LOC_ELEMENT);
-        stringBuilder.append(loc);
-        stringBuilder.append(END_LOC_ELEMENT);
+		stringBuilder.append(START_LOC_ELEMENT);
+		stringBuilder.append(loc);
+		stringBuilder.append(END_LOC_ELEMENT);
 
-        if (!Strings.isEmptyOrNull(lastMod)) {
-            stringBuilder.append(START_LAST_MOD_ELEMENT);
-            stringBuilder.append(lastMod);
-            stringBuilder.append(END_LAST_MOD_ELEMENT);
-        }
+		if (!Strings.isEmptyOrNull(lastMod)) {
+			stringBuilder.append(START_LAST_MOD_ELEMENT);
+			stringBuilder.append(lastMod);
+			stringBuilder.append(END_LAST_MOD_ELEMENT);
+		}
 
-        stringBuilder.append(END_URL_ELEMENT);
+		stringBuilder.append(END_URL_ELEMENT);
 
-        return stringBuilder.toString();
-    }
+		return stringBuilder.toString();
+	}
 }

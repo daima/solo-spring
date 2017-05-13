@@ -15,13 +15,12 @@
  */
 package org.b3log.solo.frame.repository;
 
-
 import java.util.Collections;
 import java.util.List;
 
-
 /**
- * Composite filter that combines serval sub filters using a {@link CompositeFilterOperator}.
+ * Composite filter that combines serval sub filters using a
+ * {@link CompositeFilterOperator}.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Sep 27, 2013
@@ -29,102 +28,105 @@ import java.util.List;
  */
 public final class CompositeFilter implements Filter {
 
-    /**
-     * Operator.
-     */
-    private CompositeFilterOperator operator;
+	/**
+	 * Operator.
+	 */
+	private CompositeFilterOperator operator;
 
-    /**
-     * Sub filters.
-     */
-    private List<Filter> subFilters;
+	/**
+	 * Sub filters.
+	 */
+	private List<Filter> subFilters;
 
-    /**
-     * Initialization value for hashing.
-     */
-    private static final int INIT_HASH = 3;
+	/**
+	 * Initialization value for hashing.
+	 */
+	private static final int INIT_HASH = 3;
 
-    /**
-     * Base for hashing.
-     */
-    private static final int BASE = 97;
+	/**
+	 * Base for hashing.
+	 */
+	private static final int BASE = 97;
 
-    /**
-     * Constructor with the specified parameters.
-     * 
-     * @param operator the specified operator
-     * @param subFilters the specified sub filters
-     */
-    public CompositeFilter(final CompositeFilterOperator operator, final List<Filter> subFilters) {
-        this.operator = operator;
-        this.subFilters = subFilters;
-    }
+	/**
+	 * Constructor with the specified parameters.
+	 * 
+	 * @param operator
+	 *            the specified operator
+	 * @param subFilters
+	 *            the specified sub filters
+	 */
+	public CompositeFilter(final CompositeFilterOperator operator, final List<Filter> subFilters) {
+		this.operator = operator;
+		this.subFilters = subFilters;
+	}
 
-    /**
-     * Gets the sub filters.
-     * 
-     * @return sub filters
-     */
-    public List<Filter> getSubFilters() {
-        return Collections.unmodifiableList(subFilters);
-    }
+	/**
+	 * Gets the sub filters.
+	 * 
+	 * @return sub filters
+	 */
+	public List<Filter> getSubFilters() {
+		return Collections.unmodifiableList(subFilters);
+	}
 
-    /**
-     * Gets the operator.
-     * 
-     * @return operator
-     */
-    public CompositeFilterOperator getOperator() {
-        return operator;
-    }
+	/**
+	 * Gets the operator.
+	 * 
+	 * @return operator
+	 */
+	public CompositeFilterOperator getOperator() {
+		return operator;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CompositeFilter other = (CompositeFilter) obj;
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CompositeFilter other = (CompositeFilter) obj;
 
-        if (this.operator != other.operator) {
-            return false;
-        }
-        if (this.subFilters != other.subFilters && (this.subFilters == null || !this.subFilters.equals(other.subFilters))) {
-            return false;
-        }
-        return true;
-    }
+		if (this.operator != other.operator) {
+			return false;
+		}
+		if (this.subFilters != other.subFilters
+				&& (this.subFilters == null || !this.subFilters.equals(other.subFilters))) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int ret = INIT_HASH;
+	@Override
+	public int hashCode() {
+		int ret = INIT_HASH;
 
-        ret = BASE * ret + (this.operator != null ? this.operator.hashCode() : 0);
-        ret = BASE * ret + (this.subFilters != null ? this.subFilters.hashCode() : 0);
+		ret = BASE * ret + (this.operator != null ? this.operator.hashCode() : 0);
+		ret = BASE * ret + (this.subFilters != null ? this.subFilters.hashCode() : 0);
 
-        return ret;
-    }
+		return ret;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder("operator=");
-        
-        stringBuilder.append(operator).append(", filters=[");
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder("operator=");
 
-        for (int i = 0; i < subFilters.size(); i++) {
-            final Filter filter = subFilters.get(i);
+		stringBuilder.append(operator).append(", filters=[");
 
-            stringBuilder.append("filter=[").append(filter.toString()).append("]");
-            
-            if (i < subFilters.size() - 1) {
-                stringBuilder.append(", ");
-            }
-        }
+		for (int i = 0; i < subFilters.size(); i++) {
+			final Filter filter = subFilters.get(i);
 
-        stringBuilder.append("]");
+			stringBuilder.append("filter=[").append(filter.toString()).append("]");
 
-        return stringBuilder.toString();
-    }
+			if (i < subFilters.size() - 1) {
+				stringBuilder.append(", ");
+			}
+		}
+
+		stringBuilder.append("]");
+
+		return stringBuilder.toString();
+	}
 }

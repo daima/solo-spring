@@ -19,18 +19,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.b3log.solo.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.frame.repository.Query;
 import org.b3log.solo.frame.repository.RepositoryException;
 import org.b3log.solo.frame.repository.SortDirection;
 import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.util.CollectionUtils;
-import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,181 +44,209 @@ import org.springframework.stereotype.Service;
 @Service
 public class TagQueryService {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(TagQueryService.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(TagQueryService.class);
 
-    /**
-     * Tag repository.
-     */
-    @Autowired
-    private TagDao tagDao;
+	/**
+	 * Tag repository.
+	 */
+	@Autowired
+	private TagDao tagDao;
 
-    /**
-     * Gets a tag by the specified tag title.
-     *
-     * @param tagTitle the specified tag title
-     * @return for example,      <pre>
-     * {
-     *     "tag": {
-     *         "oId": "",
-     *         "tagTitle": "",
-     *         "tagReferenceCount": int,
-     *         "tagPublishedRefCount": int
-     *     }
-     * }
-     * </pre>, returns {@code null} if not found
-     *
-     * @throws ServiceException service exception
-     */
-    public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
-        try {
-            final JSONObject ret = new JSONObject();
+	/**
+	 * Gets a tag by the specified tag title.
+	 *
+	 * @param tagTitle
+	 *            the specified tag title
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * {
+	 *     "tag": {
+	 *         "oId": "",
+	 *         "tagTitle": "",
+	 *         "tagReferenceCount": int,
+	 *         "tagPublishedRefCount": int
+	 *     }
+	 * }
+	 *         </pre>
+	 * 
+	 *         , returns {@code null} if not found
+	 *
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
+		try {
+			final JSONObject ret = new JSONObject();
 
-            final JSONObject tag = tagDao.getByTitle(tagTitle);
+			final JSONObject tag = tagDao.getByTitle(tagTitle);
 
-            if (null == tag) {
-                return null;
-            }
+			if (null == tag) {
+				return null;
+			}
 
-            ret.put(Tag.TAG, tag);
+			ret.put(Tag.TAG, tag);
 
-            logger.debug( "Got an tag[title={0}]", tagTitle);
+			logger.debug("Got an tag[title={0}]", tagTitle);
 
-            return ret;
-        } catch (final RepositoryException e) {
-            logger.error("Gets an article failed", e);
-            throw new ServiceException(e);
-        }
-    }
+			return ret;
+		} catch (final RepositoryException e) {
+			logger.error("Gets an article failed", e);
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets the count of tags.
-     *
-     * @return count of tags
-     * @throws ServiceException service exception
-     */
-    public long getTagCount() throws ServiceException {
-        try {
-            return tagDao.count();
-        } catch (final RepositoryException e) {
-            logger.error("Gets tags failed", e);
+	/**
+	 * Gets the count of tags.
+	 *
+	 * @return count of tags
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public long getTagCount() throws ServiceException {
+		try {
+			return tagDao.count();
+		} catch (final RepositoryException e) {
+			logger.error("Gets tags failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets all tags.
-     *
-     * @return for example,      <pre>
-     * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
-     *     ....
-     * ]
-     * </pre>, returns an empty list if not found
-     *
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getTags() throws ServiceException {
-        try {
-            final Query query = new Query().setPageCount(1);
+	/**
+	 * Gets all tags.
+	 *
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * [
+	 *     {"tagTitle": "", "tagReferenceCount": int, ....},
+	 *     ....
+	 * ]
+	 *         </pre>
+	 * 
+	 *         , returns an empty list if not found
+	 *
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public List<JSONObject> getTags() throws ServiceException {
+		try {
+			final Query query = new Query().setPageCount(1);
 
-            final JSONObject result = tagDao.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+			final JSONObject result = tagDao.get(query);
+			final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(tagArray);
-        } catch (final RepositoryException e) {
-            logger.error("Gets tags failed", e);
+			return CollectionUtils.jsonArrayToList(tagArray);
+		} catch (final RepositoryException e) {
+			logger.error("Gets tags failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets top (reference count descending) tags.
-     *
-     * @param fetchSize the specified fetch size
-     * @return for example,      <pre>
-     * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
-     *     ....
-     * ]
-     * </pre>, returns an empty list if not found
-     *
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getTopTags(final int fetchSize) throws ServiceException {
-        try {
-            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
-                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING);
+	/**
+	 * Gets top (reference count descending) tags.
+	 *
+	 * @param fetchSize
+	 *            the specified fetch size
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * [
+	 *     {"tagTitle": "", "tagReferenceCount": int, ....},
+	 *     ....
+	 * ]
+	 *         </pre>
+	 * 
+	 *         , returns an empty list if not found
+	 *
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public List<JSONObject> getTopTags(final int fetchSize) throws ServiceException {
+		try {
+			final Query query = new Query().setPageCount(1).setPageSize(fetchSize)
+					.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING);
 
-            final JSONObject result = tagDao.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+			final JSONObject result = tagDao.get(query);
+			final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(tagArray);
-        } catch (final RepositoryException e) {
-            logger.error("Gets top tags failed", e);
+			return CollectionUtils.jsonArrayToList(tagArray);
+		} catch (final RepositoryException e) {
+			logger.error("Gets top tags failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Gets bottom (reference count ascending) tags.
-     *
-     * @param fetchSize the specified fetch size
-     * @return for example,      <pre>
-     * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
-     *     ....
-     * ]
-     * </pre>, returns an empty list if not found
-     *
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getBottomTags(final int fetchSize) throws ServiceException {
-        try {
-            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
-                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.ASCENDING);
+	/**
+	 * Gets bottom (reference count ascending) tags.
+	 *
+	 * @param fetchSize
+	 *            the specified fetch size
+	 * @return for example,
+	 * 
+	 *         <pre>
+	 * [
+	 *     {"tagTitle": "", "tagReferenceCount": int, ....},
+	 *     ....
+	 * ]
+	 *         </pre>
+	 * 
+	 *         , returns an empty list if not found
+	 *
+	 * @throws ServiceException
+	 *             service exception
+	 */
+	public List<JSONObject> getBottomTags(final int fetchSize) throws ServiceException {
+		try {
+			final Query query = new Query().setPageCount(1).setPageSize(fetchSize)
+					.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.ASCENDING);
 
-            final JSONObject result = tagDao.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+			final JSONObject result = tagDao.get(query);
+			final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(tagArray);
-        } catch (final RepositoryException e) {
-            logger.error("Gets bottom tags failed", e);
+			return CollectionUtils.jsonArrayToList(tagArray);
+		} catch (final RepositoryException e) {
+			logger.error("Gets bottom tags failed", e);
 
-            throw new ServiceException(e);
-        }
-    }
+			throw new ServiceException(e);
+		}
+	}
 
-    /**
-     * Removes tags of unpublished articles from the specified tags.
-     *
-     * @param tags the specified tags
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
-        final Iterator<JSONObject> iterator = tags.iterator();
+	/**
+	 * Removes tags of unpublished articles from the specified tags.
+	 *
+	 * @param tags
+	 *            the specified tags
+	 * @throws JSONException
+	 *             json exception
+	 * @throws RepositoryException
+	 *             repository exception
+	 */
+	public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
+		final Iterator<JSONObject> iterator = tags.iterator();
 
-        while (iterator.hasNext()) {
-            final JSONObject tag = iterator.next();
+		while (iterator.hasNext()) {
+			final JSONObject tag = iterator.next();
 
-            if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
-                iterator.remove();
-            }
-        }
-    }
+			if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
+				iterator.remove();
+			}
+		}
+	}
 
-    /**
-     * Sets the tag repository with the specified tag repository.
-     *
-     * @param tagDao the specified tag repository
-     */
-    public void setTagRepository(final TagDao tagDao) {
-        this.tagDao = tagDao;
-    }
+	/**
+	 * Sets the tag repository with the specified tag repository.
+	 *
+	 * @param tagDao
+	 *            the specified tag repository
+	 */
+	public void setTagRepository(final TagDao tagDao) {
+		this.tagDao = tagDao;
+	}
 }

@@ -22,12 +22,12 @@ package org.b3log.solo.frame.plugin;
  * @version 1.0.0.0, Jun 11, 2011
  */
 public enum PluginStatus {
-    /**
-     * Indicates a plugin is enabled.
-     */
-    ENABLED, 
-    /**
-     * Indicates a plugin is disabled.
-     */
-    DISABLED
+	/**
+	 * Indicates a plugin is enabled.
+	 */
+	ENABLED,
+	/**
+	 * Indicates a plugin is disabled.
+	 */
+	DISABLED
 }

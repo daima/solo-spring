@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.controller.console;
 
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.module.util.QueryResults;
@@ -34,11 +31,12 @@ import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 
 /**
  * Comment console request processing.
@@ -50,328 +48,357 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class CommentConsole {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(CommentConsole.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CommentConsole.class);
 
-    /**
-     * User query service.
-     */
-    @Autowired
-    private UserQueryService userQueryService;
+	/**
+	 * User query service.
+	 */
+	@Autowired
+	private UserQueryService userQueryService;
 
-    /**
-     * Comment query service.
-     */
-    @Autowired
-    private CommentQueryService commentQueryService;
+	/**
+	 * Comment query service.
+	 */
+	@Autowired
+	private CommentQueryService commentQueryService;
 
-    /**
-     * Comment management service.
-     */
-    @Autowired
-    private CommentMgmtService commentMgmtService;
+	/**
+	 * Comment management service.
+	 */
+	@Autowired
+	private CommentMgmtService commentMgmtService;
 
-    /**
-     * Language service.
-     */
-    @Autowired
-    private LangPropsService langPropsService;
+	/**
+	 * Language service.
+	 */
+	@Autowired
+	private LangPropsService langPropsService;
 
-    /**
-     * Removes a comment of an article by the specified request.
-     *
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context the specified http request context
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/console/page/comment/*", method=RequestMethod.DELETE)
-    public void removePageComment(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Removes a comment of an article by the specified request.
+	 *
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "msg": ""
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @param context
+	 *            the specified http request context
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/console/page/comment/*", method = RequestMethod.DELETE)
+	public void removePageComment(final HttpServletRequest request, final HttpServletResponse response)
+			throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        final JSONRenderer renderer = new JSONRenderer();
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
+		final JSONRenderer renderer = new JSONRenderer();
+		final JSONObject ret = new JSONObject();
+		renderer.setJSONObject(ret);
 
-        try {
-            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/comment/").length());
+		try {
+			final String commentId = request.getRequestURI()
+					.substring((Latkes.getContextPath() + "/console/page/comment/").length());
 
-            if (!commentQueryService.canAccessComment(commentId, request)) {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-                renderer.render(request, response);
-                return;
-            }
+			if (!commentQueryService.canAccessComment(commentId, request)) {
+				ret.put(Keys.STATUS_CODE, false);
+				ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+				renderer.render(request, response);
+				return;
+			}
 
-            commentMgmtService.removePageComment(commentId);
+			commentMgmtService.removePageComment(commentId);
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			ret.put(Keys.STATUS_CODE, true);
+			ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
-        }
-        renderer.render(request, response);
-    }
+			ret.put(Keys.STATUS_CODE, false);
+			ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+		}
+		renderer.render(request, response);
+	}
 
-    /**
-     * Removes a comment of an article by the specified request.
-     *
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context the specified http request context
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/console/article/comment/*", method=RequestMethod.DELETE)
-    public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Removes a comment of an article by the specified request.
+	 *
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "msg": ""
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @param context
+	 *            the specified http request context
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/console/article/comment/*", method = RequestMethod.DELETE)
+	public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response)
+			throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        final JSONRenderer renderer = new JSONRenderer();
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
+		final JSONRenderer renderer = new JSONRenderer();
+		final JSONObject ret = new JSONObject();
+		renderer.setJSONObject(ret);
 
-        try {
-            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/comment/").length());
+		try {
+			final String commentId = request.getRequestURI()
+					.substring((Latkes.getContextPath() + "/console/article/comment/").length());
 
-            if (!commentQueryService.canAccessComment(commentId, request)) {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-                renderer.render(request, response);
-                return;
-            }
+			if (!commentQueryService.canAccessComment(commentId, request)) {
+				ret.put(Keys.STATUS_CODE, false);
+				ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+				renderer.render(request, response);
+				return;
+			}
 
-            commentMgmtService.removeArticleComment(commentId);
+			commentMgmtService.removeArticleComment(commentId);
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			ret.put(Keys.STATUS_CODE, true);
+			ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
-        }
-        renderer.render(request, response);
-    }
+			ret.put(Keys.STATUS_CODE, false);
+			ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+		}
+		renderer.render(request, response);
+	}
 
-    /**
-     * Gets comments by the specified request.
-     *
-     * <p>
-     * The request URI contains the pagination arguments. For example, the
-     * request URI is /console/comments/1/10/20, means the current page is 1, the
-     * page size is 10, and the window size is 20.
-     * </p>
-     *
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "comments": [{
-     *         "oId": "",
-     *         "commentTitle": "",
-     *         "commentName": "",
-     *         "commentEmail": "",
-     *         "thumbnailUrl": "",
-     *         "commentURL": "",
-     *         "commentContent": "",
-     *         "commentTime": long,
-     *         "commentSharpURL": ""
-     *      }, ....]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context the specified http request context
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-        method=RequestMethod.GET)
-    public void getComments(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Gets comments by the specified request.
+	 *
+	 * <p>
+	 * The request URI contains the pagination arguments. For example, the
+	 * request URI is /console/comments/1/10/20, means the current page is 1,
+	 * the page size is 10, and the window size is 20.
+	 * </p>
+	 *
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "pagination": {
+	 *         "paginationPageCount": 100,
+	 *         "paginationPageNums": [1, 2, 3, 4, 5]
+	 *     },
+	 *     "comments": [{
+	 *         "oId": "",
+	 *         "commentTitle": "",
+	 *         "commentName": "",
+	 *         "commentEmail": "",
+	 *         "thumbnailUrl": "",
+	 *         "commentURL": "",
+	 *         "commentContent": "",
+	 *         "commentTime": long,
+	 *         "commentSharpURL": ""
+	 *      }, ....]
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @param context
+	 *            the specified http request context
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/console/comments/*/*/*"/*
+														 * Requests.
+														 * PAGINATION_PATH_PATTERN
+														 */, method = RequestMethod.GET)
+	public void getComments(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        final JSONRenderer renderer = new JSONRenderer();
-        try {
-            final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + "/console/comments/").length());
+		final JSONRenderer renderer = new JSONRenderer();
+		try {
+			final String requestURI = request.getRequestURI();
+			final String path = requestURI.substring((Latkes.getContextPath() + "/console/comments/").length());
 
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+			final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result = commentQueryService.getComments(requestJSONObject);
+			final JSONObject result = commentQueryService.getComments(requestJSONObject);
 
-            result.put(Keys.STATUS_CODE, true);
+			result.put(Keys.STATUS_CODE, true);
 
-            renderer.setJSONObject(result);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			renderer.setJSONObject(result);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-        renderer.render(request, response);
-    }
+			renderer.setJSONObject(jsonObject);
+			jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+		}
+		renderer.render(request, response);
+	}
 
-    /**
-     * Gets comments of an article specified by the article id for administrator.
-     *
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "comments": [{
-     *         "oId": "",
-     *         "commentName": "",
-     *         "commentEmail": "",
-     *         "thumbnailUrl": "",
-     *         "commentURL": "",
-     *         "commentContent": "",
-     *         "commentTime": long,
-     *         "commentSharpURL": "",
-     *         "isReply": boolean
-     *      }, ....]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/console/comments/article/*", method=RequestMethod.GET)
-    public void getArticleComments(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Gets comments of an article specified by the article id for
+	 * administrator.
+	 *
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "comments": [{
+	 *         "oId": "",
+	 *         "commentName": "",
+	 *         "commentEmail": "",
+	 *         "thumbnailUrl": "",
+	 *         "commentURL": "",
+	 *         "commentContent": "",
+	 *         "commentTime": long,
+	 *         "commentSharpURL": "",
+	 *         "isReply": boolean
+	 *      }, ....]
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param context
+	 *            the specified http request context
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/console/comments/article/*", method = RequestMethod.GET)
+	public void getArticleComments(final HttpServletRequest request, final HttpServletResponse response)
+			throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        final JSONRenderer renderer = new JSONRenderer();
-        try {
-            final JSONObject ret = new JSONObject();
+		final JSONRenderer renderer = new JSONRenderer();
+		try {
+			final JSONObject ret = new JSONObject();
 
-            renderer.setJSONObject(ret);
+			renderer.setJSONObject(ret);
 
-            final String requestURI = request.getRequestURI();
-            final String articleId = requestURI.substring((Latkes.getContextPath() + "/console/comments/article/").length());
+			final String requestURI = request.getRequestURI();
+			final String articleId = requestURI
+					.substring((Latkes.getContextPath() + "/console/comments/article/").length());
 
-            final List<JSONObject> comments = commentQueryService.getComments(articleId);
+			final List<JSONObject> comments = commentQueryService.getComments(articleId);
 
-            ret.put(Comment.COMMENTS, comments);
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			ret.put(Comment.COMMENTS, comments);
+			ret.put(Keys.STATUS_CODE, true);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-        renderer.render(request, response);
-    }
+			renderer.setJSONObject(jsonObject);
+			jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+		}
+		renderer.render(request, response);
+	}
 
-    /**
-     * Gets comments of a page specified by the article id for administrator.
-     *
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "comments": [{
-     *         "oId": "",
-     *         "commentName": "",
-     *         "commentEmail": "",
-     *         "thumbnailUrl": "",
-     *         "commentURL": "",
-     *         "commentContent": "",
-     *         "commentTime": long,
-     *         "commentSharpURL": "",
-     *         "isReply": boolean
-     *      }, ....]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception exception
-     */
-    @RequestMapping(value = "/console/comments/page/*", method=RequestMethod.GET)
-    public void getPageComments(final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+	/**
+	 * Gets comments of a page specified by the article id for administrator.
+	 *
+	 * <p>
+	 * Renders the response with a json object, for example,
+	 * 
+	 * <pre>
+	 * {
+	 *     "sc": boolean,
+	 *     "comments": [{
+	 *         "oId": "",
+	 *         "commentName": "",
+	 *         "commentEmail": "",
+	 *         "thumbnailUrl": "",
+	 *         "commentURL": "",
+	 *         "commentContent": "",
+	 *         "commentTime": long,
+	 *         "commentSharpURL": "",
+	 *         "isReply": boolean
+	 *      }, ....]
+	 * }
+	 * </pre>
+	 * </p>
+	 *
+	 * @param context
+	 *            the specified http request context
+	 * @param request
+	 *            the specified http servlet request
+	 * @param response
+	 *            the specified http servlet response
+	 * @throws Exception
+	 *             exception
+	 */
+	@RequestMapping(value = "/console/comments/page/*", method = RequestMethod.GET)
+	public void getPageComments(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		if (!userQueryService.isLoggedIn(request, response)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
-        final JSONRenderer renderer = new JSONRenderer();
-        try {
-            final JSONObject ret = new JSONObject();
+		final JSONRenderer renderer = new JSONRenderer();
+		try {
+			final JSONObject ret = new JSONObject();
 
-            renderer.setJSONObject(ret);
+			renderer.setJSONObject(ret);
 
-            final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/comments/page/").length());
+			final String requestURI = request.getRequestURI();
+			final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/comments/page/").length());
 
-            final List<JSONObject> comments = commentQueryService.getComments(pageId);
+			final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
-            ret.put(Comment.COMMENTS, comments);
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
+			ret.put(Comment.COMMENTS, comments);
+			ret.put(Keys.STATUS_CODE, true);
+		} catch (final Exception e) {
+			logger.error(e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+			final JSONObject jsonObject = QueryResults.defaultResult();
 
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-        renderer.render(request, response);
-    }
+			renderer.setJSONObject(jsonObject);
+			jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+		}
+		renderer.render(request, response);
+	}
 }

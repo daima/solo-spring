@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.dao;
 
-
 import org.b3log.solo.Keys;
 import org.b3log.solo.frame.repository.FilterOperator;
 import org.b3log.solo.frame.repository.PropertyFilter;
@@ -26,7 +25,6 @@ import org.b3log.solo.model.Link;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
-
 
 /**
  * Link repository.
@@ -40,102 +38,98 @@ public class LinkDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-        return Link.LINK;
-    }
+		return Link.LINK;
+	}
 
-   
-    public JSONObject getByAddress(final String address) throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address)).setPageCount(1);
+	public JSONObject getByAddress(final String address) throws RepositoryException {
+		final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address))
+				.setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-   
-    public int getMaxOrder() throws RepositoryException {
-        final Query query = new Query();
+	public int getMaxOrder() throws RepositoryException {
+		final Query query = new Query();
 
-        query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
+		query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return -1;
-        }
+		if (0 == array.length()) {
+			return -1;
+		}
 
-        return array.optJSONObject(0).optInt(Link.LINK_ORDER);
-    }
+		return array.optJSONObject(0).optInt(Link.LINK_ORDER);
+	}
 
-   
-    public JSONObject getByOrder(final int order) throws RepositoryException {
-        final Query query = new Query();
+	public JSONObject getByOrder(final int order) throws RepositoryException {
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order));
+		query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order));
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (0 == array.length()) {
-            return null;
-        }
+		if (0 == array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-   
-    public JSONObject getUpper(final String id) throws RepositoryException {
-        final JSONObject link = get(id);
+	public JSONObject getUpper(final String id) throws RepositoryException {
+		final JSONObject link = get(id);
 
-        if (null == link) {
-            return null;
-        }
+		if (null == link) {
+			return null;
+		}
 
-        final Query query = new Query();
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER))).addSort(Link.LINK_ORDER,
-            SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(1);
+		query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER)))
+				.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
+		query.setCurrentPageNum(1);
+		query.setPageSize(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (1 != array.length()) {
-            return null;
-        }
+		if (1 != array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 
-   
-    public JSONObject getUnder(final String id) throws RepositoryException {
-        final JSONObject link = get(id);
+	public JSONObject getUnder(final String id) throws RepositoryException {
+		final JSONObject link = get(id);
 
-        if (null == link) {
-            return null;
-        }
+		if (null == link) {
+			return null;
+		}
 
-        final Query query = new Query();
+		final Query query = new Query();
 
-        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER))).addSort(
-            Link.LINK_ORDER, SortDirection.ASCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(1);
+		query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER)))
+				.addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
+		query.setCurrentPageNum(1);
+		query.setPageSize(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+		final JSONObject result = get(query);
+		final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        if (1 != array.length()) {
-            return null;
-        }
+		if (1 != array.length()) {
+			return null;
+		}
 
-        return array.optJSONObject(0);
-    }
+		return array.optJSONObject(0);
+	}
 }

@@ -15,25 +15,26 @@
  */
 package org.b3log.solo.frame.servlet.renderer.freemarker;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
- * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
- * renderer.
- * 
- * <p>Do nothing after render.</p>
+ * <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer.
+ *
+ * <p>
+ * Do nothing after render.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Oct 2, 2011
  */
 public final class FreeMarkerRenderer extends AbstractFreeMarkerRenderer {
 
-    @Override
-    protected void beforeRender(final HttpServletRequest request, final HttpServletResponse response) throws Exception {}
+	@Override
+	protected void beforeRender(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	}
 
-    @Override
-    protected void afterRender(final HttpServletRequest request, final HttpServletResponse response) throws Exception {}
+	@Override
+	protected void afterRender(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	}
 }

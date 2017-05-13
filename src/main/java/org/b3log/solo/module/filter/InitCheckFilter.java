@@ -39,79 +39,82 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
-//	private InitService initService;
+	// private InitService initService;
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(InitCheckFilter.class);
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(InitCheckFilter.class);
 
-    /**
-     * Whether initialization info reported.
-     */
-    private static boolean initReported;
+	@Override
+	public void init(final FilterConfig filterConfig) throws ServletException {
+	}
 
-    @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
-    }
+	/**
+	 * If Solo has not been initialized, so redirects to /init.
+	 *
+	 * @param request
+	 *            the specified request
+	 * @param response
+	 *            the specified response
+	 * @param chain
+	 *            filter chain
+	 * @throws IOException
+	 *             io exception
+	 * @throws ServletException
+	 *             servlet exception
+	 */
+	@Override
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+			throws IOException, ServletException {
+		final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		final String requestURI = httpServletRequest.getRequestURI();
 
-    /**
-     * If Solo has not been initialized, so redirects to /init.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     * @param chain filter chain
-     * @throws IOException io exception
-     * @throws ServletException servlet exception
-     */
-    @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws IOException, ServletException {
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        final String requestURI = httpServletRequest.getRequestURI();
+		logger.trace("Request[URI={0}]", requestURI);
 
-        logger.trace("Request[URI={0}]", requestURI);
+		// If requests Latke Remote APIs, skips this filter
+		if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
+			chain.doFilter(request, response);
 
-        // If requests Latke Remote APIs, skips this filter 
-        if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
-            chain.doFilter(request, response);
+			return;
+		}
 
-            return;
-        }
+		// if (initService.isInited()) {
+		// chain.doFilter(request, response);
+		//
+		// return;
+		// }
 
-//        if (initService.isInited()) {
-//            chain.doFilter(request, response);
-//
-//            return;
-//        }
+		if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
+				&& (Latkes.getContextPath() + "/init").equals(requestURI)) {
+			// Do initailization
+			chain.doFilter(request, response);
 
-        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI)) {
-            // Do initailization
-            chain.doFilter(request, response);
+			return;
+		}
 
-            return;
-        }
+		// if (!initReported) {
+		// logger.debug( "Solo has not been initialized, so redirects to
+		// /init");
+		// initReported = true;
+		// }
 
-//        if (!initReported) {
-//            logger.debug( "Solo has not been initialized, so redirects to /init");
-//            initReported = true;
-//        }
+		request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
+		request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, RequestMethod.GET.name());
 
-        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
-        request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, RequestMethod.GET.name());
+		// final HttpControl httpControl = new
+		// HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
+		//
+		// try {
+		// httpControl.nextHandler();
+		// } catch (final Exception e) {
+		// context.setRenderer(new HTTP500Renderer(e));
+		// }
+		//
+		// DispatcherServlet.result(context);
+	}
 
-//        final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
-//
-//        try {
-//            httpControl.nextHandler();
-//        } catch (final Exception e) {
-//            context.setRenderer(new HTTP500Renderer(e));
-//        }
-//
-//        DispatcherServlet.result(context);
-    }
-
-    @Override
-    public void destroy() {
-    }
+	@Override
+	public void destroy() {
+	}
 }
