@@ -64,6 +64,9 @@ public final class Repositories {
 	 * Whether all repositories is writable.
 	 */
 	private static boolean repositoryiesWritable = true;
+	// Repository name prefix
+	private final static String tableNamePrefix = StringUtils.isNotBlank(PropsUtil.getString("jdbc.tablePrefix"))
+			? PropsUtil.getString("jdbc.tablePrefix") + "_" : "";
 
 	/**
 	 * Whether all repositories is writable.
@@ -89,7 +92,7 @@ public final class Repositories {
 
 			repository.setWritable(writable);
 
-			logger.info("Sets repository[name={0}] writable[{1}]", new Object[] { repositoryName, writable });
+			logger.info("Sets repository[name={}] writable[{}]", new Object[] { repositoryName, writable });
 		}
 
 		repositoryiesWritable = writable;
@@ -220,8 +223,8 @@ public final class Repositories {
 			 * ("double".equals(type) && !(value instanceof Double)) ||
 			 * ("boolean".equals(type) && !(value instanceof Boolean))) {
 			 * LOGGER.log(Level.WARNING,
-			 * "A json object to persist to repository[name={0}] has " +
-			 * "a wrong value type[definedType={1}, currentType={2}] with key["
+			 * "A json object to persist to repository[name={}] has " +
+			 * "a wrong value type[definedType={}, currentType={}] with key["
 			 * + key + "]", new Object[]{repositoryName, type,
 			 * value.getClass()});
 			 * 
@@ -263,7 +266,7 @@ public final class Repositories {
 		for (int i = 0; i < repositories.length(); i++) {
 			final JSONObject repository = repositories.optJSONObject(i);
 
-			if (repositoryName.equals(repository.optString("name"))) {
+			if (repositoryName.equals(repository.optString("name")) || (tableNamePrefix + repositoryName).equals(repository.optString("name"))) {
 				return repository.optJSONArray("keys");
 			}
 		}
@@ -356,13 +359,9 @@ public final class Repositories {
 		try {
 			final String description = IOUtils.toString(inputStream);
 
-			logger.debug("{0}{1}", new Object[] { SoloConstant.LINE_SEPARATOR, description });
+			logger.debug("{}{}", new Object[] { SoloConstant.LINE_SEPARATOR, description });
 
 			repositoriesDescription = new JSONObject(description);
-
-			// Repository name prefix
-			final String tableNamePrefix = StringUtils.isNotBlank(PropsUtil.getString("jdbc.tablePrefix"))
-					? PropsUtil.getString("jdbc.tablePrefix") + "_" : "";
 
 			final JSONArray repositories = repositoriesDescription.optJSONArray("repositories");
 

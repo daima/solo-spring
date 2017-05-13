@@ -98,7 +98,7 @@ public class PreferenceMgmtService {
 
 		final Set<String> skinDirNames = getSkinDirNames();
 
-		logger.debug("Loaded skins[dirNames={0}]", skinDirNames);
+		logger.debug("Loaded skins[dirNames={}]", skinDirNames);
 		final JSONArray skinArray = new JSONArray();
 
 		for (final String dirName : skinDirNames) {
@@ -106,7 +106,7 @@ public class PreferenceMgmtService {
 			final String name = Latkes.getSkinName(dirName);
 
 			if (null == name) {
-				logger.warn("The directory[{0}] does not contain any skin, ignored it", dirName);
+				logger.warn("The directory[{}] does not contain any skin, ignored it", dirName);
 
 				continue;
 			}
@@ -120,10 +120,10 @@ public class PreferenceMgmtService {
 		final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
 		final String skinName = preference.optString(SKIN_NAME);
 
-		logger.debug("Current skin[name={0}]", skinName);
+		logger.debug("Current skin[name={}]", skinName);
 
 		if (!skinDirNames.contains(currentSkinDirName)) {
-			logger.warn("Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
+			logger.warn("Configred skin[dirName={}] can not find, try to use " + "default skin[dirName="
 					+ Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
 			if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
 				logger.error("Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
@@ -247,7 +247,7 @@ public class PreferenceMgmtService {
 			preference.put(Option.ID_C_VERSION, version);
 
 			final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-			logger.debug("Current locale[string={0}]", localeString);
+			logger.debug("Current locale[string={}]", localeString);
 			Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
 			final JSONObject adminEmailOpt = optionRepository.get(Option.ID_C_ADMIN_EMAIL);

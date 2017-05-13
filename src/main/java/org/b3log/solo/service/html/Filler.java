@@ -459,7 +459,7 @@ public class Filler {
 					if (!dateString.equals(lastDateString)) {
 						archiveDates2.add(archiveDate);
 					} else {
-						logger.warn("Found a duplicated archive date [{0}]", dateString);
+						logger.warn("Found a duplicated archive date [{}]", dateString);
 					}
 				}
 			}
@@ -898,7 +898,7 @@ public class Filler {
 			final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
 		Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
 		try {
-			logger.debug("Filling user template[name{0}]", template.getName());
+			logger.debug("Filling user template[name{}]", template.getName());
 
 			if (Templates.hasExpression(template, "<#list links as link>")) {
 				fillLinks(dataModel);

@@ -64,7 +64,7 @@ public final class JdbcUtil {
 	 *             SQLException
 	 */
 	public static boolean executeSql(final String sql, final Connection connection) throws SQLException {
-		logger.trace("executeSql: {0}", sql);
+		logger.trace("executeSql: {}", sql);
 
 		final Statement statement = connection.createStatement();
 		final boolean isSuccess = !statement.execute(sql);
@@ -89,7 +89,7 @@ public final class JdbcUtil {
 	 */
 	public static boolean executeSql(final String sql, final List<Object> paramList, final Connection connection)
 			throws SQLException {
-		logger.trace("Execute SQL [{0}]", sql);
+		logger.trace("Execute SQL [{}]", sql);
 
 		final PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -180,7 +180,7 @@ public final class JdbcUtil {
 	 */
 	private static JSONObject queryJson(final String sql, final List<Object> paramList, final Connection connection,
 			final boolean ifOnlyOne, final String tableName) throws SQLException, JSONException, RepositoryException {
-		logger.trace("Query SQL [{0}]", sql);
+		logger.trace("Query SQL [{}]", sql);
 
 		final PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -224,7 +224,7 @@ public final class JdbcUtil {
 		final List<FieldDefinition> definitionList = JdbcRepositories.getRepositoriesMap().get(tableName);
 
 		if (definitionList == null) {
-			logger.error("resultSetToJsonObject: null definitionList finded for table  {0}", tableName);
+			logger.error("resultSetToJsonObject: null definitionList finded for table  {}", tableName);
 			throw new RepositoryException("resultSetToJsonObject: null definitionList finded for table  " + tableName);
 		}
 

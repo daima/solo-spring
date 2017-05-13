@@ -138,7 +138,7 @@ public class TagProcessor {
 				return;
 			}
 
-			logger.debug("Tag[title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
+			logger.debug("Tag[title={}, currentPageNum={}]", tagTitle, currentPageNum);
 
 			tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
 			final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -184,11 +184,11 @@ public class TagProcessor {
 			final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
 			final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
-			logger.trace("Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+			logger.trace("Paginate tag-articles[currentPageNum={}, pageSize={}, pageCount={}, windowSize={}]",
 					currentPageNum, pageSize, pageCount, windowSize);
 			final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
-			logger.trace("tag-articles[pageNums={0}]", pageNums);
+			logger.trace("tag-articles[pageNums={}]", pageNums);
 
 			Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 

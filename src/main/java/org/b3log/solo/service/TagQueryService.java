@@ -89,7 +89,7 @@ public class TagQueryService {
 
 			ret.put(Tag.TAG, tag);
 
-			logger.debug("Got an tag[title={0}]", tagTitle);
+			logger.debug("Got an tag[title={}]", tagTitle);
 
 			return ret;
 		} catch (final RepositoryException e) {

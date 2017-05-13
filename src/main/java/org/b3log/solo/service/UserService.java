@@ -87,7 +87,7 @@ public final class UserService {
         try {
             to = URLEncoder.encode(to + destinationURL, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-        	logger.error("URL encode[string={0}]", destinationURL);
+        	logger.error("URL encode[string={}]", destinationURL);
         }
 
         return Latkes.getContextPath() + "/login?goto=" + to;
@@ -100,7 +100,7 @@ public final class UserService {
         try {
             to = URLEncoder.encode(to + destinationURL, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            logger.error("URL encode[string={0}]", destinationURL);
+            logger.error("URL encode[string={}]", destinationURL);
         }
 
         return Latkes.getContextPath() + "/logout?goto=" + to;

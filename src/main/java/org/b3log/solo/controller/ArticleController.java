@@ -66,7 +66,6 @@ import org.b3log.solo.util.Locales;
 import org.b3log.solo.util.Paginator;
 import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Stopwatchs;
-import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -696,7 +695,7 @@ public class ArticleController {
 			}
 
 			final String authorId = getAuthorId(requestURI);
-			logger.debug("Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
+			logger.debug("Request author articles[requestURI={}, authorId={}]", requestURI, authorId);
 
 			final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
 
@@ -705,7 +704,7 @@ public class ArticleController {
 				return;
 			}
 
-			logger.debug("Request author articles[authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
+			logger.debug("Request author articles[authorId={}, currentPageNum={}]", authorId, currentPageNum);
 
 			final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -801,11 +800,11 @@ public class ArticleController {
 				return;
 			}
 
-			logger.debug("Request archive date[string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
+			logger.debug("Request archive date[string={}, currentPageNum={}]", archiveDateString, currentPageNum);
 			final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
 			if (null == result) {
-				logger.warn("Can not find articles for the specified archive date[string={0}]", archiveDateString);
+				logger.warn("Can not find articles for the specified archive date[string={}]", archiveDateString);
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
@@ -917,7 +916,7 @@ public class ArticleController {
 
 		final String articleId = article.optString(Keys.OBJECT_ID);
 
-		logger.debug("Article[id={0}]", articleId);
+		logger.debug("Article[id={}]", articleId);
 		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
 		renderer.setTemplateName("article.ftl");
@@ -934,7 +933,7 @@ public class ArticleController {
 				return;
 			}
 
-			logger.trace("Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
+			logger.trace("Article[title={}]", article.getString(Article.ARTICLE_TITLE));
 
 			articleQueryService.markdown(article);
 

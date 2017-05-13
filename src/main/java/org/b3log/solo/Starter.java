@@ -26,7 +26,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
@@ -185,8 +184,8 @@ public final class Starter {
 		final String contextPath = Latkes.getContextPath();
 
 		try {
-			Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath
-					+ "/articles/2017/04/28/1493335727350.html"));
+			Desktop.getDesktop().browse(new URI(
+					serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/"));
 		} catch (final Throwable e) {
 			// Ignored
 		}

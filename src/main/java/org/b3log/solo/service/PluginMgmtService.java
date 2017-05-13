@@ -121,7 +121,7 @@ public class PluginMgmtService {
 
 				pluginRepository.add(pluginDesc);
 
-				logger.trace("Refreshed plugin[{0}]", pluginDesc);
+				logger.trace("Refreshed plugin[{}]", pluginDesc);
 			}
 
 		} catch (final Exception e) {

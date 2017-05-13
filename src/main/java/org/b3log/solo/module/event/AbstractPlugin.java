@@ -190,7 +190,8 @@ public abstract class AbstractPlugin implements Serializable {
 		final ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
 
 		configuration.setServletContextForTemplateLoading(servletContext, "/plugins/" + dirName);
-		logger.debug("Initialized template configuration");
+		logger.debug("Initialized template configuration:{}", dirName);
+		readLangs();
 	}
 
 	/**
@@ -213,7 +214,7 @@ public abstract class AbstractPlugin implements Serializable {
 
 					props.load(new FileInputStream(file));
 
-					langs.put(key, props);
+					langs.put(key.toLowerCase(), props);
 				} catch (final Exception e) {
 					logger.error("Get plugin[name=" + name + "]'s language configuration failed", e);
 				}
@@ -316,7 +317,7 @@ public abstract class AbstractPlugin implements Serializable {
 
 		dataModel.put(Plugin.PLUGINS, pluginsContent);
 
-		logger.debug("Plugin[name={0}] has been plugged", getName());
+		logger.debug("Plugin[name={}] has been plugged", getName());
 
 	}
 

@@ -194,7 +194,7 @@ public class CommentMgmtService {
 		final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
 		if (adminEmail.equalsIgnoreCase(commentEmail)) {
-			logger.debug("Do not send comment notification mail to admin itself[{0}]", adminEmail);
+			logger.debug("Do not send comment notification mail to admin itself[{}]", adminEmail);
 
 			return;
 		}
@@ -210,7 +210,7 @@ public class CommentMgmtService {
 
 			if (originalEmail.equalsIgnoreCase(adminEmail)) {
 				logger.debug(
-						"Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
+						"Do not send comment notification mail to admin while the specified comment[{}] is an reply",
 						commentId);
 				return;
 			}
@@ -261,7 +261,7 @@ public class CommentMgmtService {
 				.replace("{commenter}", commenter);
 		message.setHtmlBody(mailBody);
 
-		logger.debug("Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]", mailSubject, mailBody,
+		logger.debug("Sending a mail[mailSubject={}, mailBody=[{}] to admin[email={}]", mailSubject, mailBody,
 				adminEmail);
 
 		mailService.send(message);
@@ -334,7 +334,7 @@ public class CommentMgmtService {
 			String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
 
 			if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-				logger.warn("Comment name is too long[{0}]", commentName);
+				logger.warn("Comment name is too long[{}]", commentName);
 				ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
 				return ret;
@@ -343,7 +343,7 @@ public class CommentMgmtService {
 			final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
 			
 			if (!EmailValidator.getInstance().isValid(commentEmail)) {
-				logger.warn("Comment email is invalid[{0}]", commentEmail);
+				logger.warn("Comment email is invalid[{}]", commentEmail);
 				ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
 				return ret;
@@ -352,7 +352,7 @@ public class CommentMgmtService {
 			final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
 			if (!UrlValidator.getInstance().isValid(commentURL) || StringUtils.contains(commentURL, "<")) {
-				logger.warn("Comment URL is invalid[{0}]", commentURL);
+				logger.warn("Comment URL is invalid[{}]", commentURL);
 				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
 				return ret;
@@ -362,7 +362,7 @@ public class CommentMgmtService {
 
 			if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length()
 					|| MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
-				logger.warn("Comment conent length is invalid[{0}]", commentContent.length());
+				logger.warn("Comment conent length is invalid[{}]", commentContent.length());
 				ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
 
 				return ret;
@@ -485,7 +485,7 @@ public class CommentMgmtService {
 
 					ret.put(Common.IS_REPLY, true);
 				} else {
-					logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
+					logger.warn("Not found orginal comment[id={}] of reply[name={}, content={}]", originalCommentId,
 							commentName, commentContent);
 				}
 			}
@@ -637,7 +637,7 @@ public class CommentMgmtService {
 
 					ret.put(Common.IS_REPLY, true);
 				} else {
-					logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
+					logger.warn("Not found orginal comment[id={}] of reply[name={}, content={}]", originalCommentId,
 							commentName, commentContent);
 				}
 			}
@@ -856,7 +856,7 @@ public class CommentMgmtService {
 
 			statusCode = response.getResponseCode();
 		} catch (final IOException e) {
-			logger.warn("Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+			logger.warn("Can not fetch thumbnail from Gravatar[commentEmail={}]", commentEmail);
 		} finally {
 			if (HttpServletResponse.SC_OK != statusCode) {
 				thumbnailURL = Latkes.getStaticServePath() + "/images/" + DEFAULT_USER_THUMBNAIL;

@@ -58,7 +58,7 @@ public final class Latkes {
 	/**
 	 * Locale. Initializes this by {@link #setLocale(java.util.Locale)}.
 	 */
-	private static Locale locale = new Locale("9IPHP.zh_CN");
+	private static Locale locale = new Locale("zh_CN");
 
 	/**
 	 * Where Latke runs on?.
@@ -463,8 +463,7 @@ public final class Latkes {
 		final String value = PropsUtil.getProperty(serviceName);
 
 		if (null == value) {
-			logger.warn("Rutnime service[name={0}] is undefined, please configure it in latkes.properties",
-					serviceName);
+			logger.warn("Rutnime service[name={}] is undefined, please configure it in latkes.properties", serviceName);
 			return null;
 		}
 
@@ -507,14 +506,14 @@ public final class Latkes {
 	// }
 	// }
 	//
-	// logger.info("Latke is running on [{0}] with mode [{1}]", new
+	// logger.info("Latke is running on [{}] with mode [{}]", new
 	// Object[]{Latkes.getRuntimeEnv(), Latkes.getRuntimeMode()});
 	//
 	// if (RuntimeEnv.LOCAL == runtimeEnv) {
 	// // Read local database configurations
 	// final RuntimeDatabase runtimeDatabase = getRuntimeDatabase();
 	//
-	// logger.info("Runtime database is [{0}]", runtimeDatabase);
+	// logger.info("Runtime database is [{}]", runtimeDatabase);
 	//
 	// if (RuntimeDatabase.H2 == runtimeDatabase) {
 	// final String newTCPServer = Latkes.getLocalProperty("newTCPServer");
@@ -540,7 +539,7 @@ public final class Latkes {
 	//
 	// port = StringUtils.substringBefore(port, "/");
 	//
-	// logger.trace("H2 TCP port [{0}]", port);
+	// logger.trace("H2 TCP port [{}]", port);
 	//
 	// try {
 	// h2 = org.h2.tools.Server.createTcpServer(new String[]{"-tcpPort", port,
@@ -611,14 +610,11 @@ public final class Latkes {
 							+ "current runtime enviornment [" + runtimeEnv + ']');
 		}
 
-		final String runtimeDatabase = "MYSQL";
-		// final String runtimeDatabase =
-		// LOCAL_PROPS.getProperty("runtimeDatabase");
+		final String runtimeDatabase = PropsUtil.getString("runtimeDatabase");
 
-		// if (null == runtimeDatabase) {
-		// throw new RuntimeException("Please configures runtime database in
-		// local.properties!");
-		// }
+		if (null == runtimeDatabase) {
+			throw new RuntimeException("Please configures runtime database inlocal.properties!");
+		}
 
 		final RuntimeDatabase ret = RuntimeDatabase.valueOf(runtimeDatabase);
 
@@ -793,7 +789,7 @@ public final class Latkes {
 
 			return ret.getProperty("name");
 		} catch (final Exception e) {
-			logger.error("Read skin configuration error[msg={0}]", e.getMessage());
+			logger.error("Read skin configuration error[msg={}]", e.getMessage());
 
 			return null;
 		}

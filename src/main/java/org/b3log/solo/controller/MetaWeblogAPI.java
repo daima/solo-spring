@@ -215,7 +215,7 @@ public class MetaWeblogAPI {
 			final JSONObject methodCall = requestJSONObject.getJSONObject(METHOD_CALL);
 			final String methodName = methodCall.getString(METHOD_NAME);
 
-			logger.info("MetaWeblog[methodName={0}]", methodName);
+			logger.info("MetaWeblog[methodName={}]", methodName);
 
 			final JSONArray params = methodCall.getJSONObject("params").getJSONArray("param");
 

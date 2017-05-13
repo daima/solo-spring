@@ -81,13 +81,13 @@ public final class RhythmArticleSender {
 	public void action(final Event<JSONObject> event) throws EventException {
 		final JSONObject data = event.getData();
 
-		logger.debug("Processing an event[type={0}, data={1}] in listener[className={2}]", event.getType(), data,
+		logger.debug("Processing an event[type={}, data={}] in listener[className={}]", event.getType(), data,
 				RhythmArticleSender.class);
 		try {
 			final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
 			if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-				logger.debug("Ignores post article[title={0}] to Rhythm",
+				logger.debug("Ignores post article[title={}] to Rhythm",
 						originalArticle.getString(Article.ARTICLE_TITLE));
 
 				return;
@@ -104,7 +104,7 @@ public final class RhythmArticleSender {
 			}
 
 			if (Latkes.getServePath().contains("localhost")) {
-				logger.info("Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+				logger.info("Solo runs on local server, so should not send this article[id={}, title={}] to Rhythm",
 						originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
 				return;
 			}
@@ -142,7 +142,7 @@ public final class RhythmArticleSender {
 
 			urlFetchService.fetchAsync(httpRequest);
 		} catch (final Exception e) {
-			logger.error("Sends an article to Rhythm error: {0}", e.getMessage());
+			logger.error("Sends an article to Rhythm error: {}", e.getMessage());
 		}
 
 		logger.debug("Sent an article to Rhythm");

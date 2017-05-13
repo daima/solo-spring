@@ -108,7 +108,7 @@ public abstract class AbstractRepository implements Repository {
 		}
 
 		Repositories.addRepository(repository);
-		logger.info("Constructed repository[name={0}]", name);
+		logger.info("Constructed repository[name={}]", name);
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public abstract class AbstractRepository implements Repository {
 		try {
 			return repository.get(id);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}]", e.getMessage());
+			logger.warn("SQL exception[msg={}]", e.getMessage());
 			return null;
 		}
 	}
@@ -167,7 +167,7 @@ public abstract class AbstractRepository implements Repository {
 		try {
 			return repository.get(query);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(), repository.getTableName(),
+			logger.warn("SQL exception[msg={}, repository={}, query={}]", e.getMessage(), repository.getTableName(),
 					query.toString());
 
 			final JSONObject ret = new JSONObject();
@@ -188,7 +188,7 @@ public abstract class AbstractRepository implements Repository {
 		try {
 			return repository.select(statement, params);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(),
+			logger.warn("SQL exception[msg={}, repository={}, statement={}]", e.getMessage(),
 					repository.getTableName(), statement);
 
 			return Collections.emptyList();

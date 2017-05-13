@@ -114,7 +114,7 @@ public class PropsUtil {
 				logger.info("Loaded {}.", fileName);
 			}
 		} catch (IOException e) {
-			logger.error(String.format("Can't load %s, please ensure it in classpath", fileName), e);
+			logger.error("Can't load %s, please ensure it in classpath", fileName, e);
 		}
 	}
 
@@ -131,7 +131,22 @@ public class PropsUtil {
 				logger.info("Loaded {}.", fileName);
 			}
 		} catch (IOException e) {
-			logger.error(String.format("Can't load %s, please ensure it in classpath", fileName), e);
+			logger.error("Can't load %s, please ensure it in classpath", fileName, e);
+		}
+	}
+	/**
+	 * 加载ClassPath下的属性文件到内存中
+	 * 
+	 * @param fileName
+	 */
+	public static void loadFromInputStream(InputStream is) {
+		try {
+			if (is != null) {
+				System.getProperties().load(is);
+				logger.info("Loaded from InputStream.");
+			}
+		} catch (IOException e) {
+			logger.error("Can't load InputStream, please ensure it in classpath", e);
 		}
 	}
 

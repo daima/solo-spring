@@ -19,9 +19,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 
+import javax.servlet.ServletContext;
+
+import org.b3log.solo.Keys;
 import org.b3log.solo.SoloConstant;
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.ContextLoader;
 
 import freemarker.core.TemplateElement;
 import freemarker.template.Configuration;
@@ -52,12 +57,14 @@ public final class Templates {
 	public static final Configuration MOBILE_CFG = new Configuration();
 
 	static {
+		/*ServletContext context = ContextLoader.getCurrentWebApplicationContext().getServletContext();
+		String path = context.getRealPath("") + "/view/skins/9IPHP/";
 		try {
-			MAIN_CFG.setDirectoryForTemplateLoading(new File(SoloConstant.TMPLATE_PATH));
-			MOBILE_CFG.setDirectoryForTemplateLoading(new File(SoloConstant.TMPLATE_PATH));
+			MAIN_CFG.setDirectoryForTemplateLoading(new File(path));
+			MOBILE_CFG.setDirectoryForTemplateLoading(new File(path));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		MAIN_CFG.setDefaultEncoding("UTF-8");
 		MOBILE_CFG.setDefaultEncoding("UTF-8");
 	}
@@ -102,7 +109,7 @@ public final class Templates {
 		final String canonicalForm = templateElement.getCanonicalForm();
 
 		if (canonicalForm.startsWith(expression)) {
-			logger.trace("Template has expression[nodeName={0}, expression={1}]",
+			logger.trace("Template has expression[nodeName={}, expression={}]",
 					new Object[] { templateElement.getNodeName(), expression });
 
 			return true;
@@ -134,19 +141,22 @@ public final class Templates {
 	 */
 	public static Template getTemplate(final String templateDirName, final String templateName) {
 		try {
+			String path = SoloConstant.TMPLATE_PATH + "/skins/" + templateDirName;
+			MAIN_CFG.setDirectoryForTemplateLoading(new File(path));
+			MOBILE_CFG.setDirectoryForTemplateLoading(new File(path));
 			try {
 				if ("mobile".equals(templateDirName)) {
 					return MOBILE_CFG.getTemplate(templateName);
 				}
 			} catch (final Exception e) {
-				logger.error("Can not load mobile template[templateDirName={0}, templateName={1}]",
+				logger.error("Can not load mobile template[templateDirName={}, templateName={}]",
 						new Object[] { templateDirName, templateName });
 				return null;
 			}
 
 			return MAIN_CFG.getTemplate(templateName);
 		} catch (final IOException e) {
-			logger.warn("Gets template[name={0}] failed: [{1}]", new Object[] { templateName, e.getMessage() });
+			logger.warn("Gets template[name={}] failed: [{}]", new Object[] { templateName, e.getMessage() });
 
 			return null;
 		}

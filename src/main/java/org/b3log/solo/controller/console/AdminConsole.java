@@ -224,7 +224,7 @@ public class AdminConsole {
 		final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".")
 				+ ".ftl";
 
-		logger.trace("Admin function[templateName={0}]", templateName);
+		logger.trace("Admin function[templateName={}]", templateName);
 		renderer.setTemplateName(templateName);
 
 		final Locale locale = Latkes.getLocale();

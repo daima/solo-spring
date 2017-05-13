@@ -76,7 +76,7 @@ public final class SymphonyCommentSender {
 	public void action(final Event<JSONObject> event) throws EventException {
 		final JSONObject data = event.getData();
 
-		logger.debug("Processing an event[type={0}, data={1}] in listener[className={2}]", event.getType(), data,
+		logger.debug("Processing an event[type={}, data={}] in listener[className={}]", event.getType(), data,
 				RhythmArticleSender.class);
 		try {
 			final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
@@ -88,7 +88,7 @@ public final class SymphonyCommentSender {
 			}
 
 			if (Latkes.getServePath().contains("localhost")) {
-				logger.trace("Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+				logger.trace("Solo runs on local server, so should not send this comment[id={}] to Symphony",
 						originalComment.getString(Keys.OBJECT_ID));
 				return;
 			}
@@ -118,7 +118,7 @@ public final class SymphonyCommentSender {
 
 			urlFetchService.fetchAsync(httpRequest);
 		} catch (final Exception e) {
-			logger.error("Sends a comment to Symphony error: {0}", e.getMessage());
+			logger.error("Sends a comment to Symphony error: {}", e.getMessage());
 		}
 
 		logger.debug("Sent a comment to Symphony");

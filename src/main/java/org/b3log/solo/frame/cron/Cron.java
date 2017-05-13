@@ -115,7 +115,7 @@ public final class Cron extends TimerTask {
 			request.setRequestMethod(RequestMethod.GET);
 			urlFetchService.fetchAsync(request);
 
-			logger.debug("Executed scheduled task[url={0}]", url);
+			logger.debug("Executed scheduled task[url={}]", url);
 		} catch (final Exception e) {
 			logger.error("Scheduled task execute failed", e);
 
@@ -132,7 +132,7 @@ public final class Cron extends TimerTask {
 		final int num = Integer.valueOf(StringUtils.substringBetween(schedule, " ", " "));
 		final String timeUnit = StringUtils.substringAfterLast(schedule, " ");
 
-		logger.trace("Parsed a cron job [schedule={0}]: [num={1}, timeUnit={2}, description={3}], ",
+		logger.trace("Parsed a cron job [schedule={}]: [num={}, timeUnit={}, description={}], ",
 				new Object[] { schedule, num, timeUnit, description });
 
 		if ("hours".equals(timeUnit)) {

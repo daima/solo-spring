@@ -228,7 +228,7 @@ public class InitService {
 		final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
 		if (RuntimeEnv.LOCAL == runtimeEnv) {
-			logger.info("Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates " + "all tables",
+			logger.info("Solo is running on [" + runtimeEnv + "] environment, database [{}], creates " + "all tables",
 					Latkes.getRuntimeDatabase());
 
 			if (RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
@@ -242,8 +242,8 @@ public class InitService {
 			// JdbcRepositories.initAllTables();
 			// for (final CreateTableResult createTableResult :
 			// createTableResults) {
-			// logger.debug( "Create table result[tableName={0},
-			// isSuccess={1}]",
+			// logger.debug( "Create table result[tableName={},
+			// isSuccess={}]",
 			// createTableResult.getName(), createTableResult.isSuccess());
 			// }
 		}
@@ -275,7 +275,7 @@ public class InitService {
 
 				// Allow retry to occur
 				--retries;
-				logger.warn("Retrying to init Solo[retries={0}]", retries);
+				logger.warn("Retrying to init Solo[retries={}]", retries);
 			} finally {
 				// if (transaction.isActive()) {
 				// transaction.rollback();
@@ -325,7 +325,7 @@ public class InitService {
 		article.put(Article.ARTICLE_ABSTRACT, content);
 		article.put(Article.ARTICLE_CONTENT, content);
 		article.put(Article.ARTICLE_TAGS_REF, "Solo");
-		article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
+//		article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
 		article.put(Article.ARTICLE_IS_PUBLISHED, true);
 		article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
 		article.put(Article.ARTICLE_SIGN_ID, "1");
@@ -505,7 +505,7 @@ public class InitService {
 			final String tagTitle = tagTitles[i].trim();
 			final JSONObject tag = new JSONObject();
 
-			logger.trace("Found a new tag[title={0}] in article[title={1}]", tagTitle,
+			logger.trace("Found a new tag[title={}] in article[title={}]", tagTitle,
 					article.optString(Article.ARTICLE_TITLE));
 			tag.put(Tag.TAG_TITLE, tagTitle);
 			tag.put(Tag.TAG_REFERENCE_COUNT, 1);

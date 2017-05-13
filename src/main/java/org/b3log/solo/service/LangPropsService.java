@@ -60,13 +60,13 @@ public class LangPropsService {
 			try {
 				langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
 			} catch (final MissingResourceException e) {
-				logger.warn("{0}, using default locale[{1}] instead",
+				logger.warn("{}, using default locale[{}] instead",
 						new Object[] { e.getMessage(), Latkes.getLocale() });
 
 				try {
 					langBundle = ResourceBundle.getBundle(Keys.LANGUAGE, Latkes.getLocale());
 				} catch (final MissingResourceException ex) {
-					logger.warn("{0}, using default lang.properties instead", new Object[] { e.getMessage() });
+					logger.warn("{}, using default lang.properties instead", new Object[] { e.getMessage() });
 					langBundle = ResourceBundle.getBundle(Keys.LANGUAGE);
 				}
 			}
@@ -123,7 +123,7 @@ public class LangPropsService {
 		try {
 			return replaceVars(ResourceBundle.getBundle(baseName, locale).getString(key));
 		} catch (final MissingResourceException e) {
-			logger.warn("{0}, get it from default locale[{1}]", new Object[] { e.getMessage(), Latkes.getLocale() });
+			logger.warn("{}, get it from default locale[{}]", new Object[] { e.getMessage(), Latkes.getLocale() });
 
 			return ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key);
 		}

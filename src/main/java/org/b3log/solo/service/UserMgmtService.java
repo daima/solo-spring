@@ -115,7 +115,7 @@ public class UserMgmtService {
 
 				if (userPassword.equals(hashPassword)) {
 					Sessions.login(request, response, user);
-					logger.debug("Logged in with cookie[email={0}]", userEmail);
+					logger.debug("Logged in with cookie[email={}]", userEmail);
 				}
 			}
 		} catch (final Exception e) {

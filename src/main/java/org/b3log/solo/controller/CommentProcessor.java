@@ -141,7 +141,7 @@ public class CommentProcessor {
 		renderer.setJSONObject(jsonObject);
 
 		if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-			logger.warn("Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+			logger.warn("Can't add comment[msg={}]", jsonObject.optString(Keys.MSG));
 			renderer.render(request, response);
 			return;
 		}
@@ -250,7 +250,7 @@ public class CommentProcessor {
 		renderer.setJSONObject(jsonObject);
 
 		if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-			logger.warn("Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+			logger.warn("Can't add comment[msg={}]", jsonObject.optString(Keys.MSG));
 			renderer.render(request, response);
 			return;
 		}

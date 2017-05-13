@@ -144,7 +144,7 @@ public class LinkMgmtService {
 				// transaction.rollback();
 				// }
 
-				logger.warn("Cant not find the target link of source link[order={0}]", srcLinkOrder);
+				logger.warn("Cant not find the target link of source link[order={}]", srcLinkOrder);
 				return;
 			}
 

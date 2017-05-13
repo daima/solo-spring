@@ -55,17 +55,17 @@ public final class ViewLoadEventHandler {
 
 		final Set<AbstractPlugin> plugins = pluginManager.getPlugins(viewName);
 
-		logger.debug("Plugin count[{0}] of view[name={1}]", new Object[] { plugins.size(), viewName });
+		logger.debug("Plugin count[{}] of view[name={}]", new Object[] { plugins.size(), viewName });
 		for (final AbstractPlugin plugin : plugins) {
 			switch (plugin.getStatus()) {
 			case ENABLED:
 				plugin.plug(dataModel);
-				logger.debug("Plugged[name={0}]", plugin.getName());
+				logger.debug("Plugged[name={}]", plugin.getName());
 				break;
 
 			case DISABLED:
 				plugin.unplug();
-				logger.debug("Unplugged[name={0}]", plugin.getName());
+				logger.debug("Unplugged[name={}]", plugin.getName());
 				break;
 
 			default:

@@ -173,7 +173,7 @@ public class CategoryProcessor {
 				return;
 			}
 
-			logger.debug("Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
+			logger.debug("Category [URI={}, currentPageNum={}]", categoryURI, currentPageNum);
 
 			categoryURI = URLDecoder.decode(categoryURI, "UTF-8");
 			final JSONObject category = categoryQueryService.getByURI(categoryURI);

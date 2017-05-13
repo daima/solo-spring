@@ -369,7 +369,7 @@ public class ArticleQueryService {
 
 			if (null == ret) {
 				logger.warn(
-						"Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+						"Gets author of article failed, assumes the administrator is the author of this article[id={}]",
 						article.getString(Keys.OBJECT_ID));
 				// This author may be deleted by admin, use admin as the author
 				// of this article
@@ -378,10 +378,10 @@ public class ArticleQueryService {
 
 			return ret;
 		} catch (final RepositoryException e) {
-			logger.error("Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+			logger.error("Gets author of article[id={}] failed", article.optString(Keys.OBJECT_ID));
 			throw new ServiceException(e);
 		} catch (final JSONException e) {
-			logger.error("Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+			logger.error("Gets author of article[id={}] failed", article.optString(Keys.OBJECT_ID));
 			throw new ServiceException(e);
 		}
 	}
@@ -418,7 +418,7 @@ public class ArticleQueryService {
 			}
 		}
 
-		logger.warn("Can not find the sign[id={0}], returns a default sign[id=1]", signId);
+		logger.warn("Can not find the sign[id={}], returns a default sign[id=1]", signId);
 		if (null == defaultSign) {
 			throw new IllegalStateException("Can not find the default sign which id equals to 1");
 		}
@@ -576,7 +576,7 @@ public class ArticleQueryService {
 			article.remove(ARTICLE_VIEW_COUNT);
 			article.remove(ARTICLE_RANDOM_DOUBLE);
 
-			logger.debug("Got an article[id={0}]", articleId);
+			logger.debug("Got an article[id={}]", articleId);
 
 			return ret;
 		} catch (final Exception e) {

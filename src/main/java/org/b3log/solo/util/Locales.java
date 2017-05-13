@@ -100,7 +100,7 @@ public final class Locales {
 			// Gets from request header
 			final String languageHeader = request.getHeader("Accept-Language");
 
-			logger.debug("[Accept-Language={0}]", languageHeader);
+			logger.debug("[Accept-Language={}]", languageHeader);
 
 			String language = "zh";
 			String country = "CN";
@@ -115,12 +115,12 @@ public final class Locales {
 			if (!hasLocale(locale)) {
 				// Uses default
 				locale = Latkes.getLocale();
-				logger.debug("Using the default locale[{0}]", locale.toString());
+				logger.debug("Using the default locale[{}]", locale.toString());
 			} else {
-				logger.debug("Got locale[{0}] from request.", locale.toString());
+				logger.debug("Got locale[{}] from request.", locale.toString());
 			}
 		} else {
-			logger.debug("Got locale[{0}] from session.", locale.toString());
+			logger.debug("Got locale[{}] from session.", locale.toString());
 		}
 
 		return locale;
@@ -167,7 +167,7 @@ public final class Locales {
 		}
 
 		session.setAttribute(Keys.LOCALE, locale);
-		logger.debug("Client[sessionId={0}] sets locale to [{1}]", new Object[] { session.getId(), locale.toString() });
+		logger.debug("Client[sessionId={}] sets locale to [{}]", new Object[] { session.getId(), locale.toString() });
 	}
 
 	/**

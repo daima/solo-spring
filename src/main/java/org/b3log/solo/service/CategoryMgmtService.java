@@ -90,7 +90,7 @@ public class CategoryMgmtService {
 				// transaction.rollback();
 				// }
 
-				logger.warn("Cant not find the target category of source category [order={0}]", srcCategoryOrder);
+				logger.warn("Cant not find the target category of source category [order={}]", srcCategoryOrder);
 
 				return;
 			}

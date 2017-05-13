@@ -112,7 +112,7 @@ public class UserTemplateProcessor {
 		String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
 		templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-		logger.debug("Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
+		logger.debug("Shows page[requestURI={}, templateName={}]", requestURI, templateName);
 
 		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 

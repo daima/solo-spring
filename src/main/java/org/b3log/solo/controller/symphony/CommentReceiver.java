@@ -179,7 +179,7 @@ public class CommentReceiver {
 			try {
 				new URL(commentURL);
 			} catch (final MalformedURLException e) {
-				logger.warn("The comment URL is invalid [{0}]", commentURL);
+				logger.warn("The comment URL is invalid [{}]", commentURL);
 				commentURL = "";
 			}
 			final String commentThumbnailURL = symphonyCmt.getString("commentAuthorThumbnailURL");
@@ -218,7 +218,7 @@ public class CommentReceiver {
 				} else {
 					comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
 					comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-					logger.warn("Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
+					logger.warn("Not found orginal comment[id={}] of reply[name={}, content={}]", originalCommentId,
 							commentName, commentContent);
 				}
 			} else {

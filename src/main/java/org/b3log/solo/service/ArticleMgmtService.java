@@ -261,7 +261,7 @@ public class ArticleMgmtService {
 			// transaction.rollback();
 			// }
 
-			logger.error("Can't put the article[oId{0}] to top", articleId);
+			logger.error("Can't put the article[oId{}] to top", articleId);
 			throw new ServiceException(e);
 		}
 	}
@@ -610,7 +610,7 @@ public class ArticleMgmtService {
 	 *             service exception
 	 */
 	public void removeArticle(final String articleId) throws ServiceException {
-		logger.debug("Removing an article[id={0}]", articleId);
+		logger.debug("Removing an article[id={}]", articleId);
 
 		// final Transaction transaction = articleDao.beginTransaction();
 
@@ -645,7 +645,7 @@ public class ArticleMgmtService {
 			throw new ServiceException(e);
 		}
 
-		logger.debug("Removed an article[id={0}]", articleId);
+		logger.debug("Removed an article[id={}]", articleId);
 	}
 
 	/**
@@ -751,7 +751,7 @@ public class ArticleMgmtService {
 					tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
 				}
 				tagDao.update(tagId, tag);
-				logger.trace("Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
+				logger.trace("Deced tag[title={}, refCnt={}, publishedRefCnt={}] of article[id={}]",
 						tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT),
 						tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT), articleId);
 			}
@@ -760,7 +760,7 @@ public class ArticleMgmtService {
 			throw new ServiceException(e);
 		}
 
-		logger.debug("Deced all tag reference count of article[id={0}]", articleId);
+		logger.debug("Deced all tag reference count of article[id={}]", articleId);
 	}
 
 	/**
@@ -879,7 +879,7 @@ public class ArticleMgmtService {
 			final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
 			if (!tagExists(newTagTitle, oldTags)) {
-				logger.debug("Tag need to add[title={0}]", newTagTitle);
+				logger.debug("Tag need to add[title={}]", newTagTitle);
 				tagsNeedToAdd.add(newTag);
 			} else {
 				tagsUnchanged.add(newTag);
@@ -889,14 +889,14 @@ public class ArticleMgmtService {
 			final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
 			if (!tagExists(oldTagTitle, newTags)) {
-				logger.debug("Tag dropped[title={0}]", oldTag);
+				logger.debug("Tag dropped[title={}]", oldTag);
 				tagsDropped.add(oldTag);
 			} else {
 				tagsUnchanged.remove(oldTag);
 			}
 		}
 
-		logger.debug("Tags unchanged[{0}]", tagsUnchanged);
+		logger.debug("Tags unchanged[{}]", tagsUnchanged);
 		for (final JSONObject tagUnchanged : tagsUnchanged) {
 			final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
 
@@ -1035,7 +1035,7 @@ public class ArticleMgmtService {
 			String tagId;
 
 			if (null == tag) {
-				logger.trace("Found a new tag[title={0}] in article[title={1}]", tagTitle,
+				logger.trace("Found a new tag[title={}] in article[title={}]", tagTitle,
 						article.optString(Article.ARTICLE_TITLE));
 				tag = new JSONObject();
 				tag.put(Tag.TAG_TITLE, tagTitle);
@@ -1052,7 +1052,7 @@ public class ArticleMgmtService {
 				tag.put(Keys.OBJECT_ID, tagId);
 			} else {
 				tagId = tag.optString(Keys.OBJECT_ID);
-				logger.trace("Found a existing tag[title={0}, id={1}] in article[title={2}]",
+				logger.trace("Found a existing tag[title={}, id={}] in article[title={}]",
 						tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
 						article.optString(Article.ARTICLE_TITLE));
 				final JSONObject tagTmp = new JSONObject();

@@ -182,7 +182,7 @@ public class PageMgmtService {
 
 			// transaction.commit();
 
-			logger.debug("Updated a page[id={0}]", pageId);
+			logger.debug("Updated a page[id={}]", pageId);
 		} catch (final Exception e) {
 			logger.error(e.getMessage(), e);
 			// if (transaction.isActive()) {
@@ -205,7 +205,7 @@ public class PageMgmtService {
 		// final Transaction transaction = pageDao.beginTransaction();
 
 		try {
-			logger.debug("Removing a page[id={0}]", pageId);
+			logger.debug("Removing a page[id={}]", pageId);
 			removePageComments(pageId);
 			pageDao.remove(pageId);
 
@@ -347,7 +347,7 @@ public class PageMgmtService {
 				// transaction.rollback();
 				// }
 
-				logger.warn("Cant not find the target page of source page[order={0}]", srcPageOrder);
+				logger.warn("Cant not find the target page of source page[order={}]", srcPageOrder);
 				return;
 			}
 

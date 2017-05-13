@@ -200,12 +200,12 @@ public class LoginProcessor {
 				return;
 			}
 
-			logger.info("Login[email={0}]", userEmail);
+			logger.info("Login[email={}]", userEmail);
 
 			final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
 			if (null == user) {
-				logger.warn("Not found user[email={0}]", userEmail);
+				logger.warn("Not found user[email={}]", userEmail);
 				renderer.render(request, response);
 				return;
 			}
@@ -213,7 +213,7 @@ public class LoginProcessor {
 			if (MD5.hash(userPwd).equals(user.getString(User.USER_PASSWORD))) {
 				Sessions.login(request, response, user);
 
-				logger.info("Logged in[email={0}]", userEmail);
+				logger.info("Logged in[email={}]", userEmail);
 
 				jsonObject.put(Common.IS_LOGGED_IN, true);
 
@@ -228,7 +228,7 @@ public class LoginProcessor {
 				return;
 			}
 
-			logger.warn("Wrong password[{0}]", userPwd);
+			logger.warn("Wrong password[{}]", userPwd);
 		} catch (final Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -311,12 +311,12 @@ public class LoginProcessor {
 				return;
 			}
 
-			logger.info("Login[email={0}]", userEmail);
+			logger.info("Login[email={}]", userEmail);
 
 			final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
 			if (null == user) {
-				logger.warn("Not found user[email={0}]", userEmail);
+				logger.warn("Not found user[email={}]", userEmail);
 				jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
 				return;
 			}
@@ -360,7 +360,7 @@ public class LoginProcessor {
 
 			user.put(User.USER_PASSWORD, newPwd);
 			userMgmtService.updateUser(user);
-			logger.debug("[{0}]'s password updated successfully.", userEmail);
+			logger.debug("[{}]'s password updated successfully.", userEmail);
 
 			jsonObject.put("succeed", true);
 			jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
@@ -419,7 +419,7 @@ public class LoginProcessor {
 		jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
 		jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
 
-		logger.debug("Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody, userEmail);
+		logger.debug("Sent a mail[mailSubject={}, mailBody=[{}] to [{}]", mailSubject, mailBody, userEmail);
 	}
 
 	/**

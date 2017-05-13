@@ -221,7 +221,7 @@ public class ArticleDao extends AbstractBlogDao {
 
 		final double mid = Math.random() + RANDOM_RANGE;
 
-		logger.trace("Random mid[{0}]", mid);
+		logger.trace("Random mid[{}]", mid);
 
 		Query query = new Query();
 

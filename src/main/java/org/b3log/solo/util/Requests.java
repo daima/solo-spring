@@ -383,7 +383,7 @@ public final class Requests {
 	 * @see #PAGINATION_PATH_PATTERN
 	 */
 	public static int getCurrentPageNum(final String path) {
-		logger.trace("Getting current page number[path={0}]", path);
+		logger.trace("Getting current page number[path={}]", path);
 
 		if (StringUtils.isBlank(path) || path.equals("/")) {
 			return 1;
@@ -409,7 +409,7 @@ public final class Requests {
 	 * @see #PAGINATION_PATH_PATTERN
 	 */
 	public static int getPageSize(final String path) {
-		logger.trace("Page number[string={0}]", path);
+		logger.trace("Page number[string={}]", path);
 
 		if (StringUtils.isBlank(path)) {
 			return DEFAULT_PAGE_SIZE;
@@ -441,7 +441,7 @@ public final class Requests {
 	 * @see #PAGINATION_PATH_PATTERN
 	 */
 	public static int getWindowSize(final String path) {
-		logger.trace("Page number[string={0}]", path);
+		logger.trace("Page number[string={}]", path);
 
 		if (StringUtils.isBlank(path)) {
 			return DEFAULT_WINDOW_SIZE;

@@ -74,7 +74,7 @@ public class ErrorProcessor {
 	 * User service.
 	 */
 	@Autowired
-	private static UserService userService;
+	private UserService userService;
 
 	/**
 	 * Shows the user template page.
@@ -94,7 +94,7 @@ public class ErrorProcessor {
 		String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
 		templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-		logger.debug("Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
+		logger.debug("Shows error page[requestURI={}, templateName={}]", requestURI, templateName);
 
 		final ConsoleRenderer renderer = new ConsoleRenderer();
 		renderer.setTemplateName("error/" + templateName);

@@ -45,7 +45,7 @@ public final class PluginRefresher {
 	public void action(final Event<List<AbstractPlugin>> event) throws EventException {
 		final List<AbstractPlugin> plugins = event.getData();
 
-		logger.debug("Processing an event[type={0}, data={1}] in listener[className={2}]", event.getType(), plugins,
+		logger.debug("Processing an event[type={}, data={}] in listener[className={}]", event.getType(), plugins,
 				PluginRefresher.class);
 		// final Transaction transaction = pluginDao.beginTransaction();
 

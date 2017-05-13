@@ -59,12 +59,12 @@ public final class PageCommentReplyNotifier {
 		final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
 		final JSONObject page = eventData.optJSONObject(Page.PAGE);
 
-		logger.debug("Processing an event[type={0}, data={1}] in listener[className={2}]", event.getType(), eventData,
+		logger.debug("Processing an event[type={}, data={}] in listener[className={}]", event.getType(), eventData,
 				PageCommentReplyNotifier.class);
 		final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
 		if (StringUtils.isBlank(originalCommentId)) {
-			logger.debug("This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
+			logger.debug("This comment[id={}] is not a reply", comment.optString(Keys.OBJECT_ID));
 			return;
 		}
 
@@ -115,7 +115,7 @@ public final class PageCommentReplyNotifier {
 					.replace("${replyContent}", commentContent);
 
 			message.setHtmlBody(mailBody);
-			logger.debug("Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody,
+			logger.debug("Sending a mail[mailSubject={}, mailBody=[{}] to [{}]", mailSubject, mailBody,
 					originalCommentEmail);
 			mailService.send(message);
 		} catch (final Exception e) {

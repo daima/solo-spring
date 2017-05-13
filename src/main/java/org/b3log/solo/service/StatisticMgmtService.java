@@ -114,7 +114,7 @@ public class StatisticMgmtService {
 				return;
 			}
 
-			logger.trace("Before inc blog view count[statistic={0}]", statistic);
+			logger.trace("Before inc blog view count[statistic={}]", statistic);
 
 			int blogViewCnt = statistic.optInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
 
@@ -134,7 +134,7 @@ public class StatisticMgmtService {
 			return;
 		}
 
-		logger.trace("Inced blog view count[statistic={0}]", statistic);
+		logger.trace("Inced blog view count[statistic={}]", statistic);
 	}
 
 	/**
@@ -342,10 +342,10 @@ public class StatisticMgmtService {
 	public void onlineVisitorCount(final HttpServletRequest request) {
 		final String remoteAddr = Requests.getRemoteAddr(request);
 
-		logger.debug("Current request [IP={0}]", remoteAddr);
+		logger.debug("Current request [IP={}]", remoteAddr);
 
 		ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
-		logger.debug("Current online visitor count [{0}]", ONLINE_VISITORS.size());
+		logger.debug("Current online visitor count [{}]", ONLINE_VISITORS.size());
 	}
 
 	/**
@@ -361,11 +361,11 @@ public class StatisticMgmtService {
 
 			if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
 				iterator.remove();
-				logger.trace("Removed online visitor[ip={0}]", onlineVisitor.getKey());
+				logger.trace("Removed online visitor[ip={}]", onlineVisitor.getKey());
 			}
 		}
 
-		logger.debug("Current online visitor count [{0}]", ONLINE_VISITORS.size());
+		logger.debug("Current online visitor count [{}]", ONLINE_VISITORS.size());
 	}
 
 	/**

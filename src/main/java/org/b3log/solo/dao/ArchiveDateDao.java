@@ -59,7 +59,7 @@ public class ArchiveDateDao extends AbstractBlogDao {
 			throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
 		}
 
-		logger.trace("Archive date [{0}] parsed to time [{1}]", archiveDate, time);
+		logger.trace("Archive date [{}] parsed to time [{}]", archiveDate, time);
 
 		final Query query = new Query();
 

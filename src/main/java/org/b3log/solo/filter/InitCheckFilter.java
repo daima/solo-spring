@@ -70,7 +70,7 @@ public final class InitCheckFilter implements Filter {
 		final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		final String requestURI = httpServletRequest.getRequestURI();
 
-		logger.trace("Request[URI={0}]", requestURI);
+		logger.trace("Request[URI={}]", requestURI);
 
 		// If requests Latke Remote APIs, skips this filter
 		if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {

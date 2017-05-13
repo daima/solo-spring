@@ -65,7 +65,7 @@ public class ArchiveDateArticleDao extends AbstractBlogDao {
 
 	@Override
 	public String getTableNamePostfix() {
-		return ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE;
+		return (ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE).toLowerCase();
 	}
 
 }

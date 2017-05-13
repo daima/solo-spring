@@ -161,7 +161,7 @@ public class RepairProcessor {
 					}
 
 					articleDao.update(article.getString(Keys.OBJECT_ID), article);
-					logger.info("Found an article[id={0}] exists unused properties[{1}]",
+					logger.info("Found an article[id={}] exists unused properties[{}]",
 							article.getString(Keys.OBJECT_ID), nameSet);
 				}
 			}
@@ -304,7 +304,7 @@ public class RepairProcessor {
 
 				tagDao.update(tagId, tag);
 
-				logger.info("Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]", tag.getString(Tag.TAG_TITLE),
+				logger.info("Repaired tag[title={}, refCnt={}, publishedTagRefCnt={}]", tag.getString(Tag.TAG_TITLE),
 						tagRefCnt, publishedTagRefCnt);
 			}
 

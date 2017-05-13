@@ -33,13 +33,13 @@ import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -334,7 +334,7 @@ public class ArticleConsole {
 	 */
 	@RequestMapping(value = "/console/article/{articleId}", method = RequestMethod.DELETE)
 	public void removeArticle(final HttpServletRequest request, final HttpServletResponse response,
-			final String articleId) throws Exception {
+			@PathVariable final String articleId) throws Exception {
 		if (!userQueryService.isLoggedIn(request, response)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;

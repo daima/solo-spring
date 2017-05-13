@@ -106,7 +106,7 @@ public class CaptchaProcessor {
 			final HttpSession httpSession = request.getSession(false);
 
 			if (null != httpSession) {
-				logger.debug("Captcha[{0}] for session[id={1}]", captcha, httpSession.getId());
+				logger.debug("Captcha[{}] for session[id={}]", captcha, httpSession.getId());
 				httpSession.setAttribute(CAPTCHA, captcha);
 			}
 

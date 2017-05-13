@@ -82,10 +82,10 @@ public final class CronService {
 
 					timer.scheduleAtFixedRate(cron, Cron.TEN * Cron.THOUSAND, cron.getPeriod());
 
-					logger.debug("Scheduled a cron job[url={0}]", cron.getURL());
+					logger.debug("Scheduled a cron job[url={}]", cron.getURL());
 				}
 
-				logger.debug("[{0}] cron jobs totally", CRONS.size());
+				logger.debug("[{}] cron jobs totally", CRONS.size());
 
 				break;
 			default:

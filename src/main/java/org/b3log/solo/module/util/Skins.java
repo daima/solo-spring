@@ -102,7 +102,7 @@ public final class Skins {
 			if (null == langs) {
 				LANG_MAP.clear(); // Collect unused skin languages
 
-				logger.debug("Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
+				logger.debug("Loading skin [dirName={}, locale={}]", currentSkinDirName, localeString);
 				langs = new HashMap<>();
 
 				final String language = Locales.getLanguage(localeString);
@@ -125,7 +125,7 @@ public final class Skins {
 				}
 
 				LANG_MAP.put(langName, langs);
-				logger.debug("Loaded skin[dirName={0}, locale={1}, keyCount={2}]", currentSkinDirName, localeString,
+				logger.debug("Loaded skin[dirName={}, locale={}, keyCount={}]", currentSkinDirName, localeString,
 						langs.size());
 			}
 

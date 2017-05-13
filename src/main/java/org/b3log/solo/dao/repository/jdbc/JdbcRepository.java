@@ -136,11 +136,11 @@ public abstract class JdbcRepository implements Repository {
 
 	@Override
 	public String add(final JSONObject jsonObject) throws RepositoryException {
-		final JdbcTransaction currentTransaction = TX.get();
+		/*final JdbcTransaction currentTransaction = TX.get();
 
 		if (null == currentTransaction) {
 			throw new RepositoryException("Invoking add() outside a transaction");
-		}
+		}*/
 
 		final Connection connection = getConnection();
 		final List<Object> paramList = new ArrayList<>();
@@ -300,7 +300,7 @@ public abstract class JdbcRepository implements Repository {
 		final JSONObject needUpdateJsonObject = getNeedUpdateJsonObject(oldJsonObject, jsonObject);
 
 		if (needUpdateJsonObject.length() == 0) {
-			logger.info("nothing to update [{0}] for repository [{1}]", new Object[] { id, getTableName() });
+			logger.info("nothing to update [{}] for repository [{}]", new Object[] { id, getTableName() });
 			return;
 		}
 
@@ -390,11 +390,11 @@ public abstract class JdbcRepository implements Repository {
 			return;
 		}
 
-		final JdbcTransaction currentTransaction = TX.get();
+		/*final JdbcTransaction currentTransaction = TX.get();
 
 		if (null == currentTransaction) {
 			throw new RepositoryException("Invoking remove() outside a transaction");
-		}
+		}*/
 
 		final StringBuilder sql = new StringBuilder();
 		final Connection connection = getConnection();
@@ -614,7 +614,7 @@ public abstract class JdbcRepository implements Repository {
 		ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
 
 		// if (currentPageNum > pageCnt) {
-		// logger.warn("Current page num [{0}] > page count [{1}]",
+		// logger.warn("Current page num [{}] > page count [{}]",
 		// new Object[] {currentPageNum, pageCnt});
 		// }
 		getQuerySql(currentPageNum, pageSize, selectSql, filterSql, orderBySql, sql);
@@ -865,7 +865,7 @@ public abstract class JdbcRepository implements Repository {
 	 * ret = TX.get();
 	 * 
 	 * if (null != ret) { logger.debug(
-	 * "There is a transaction[isActive={0}] in current thread",
+	 * "There is a transaction[isActive={}] in current thread",
 	 * ret.isActive()); if (ret.isActive()) { return TX.get(); // Using 'the
 	 * current transaction' } }
 	 * 

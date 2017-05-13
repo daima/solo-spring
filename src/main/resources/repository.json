@@ -60,7 +60,7 @@
             ]
         },
         {
-            "name": "archiveDate",
+            "name": "archivedate",
             "keys": [
                 {
                     "name": "oId",
@@ -82,7 +82,7 @@
             ]
         },
         {
-            "name": "archiveDate_article",
+            "name": "archivedate_article",
             "keys": [
                 {
                     "name": "oId",

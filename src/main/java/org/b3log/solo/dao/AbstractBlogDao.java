@@ -64,7 +64,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.get(id);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}]", e.getMessage());
+			logger.warn("SQL exception[msg={}]", e.getMessage());
 			return null;
 		}
 	}
@@ -84,7 +84,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.get(query);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, query={2}]", e.getMessage(), super.getTableName(),
+			logger.warn("SQL exception[msg={}, repository={}, query={}]", e.getMessage(), super.getTableName(),
 					query.toString());
 
 			final JSONObject ret = new JSONObject();
@@ -105,7 +105,7 @@ public abstract class AbstractBlogDao extends JdbcRepository implements BlogDao 
 		try {
 			return super.select(statement, params);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={0}, repository={1}, statement={2}]", e.getMessage(), super.getTableName(),
+			logger.warn("SQL exception[msg={}, repository={}, statement={}]", e.getMessage(), super.getTableName(),
 					statement);
 
 			return Collections.emptyList();

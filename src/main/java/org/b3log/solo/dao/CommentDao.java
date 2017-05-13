@@ -69,7 +69,7 @@ public class CommentDao extends AbstractBlogDao {
 			remove(commentId);
 		}
 
-		logger.debug("Removed comments[onId={0}, removedCnt={1}]", onId, comments.size());
+		logger.debug("Removed comments[onId={}, removedCnt={}]", onId, comments.size());
 
 		return comments.size();
 	}

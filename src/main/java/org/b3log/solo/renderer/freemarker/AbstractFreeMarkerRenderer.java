@@ -121,7 +121,7 @@ public abstract class AbstractFreeMarkerRenderer extends AbstractHTTPResponseRen
 		final Template template = getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
 
 		if (null == template) {
-			logger.error("Not found template[{0}]", templateName);
+			logger.error("Not found template[{}]", templateName);
 
 			try {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
