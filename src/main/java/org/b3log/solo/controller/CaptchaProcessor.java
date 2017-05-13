@@ -36,7 +36,7 @@ import org.b3log.solo.RuntimeEnv;
 import org.b3log.solo.frame.image.Image;
 import org.b3log.solo.frame.image.ImageService;
 import org.b3log.solo.frame.image.ImageServiceFactory;
-import org.b3log.solo.frame.servlet.renderer.PNGRenderer;
+import org.b3log.solo.renderer.PNGRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

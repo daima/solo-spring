@@ -3,8 +3,8 @@ package org.b3log.solo.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.json.JSONObject;
 
 public interface BlogDao {
@@ -91,7 +91,7 @@ public interface BlogDao {
 	 * <p>
 	 * <b>Note</b>: The order of elements of the returned result list is decided
 	 * by datastore implementation, excepts
-	 * {@link Query#addSort(java.lang.String, org.b3log.solo.frame.repository.SortDirection)}
+	 * {@link Query#addSort(java.lang.String, org.b3log.solo.dao.repository.SortDirection)}
 	 * be invoked.
 	 * </p>
 	 *

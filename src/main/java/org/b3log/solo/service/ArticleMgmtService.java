@@ -33,8 +33,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.ArchiveDateArticleDao;
 import org.b3log.solo.dao.ArchiveDateDao;
@@ -43,10 +43,9 @@ import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.dao.UserDao;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -60,7 +59,7 @@ import org.b3log.solo.module.event.RhythmArticleUpdater;
 import org.b3log.solo.module.util.Comments;
 import org.b3log.solo.util.CollectionUtils;
 import org.b3log.solo.util.Ids;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -505,7 +504,7 @@ public class ArticleMgmtService {
 	public String addArticleInternal(final JSONObject article) throws ServiceException {
 		String ret = article.optString(Keys.OBJECT_ID);
 
-		if (Strings.isEmptyOrNull(ret)) {
+		if (StringUtils.isBlank(ret)) {
 			ret = Ids.genTimeMillisId();
 			article.put(Keys.OBJECT_ID, ret);
 		}
@@ -826,10 +825,10 @@ public class ArticleMgmtService {
 
 			comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
-			if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+			if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
 				comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
 			}
-			if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+			if (StringUtils.isEmpty(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
 				comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
 			}
 
@@ -1235,7 +1234,7 @@ public class ArticleMgmtService {
 
 		String ret = article.optString(Article.ARTICLE_PERMALINK);
 
-		if (Strings.isEmptyOrNull(ret)) {
+		if (StringUtils.isBlank(ret)) {
 			ret = "/articles/" + DateFormatUtils.format(date, "yyyy/MM/dd") + "/" + article.optString(Keys.OBJECT_ID)
 					+ ".html";
 		}
@@ -1278,7 +1277,7 @@ public class ArticleMgmtService {
 		final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
 
 		if (!oldPermalink.equals(ret)) {
-			if (Strings.isEmptyOrNull(ret)) {
+			if (StringUtils.isBlank(ret)) {
 				ret = "/articles/" + DateFormatUtils.format(createDate, "yyyy/MM/dd") + "/" + articleId + ".html";
 			}
 

@@ -16,8 +16,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.solo.dao.StatisticDao;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Statistic;
 import org.json.JSONException;
 import org.json.JSONObject;

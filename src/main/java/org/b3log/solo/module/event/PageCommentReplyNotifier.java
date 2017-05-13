@@ -15,19 +15,18 @@
  */
 package org.b3log.solo.module.event;
 
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.mail.MailService;
-import org.b3log.solo.frame.mail.MailService.Message;
-import org.b3log.solo.frame.mail.MailServiceFactory;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.MailMessage;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.service.MailService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +51,8 @@ public final class PageCommentReplyNotifier {
 	 */
 	private static Logger logger = LoggerFactory.getLogger(PageCommentReplyNotifier.class);
 
-	/**
-	 * Mail service.
-	 */
-	private MailService mailService = MailServiceFactory.getMailService();
+	@Autowired
+	private MailService mailService;
 
 	public void action(final Event<JSONObject> event) throws EventException {
 		final JSONObject eventData = event.getData();
@@ -66,7 +63,7 @@ public final class PageCommentReplyNotifier {
 				PageCommentReplyNotifier.class);
 		final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
-		if (Strings.isEmptyOrNull(originalCommentId)) {
+		if (StringUtils.isBlank(originalCommentId)) {
 			logger.debug("This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
 			return;
 		}
@@ -91,7 +88,7 @@ public final class PageCommentReplyNotifier {
 
 			final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
 			final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-			final Message message = new Message();
+			final MailMessage message = new MailMessage();
 
 			message.setFrom(adminEmail);
 			message.addRecipient(originalCommentEmail);

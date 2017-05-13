@@ -22,23 +22,23 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.CommentDao;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.module.util.Comments;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Requests;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +153,7 @@ public class CommentReceiver {
 			final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
 			final String key = symphonyCmt.optString("userB3Key");
 
-			if (Strings.isEmptyOrNull(keyOfSolo) || !keyOfSolo.equals(key)) {
+			if (StringUtils.isBlank(keyOfSolo) || !keyOfSolo.equals(key)) {
 				ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 				ret.put(Keys.MSG, "Wrong key");
 				renderer.render(request, response);
@@ -207,7 +207,7 @@ public class CommentReceiver {
 
 			comment.put(Comment.COMMENT_DATE, date);
 			ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
-			if (!Strings.isEmptyOrNull(originalCommentId)) {
+			if (!StringUtils.isBlank(originalCommentId)) {
 				originalComment = commentDao.get(originalCommentId);
 				if (null != originalComment) {
 					comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);

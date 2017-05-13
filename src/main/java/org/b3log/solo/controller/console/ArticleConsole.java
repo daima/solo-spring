@@ -18,22 +18,22 @@ package org.b3log.solo.controller.console;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.Emotions;
 import org.b3log.solo.module.util.Markdowns;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.LangPropsService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -121,7 +121,7 @@ public class ArticleConsole {
 
 		final String markdownText = request.getParameter("markdownText");
 
-		if (Strings.isEmptyOrNull(markdownText)) {
+		if (StringUtils.isBlank(markdownText)) {
 			result.put("html", "");
 
 			return;

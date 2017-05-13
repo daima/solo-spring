@@ -15,7 +15,8 @@
  */
 package org.b3log.solo.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.b3log.solo.SoloConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +89,7 @@ public final class Callstacks {
 			return;
 		}
 
-		final StringBuilder stackBuilder = new StringBuilder("CallStack [").append(Strings.LINE_SEPARATOR);
+		final StringBuilder stackBuilder = new StringBuilder("CallStack [").append(SoloConstant.LINE_SEPARATOR);
 
 		for (int i = 1; i < stackElements.length; i++) {
 			final String stackElemClassName = stackElements[i].getClassName();
@@ -97,11 +98,10 @@ public final class Callstacks {
 					|| StringUtils.startsWithAny(stackElemClassName, exceptablePackages)) {
 				continue;
 			}
-
 			stackBuilder.append("    [className=").append(stackElements[i].getClassName()).append(", fileName=")
 					.append(stackElements[i].getFileName()).append(", lineNumber=")
 					.append(stackElements[i].getLineNumber()).append(", methodName=")
-					.append(stackElements[i].getMethodName()).append(']').append(Strings.LINE_SEPARATOR);
+					.append(stackElements[i].getMethodName()).append(']').append(SoloConstant.LINE_SEPARATOR);
 		}
 		stackBuilder.append("], full depth [").append(stackElements.length).append("]");
 

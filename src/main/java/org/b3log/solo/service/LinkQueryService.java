@@ -19,11 +19,10 @@ import java.util.List;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.LinkDao;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.Link;
+import org.b3log.solo.model.Pagination;
 import org.b3log.solo.util.Paginator;
 import org.json.JSONArray;
 import org.json.JSONObject;

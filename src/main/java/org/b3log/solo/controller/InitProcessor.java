@@ -22,25 +22,26 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.model.Role;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Role;
+import org.b3log.solo.model.User;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.module.util.QueryResults;
 import org.b3log.solo.module.util.Thumbnails;
+import org.b3log.solo.renderer.ConsoleRenderer;
+import org.b3log.solo.renderer.JSONRenderer;
+import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.LangPropsService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Locales;
 import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Sessions;
-import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -168,8 +169,8 @@ public class InitProcessor {
 			final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
 			final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
-			if (Strings.isEmptyOrNull(userName) || Strings.isEmptyOrNull(userEmail)
-					|| Strings.isEmptyOrNull(userPassword) || !Strings.isEmail(userEmail)) {
+			if (StringUtils.isBlank(userName) || StringUtils.isBlank(userEmail)
+					|| StringUtils.isBlank(userPassword) || !EmailValidator.getInstance().isValid(userEmail)) {
 				ret.put(Keys.MSG, "Init failed, please check your input");
 				renderer.render(request, response);
 				return;

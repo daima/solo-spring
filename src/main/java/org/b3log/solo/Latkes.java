@@ -32,7 +32,7 @@ import org.apache.commons.io.FileUtils;
 import org.b3log.solo.frame.cron.CronService;
 import org.b3log.solo.frame.thread.local.LocalThreadService;
 import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.freemarker.Templates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -262,7 +262,7 @@ public final class Latkes {
 					.append(getServerHost());
 			final String port = getServerPort();
 
-			if (!Strings.isEmptyOrNull(port) && !port.equals("80")) {
+			if (!StringUtils.isBlank(port) && !port.equals("80")) {
 				serverBuilder.append(':').append(port);
 			}
 
@@ -364,7 +364,7 @@ public final class Latkes {
 
 			final String port = getStaticServerPort();
 
-			if (!Strings.isEmptyOrNull(port) && !port.equals("80")) {
+			if (!StringUtils.isBlank(port) && !port.equals("80")) {
 				staticServerBuilder.append(':').append(port);
 			}
 
@@ -524,7 +524,7 @@ public final class Latkes {
 	//
 	// final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
 	//
-	// if (Strings.isEmptyOrNull(jdbcURL)) {
+	// if (StringUtils.isBlank(jdbcURL)) {
 	// throw new IllegalStateException("The jdbc.URL in local.properties is
 	// required");
 	// }

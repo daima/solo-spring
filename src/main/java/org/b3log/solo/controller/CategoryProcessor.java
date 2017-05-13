@@ -26,23 +26,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Pagination;
 import org.b3log.solo.module.util.Skins;
+import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.solo.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CategoryQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Requests;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -117,7 +117,7 @@ public class CategoryProcessor {
 	 *         not convert to an number
 	 */
 	private static int getCurrentPageNum(final String requestURI, final String categoryURI) {
-		if (Strings.isEmptyOrNull(categoryURI)) {
+		if (StringUtils.isBlank(categoryURI)) {
 			return -1;
 		}
 

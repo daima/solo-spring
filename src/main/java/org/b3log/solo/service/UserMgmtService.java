@@ -19,19 +19,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.frame.model.Role;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.model.Role;
+import org.b3log.solo.model.User;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.module.util.Thumbnails;
 import org.b3log.solo.util.MD5;
 import org.b3log.solo.util.Sessions;
-import org.b3log.solo.util.Strings;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public class UserMgmtService {
 
 				final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
 
-				if (Strings.isEmptyOrNull(userEmail)) {
+				if (StringUtils.isBlank(userEmail)) {
 					break;
 				}
 
@@ -194,12 +193,12 @@ public class UserMgmtService {
 			}
 
 			final String userRole = requestJSONObject.optString(User.USER_ROLE);
-			if (!Strings.isEmptyOrNull(userRole)) {
+			if (!StringUtils.isBlank(userRole)) {
 				oldUser.put(User.USER_ROLE, userRole);
 			}
 
 			final String userURL = requestJSONObject.optString(User.USER_URL);
-			if (!Strings.isEmptyOrNull(userURL)) {
+			if (!StringUtils.isBlank(userURL)) {
 				oldUser.put(User.USER_URL, userURL);
 			}
 
@@ -308,11 +307,11 @@ public class UserMgmtService {
 			user.put(User.USER_PASSWORD, MD5.hash(userPassword));
 
 			String userURL = requestJSONObject.optString(User.USER_URL);
-			if (Strings.isEmptyOrNull(userURL)) {
+			if (StringUtils.isBlank(userURL)) {
 				userURL = Latkes.getServePath();
 			}
 
-			if (!Strings.isURL(userURL)) {
+			if (!UrlValidator.getInstance().isValid(userURL)) {
 				throw new ServiceException(langPropsService.get("urlInvalidLabel"));
 			}
 
@@ -325,7 +324,7 @@ public class UserMgmtService {
 			user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
 			String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-			if (Strings.isEmptyOrNull(userAvatar)) {
+			if (StringUtils.isBlank(userAvatar)) {
 				userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
 			}
 			user.put(UserExt.USER_AVATAR, userAvatar);

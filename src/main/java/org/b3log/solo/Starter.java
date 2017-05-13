@@ -26,7 +26,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
@@ -131,7 +132,7 @@ public final class Starter {
 		}
 
 		String portArg = commandLine.getOptionValue("listen_port");
-		if (!Strings.isNumeric(portArg)) {
+		if (!NumberUtils.isDigits(portArg)) {
 			portArg = "8080";
 		}
 

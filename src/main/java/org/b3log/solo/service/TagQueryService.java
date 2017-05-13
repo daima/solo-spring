@@ -20,10 +20,9 @@ import java.util.List;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.util.CollectionUtils;
 import org.json.JSONArray;

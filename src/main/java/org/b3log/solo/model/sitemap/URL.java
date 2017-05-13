@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.model.sitemap;
 
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Sitemap URL.
@@ -114,7 +114,7 @@ public final class URL {
 		stringBuilder.append(loc);
 		stringBuilder.append(END_LOC_ELEMENT);
 
-		if (!Strings.isEmptyOrNull(lastMod)) {
+		if (!StringUtils.isBlank(lastMod)) {
 			stringBuilder.append(START_LAST_MOD_ELEMENT);
 			stringBuilder.append(lastMod);
 			stringBuilder.append(END_LAST_MOD_ELEMENT);

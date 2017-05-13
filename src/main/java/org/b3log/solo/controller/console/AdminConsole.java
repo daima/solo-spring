@@ -30,34 +30,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeDatabase;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.frame.event.Event;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.model.Plugin;
-import org.b3log.solo.frame.model.User;
 import org.b3log.solo.frame.plugin.ViewLoadEventData;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Plugin;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.model.User;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.module.plugin.ViewLoadEventHandler;
 import org.b3log.solo.module.util.Thumbnails;
+import org.b3log.solo.renderer.ConsoleRenderer;
+import org.b3log.solo.renderer.JSONRenderer;
+import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Execs;
 import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +149,7 @@ public class AdminConsole {
 		final String email = currentUser.optString(User.USER_EMAIL);
 
 		final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-		if (!Strings.isEmptyOrNull(userAvatar)) {
+		if (!StringUtils.isBlank(userAvatar)) {
 			dataModel.put(Common.GRAVATAR, userAvatar);
 		} else {
 			final String gravatar = Thumbnails.getGravatarURL(email, "128");
@@ -384,7 +384,7 @@ public class AdminConsole {
 			viewLoadEventHandler.action(new Event<>(Keys.FREEMARKER_ACTION, data));
 			// eventManager.fireEventSynchronously(new
 			// Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
-			if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
+			if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
 				// There is no plugin for this template, fill ${plugins} with
 				// blank.
 				dataModel.put(Plugin.PLUGINS, "");

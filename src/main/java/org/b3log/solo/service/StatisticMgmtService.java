@@ -24,8 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.StatisticDao;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.util.Requests;
 import org.json.JSONException;

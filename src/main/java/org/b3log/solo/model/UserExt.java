@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.0, Oct 17, 2015
  * @since 0.4.1
- * @see org.b3log.solo.frame.model.User
+ * @see org.b3log.solo.model.User
  */
 public final class UserExt {
 

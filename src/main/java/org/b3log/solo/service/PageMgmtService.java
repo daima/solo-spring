@@ -20,14 +20,13 @@ import java.util.List;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.dao.PageDao;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.module.util.Comments;
 import org.b3log.solo.util.Ids;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -135,7 +134,7 @@ public class PageMgmtService {
 			final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
 
 			if (!oldPermalink.equals(permalink)) {
-				if (Strings.isEmptyOrNull(permalink)) {
+				if (StringUtils.isBlank(permalink)) {
 					permalink = "/pages/" + pageId + ".html";
 				}
 
@@ -260,7 +259,7 @@ public class PageMgmtService {
 
 			String permalink = page.optString(Page.PAGE_PERMALINK);
 
-			if (Strings.isEmptyOrNull(permalink)) {
+			if (StringUtils.isBlank(permalink)) {
 				permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
 			}
 
@@ -418,10 +417,10 @@ public class PageMgmtService {
 
 			comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
-			if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+			if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
 				comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
 			}
-			if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+			if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
 				comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
 			}
 

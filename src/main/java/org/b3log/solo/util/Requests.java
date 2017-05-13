@@ -26,7 +26,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.model.Pagination;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.b3log.solo.SoloConstant;
+import org.b3log.solo.model.Pagination;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -104,34 +107,33 @@ public final class Requests {
 	 */
 	public static String getLog(final HttpServletRequest httpServletRequest) {
 		final String indents = "    ";
-		final StringBuilder logBuilder = new StringBuilder("Request [").append(Strings.LINE_SEPARATOR);
+		final StringBuilder logBuilder = new StringBuilder("Request [").append(SoloConstant.LINE_SEPARATOR);
 
 		logBuilder.append(indents).append("method=").append(httpServletRequest.getMethod()).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append("URL=").append(httpServletRequest.getRequestURL()).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append("contentType=").append(httpServletRequest.getContentType()).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append("characterEncoding=").append(httpServletRequest.getCharacterEncoding())
-				.append(",").append(Strings.LINE_SEPARATOR);
-		logBuilder.append(indents).append("local=[").append(Strings.LINE_SEPARATOR);
+				.append(",").append(SoloConstant.LINE_SEPARATOR);
+		logBuilder.append(indents).append("local=[").append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("addr=").append(httpServletRequest.getLocalAddr()).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("port=").append(httpServletRequest.getLocalPort()).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("name=").append(httpServletRequest.getLocalName())
-				.append("],").append(Strings.LINE_SEPARATOR);
-		logBuilder.append(indents).append("remote=[").append(Strings.LINE_SEPARATOR);
+				.append("],").append(SoloConstant.LINE_SEPARATOR);
+		logBuilder.append(indents).append("remote=[").append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("addr=").append(getRemoteAddr(httpServletRequest)).append(",")
-				.append(Strings.LINE_SEPARATOR);
+				.append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("port=").append(httpServletRequest.getRemotePort())
-				.append(",").append(Strings.LINE_SEPARATOR);
+				.append(",").append(SoloConstant.LINE_SEPARATOR);
 		logBuilder.append(indents).append(indents).append("host=").append(httpServletRequest.getRemoteHost())
-				.append("],").append(Strings.LINE_SEPARATOR);
-		logBuilder.append(indents).append("headers=[").append(Strings.LINE_SEPARATOR);
+				.append("],").append(SoloConstant.LINE_SEPARATOR);
+		logBuilder.append(indents).append("headers=[").append(SoloConstant.LINE_SEPARATOR);
 
 		final StringBuilder headerLogBuilder = new StringBuilder();
-		@SuppressWarnings("unchecked")
 		final Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
 
 		while (headerNames.hasMoreElements()) {
@@ -140,11 +142,11 @@ public final class Requests {
 
 			headerLogBuilder.append(indents).append(indents).append(name).append("=").append(value);
 
-			headerLogBuilder.append(Strings.LINE_SEPARATOR);
+			headerLogBuilder.append(SoloConstant.LINE_SEPARATOR);
 		}
 		headerLogBuilder.append(indents).append("]");
 
-		logBuilder.append(headerLogBuilder.toString()).append(Strings.LINE_SEPARATOR).append("]");
+		logBuilder.append(headerLogBuilder.toString()).append(SoloConstant.LINE_SEPARATOR).append("]");
 
 		return logBuilder.toString();
 	}
@@ -165,11 +167,11 @@ public final class Requests {
 	public static String getRemoteAddr(final HttpServletRequest request) {
 		String ret = request.getHeader("X-forwarded-for");
 
-		if (Strings.isEmptyOrNull(ret)) {
+		if (StringUtils.isBlank(ret)) {
 			ret = request.getHeader("X-Real-IP");
 		}
 
-		if (Strings.isEmptyOrNull(ret)) {
+		if (StringUtils.isBlank(ret)) {
 			return request.getRemoteAddr();
 		}
 
@@ -219,7 +221,7 @@ public final class Requests {
 	public static boolean searchEngineBotRequest(final HttpServletRequest request) {
 		final String userAgent = request.getHeader("User-Agent");
 
-		if (Strings.isEmptyOrNull(userAgent)) {
+		if (StringUtils.isBlank(userAgent)) {
 			return false;
 		}
 
@@ -331,7 +333,7 @@ public final class Requests {
 	public static boolean mobileRequest(final HttpServletRequest request) {
 		final String userAgent = request.getHeader("User-Agent");
 
-		if (Strings.isEmptyOrNull(userAgent)) {
+		if (StringUtils.isBlank(userAgent)) {
 			return false;
 		}
 
@@ -383,13 +385,13 @@ public final class Requests {
 	public static int getCurrentPageNum(final String path) {
 		logger.trace("Getting current page number[path={0}]", path);
 
-		if (Strings.isEmptyOrNull(path) || path.equals("/")) {
+		if (StringUtils.isBlank(path) || path.equals("/")) {
 			return 1;
 		}
 
 		final String currentPageNumber = path.split("/")[0];
 
-		if (!Strings.isNumeric(currentPageNumber)) {
+		if (!NumberUtils.isDigits(currentPageNumber)) {
 			return 1;
 		}
 
@@ -409,7 +411,7 @@ public final class Requests {
 	public static int getPageSize(final String path) {
 		logger.trace("Page number[string={0}]", path);
 
-		if (Strings.isEmptyOrNull(path)) {
+		if (StringUtils.isBlank(path)) {
 			return DEFAULT_PAGE_SIZE;
 		}
 
@@ -421,7 +423,7 @@ public final class Requests {
 
 		final String pageSize = parts[1];
 
-		if (!Strings.isNumeric(pageSize)) {
+		if (!NumberUtils.isDigits(pageSize)) {
 			return DEFAULT_PAGE_SIZE;
 		}
 
@@ -441,7 +443,7 @@ public final class Requests {
 	public static int getWindowSize(final String path) {
 		logger.trace("Page number[string={0}]", path);
 
-		if (Strings.isEmptyOrNull(path)) {
+		if (StringUtils.isBlank(path)) {
 			return DEFAULT_WINDOW_SIZE;
 		}
 
@@ -453,7 +455,7 @@ public final class Requests {
 
 		final String windowSize = parts[2];
 
-		if (!Strings.isNumeric(windowSize)) {
+		if (!NumberUtils.isDigits(windowSize)) {
 			return DEFAULT_WINDOW_SIZE;
 		}
 
@@ -501,7 +503,7 @@ public final class Requests {
 
 			String tmp = sb.toString();
 
-			if (Strings.isEmptyOrNull(tmp)) {
+			if (StringUtils.isBlank(tmp)) {
 				tmp = "{}";
 			}
 

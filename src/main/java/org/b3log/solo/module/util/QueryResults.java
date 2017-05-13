@@ -16,7 +16,7 @@
 package org.b3log.solo.module.util;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.model.Pagination;
+import org.b3log.solo.model.Pagination;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

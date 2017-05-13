@@ -17,11 +17,10 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.repository.FilterOperator;
-import org.b3log.solo.frame.repository.PropertyFilter;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.FilterOperator;
+import org.b3log.solo.dao.repository.PropertyFilter;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Option;
 import org.json.JSONArray;
 import org.json.JSONObject;

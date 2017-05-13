@@ -21,14 +21,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.controller.util.Filler;
-import org.b3log.solo.frame.user.UserService;
-import org.b3log.solo.frame.user.UserServiceFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.renderer.ConsoleRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Locales;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -74,7 +73,8 @@ public class ErrorProcessor {
 	/**
 	 * User service.
 	 */
-	private static UserService userService = UserServiceFactory.getUserService();
+	@Autowired
+	private static UserService userService;
 
 	/**
 	 * Shows the user template page.

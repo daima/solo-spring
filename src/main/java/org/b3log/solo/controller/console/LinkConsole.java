@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;

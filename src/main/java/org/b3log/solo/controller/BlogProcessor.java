@@ -27,16 +27,16 @@ import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeEnv;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Pagination;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.User;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticQueryService;
@@ -44,7 +44,7 @@ import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.MD5;
 import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,7 +211,7 @@ public class BlogProcessor {
 	public void getArticlesTags(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		final String pwd = request.getParameter("pwd");
 
-		if (Strings.isEmptyOrNull(pwd)) {
+		if (StringUtils.isBlank(pwd)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -264,7 +264,7 @@ public class BlogProcessor {
 			for (final String tag : tags) {
 				final String trim = tag.trim();
 
-				if (!Strings.isEmptyOrNull(trim)) {
+				if (!StringUtils.isBlank(trim)) {
 					tagArray.put(tag);
 				}
 			}

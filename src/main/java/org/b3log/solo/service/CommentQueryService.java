@@ -21,25 +21,24 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.dao.PageDao;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Pagination;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.Emotions;
 import org.b3log.solo.module.util.Markdowns;
 import org.b3log.solo.module.util.Thumbnails;
 import org.b3log.solo.util.Paginator;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -99,7 +98,7 @@ public class CommentQueryService {
 	 *             exception
 	 */
 	public boolean canAccessComment(final String commentId, final HttpServletRequest request) throws Exception {
-		if (Strings.isEmptyOrNull(commentId)) {
+		if (StringUtils.isBlank(commentId)) {
 			return false;
 		}
 
@@ -265,7 +264,7 @@ public class CommentQueryService {
 
 				comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
 
-				if (!Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+				if (!StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
 					// This comment is a reply
 					comment.put(Common.IS_REPLY, true);
 				}

@@ -27,16 +27,15 @@ import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.mail.MailService;
-import org.b3log.solo.frame.mail.MailService.Message;
-import org.b3log.solo.frame.mail.MailServiceFactory;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.Repositories;
-import org.b3log.solo.frame.servlet.renderer.TextHTMLRenderer;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.Repositories;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.MailMessage;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.renderer.TextHTMLRenderer;
+import org.b3log.solo.service.MailService;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
@@ -91,7 +90,8 @@ public class RepairProcessor {
 	/**
 	 * Mail service.
 	 */
-	private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+	@Autowired
+	private MailService mailService;
 
 	/**
 	 * Tag repository.
@@ -246,7 +246,7 @@ public class RepairProcessor {
 			preferenceMgmtService.updatePreference(preference);
 
 			// Sends the sample signs to developer
-			final Message msg = new MailService.Message();
+			final MailMessage msg = new MailMessage();
 
 			msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
 			msg.addRecipient("DL88250@gmail.com");
@@ -254,7 +254,7 @@ public class RepairProcessor {
 			msg.setHtmlBody(
 					originalSigns + "<p>Admin email: " + preference.getString(Option.ID_C_ADMIN_EMAIL) + "</p>");
 
-			MAIL_SVC.send(msg);
+			mailService.send(msg);
 			renderer.setContent("Restores signs succeeded.");
 		} catch (final Exception e) {
 			logger.error(e.getMessage(), e);

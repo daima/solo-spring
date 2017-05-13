@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.b3log.solo.SoloConstant;
 
 /**
  * Stop watch utilities for timing of a thread of tasks.
@@ -507,7 +508,7 @@ public final class Stopwatchs {
 
 			final StringBuilder stringBuilder = new StringBuilder("[").append(percenOfRoot).append("]%, [")
 					.append(getElapsedTime()).append("]ms [").append(getTaskTitle()).append("]")
-					.append(Strings.LINE_SEPARATOR);
+					.append(SoloConstant.LINE_SEPARATOR);
 
 			return stringBuilder.toString();
 		}

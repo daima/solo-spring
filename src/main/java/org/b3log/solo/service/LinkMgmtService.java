@@ -17,7 +17,6 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.LinkDao;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Link;
 import org.json.JSONObject;
 import org.slf4j.Logger;

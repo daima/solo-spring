@@ -22,34 +22,33 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.mail.MailService;
-import org.b3log.solo.frame.mail.MailServiceFactory;
-import org.b3log.solo.frame.model.Role;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.solo.frame.user.UserService;
-import org.b3log.solo.frame.user.UserServiceFactory;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.MailMessage;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Role;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.Randoms;
+import org.b3log.solo.renderer.ConsoleRenderer;
+import org.b3log.solo.renderer.JSONRenderer;
+import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.service.LangPropsService;
+import org.b3log.solo.service.MailService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.UserService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.MD5;
 import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Sessions;
-import org.b3log.solo.util.Strings;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -90,12 +89,14 @@ public class LoginProcessor {
 	/**
 	 * User service.
 	 */
-	private UserService userService = UserServiceFactory.getUserService();
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * Mail service.
 	 */
-	private MailService mailService = MailServiceFactory.getMailService();
+	@Autowired
+	private MailService mailService;
 
 	/**
 	 * User management service.
@@ -145,7 +146,7 @@ public class LoginProcessor {
 	public void showLogin(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		String destinationURL = request.getParameter(Common.GOTO);
 
-		if (Strings.isEmptyOrNull(destinationURL)) {
+		if (StringUtils.isBlank(destinationURL)) {
 			destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
 		}
 
@@ -194,7 +195,7 @@ public class LoginProcessor {
 			final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 			final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 
-			if (Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPwd)) {
+			if (StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPwd)) {
 				renderer.render(request, response);
 				return;
 			}
@@ -248,7 +249,7 @@ public class LoginProcessor {
 
 		String destinationURL = request.getParameter(Common.GOTO);
 
-		if (Strings.isEmptyOrNull(destinationURL)) {
+		if (StringUtils.isBlank(destinationURL)) {
 			destinationURL = "/";
 		}
 
@@ -267,7 +268,7 @@ public class LoginProcessor {
 	public void showForgot(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		String destinationURL = request.getParameter(Common.GOTO);
 
-		if (Strings.isEmptyOrNull(destinationURL)) {
+		if (StringUtils.isBlank(destinationURL)) {
 			destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
 		}
 
@@ -305,7 +306,7 @@ public class LoginProcessor {
 			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 			final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
-			if (Strings.isEmptyOrNull(userEmail)) {
+			if (StringUtils.isBlank(userEmail)) {
 				logger.warn("Why user's email is empty");
 				return;
 			}
@@ -394,7 +395,7 @@ public class LoginProcessor {
 		final String mailSubject = langPropsService.get("resetPwdMailSubject");
 		final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath()
 				+ "/forgot?token=" + token + "&login=" + userEmail;
-		final MailService.Message message = new MailService.Message();
+		final MailMessage message = new MailMessage();
 
 		final JSONObject option = new JSONObject();
 

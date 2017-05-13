@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.Repositories;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.jdbc.JdbcRepository;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.Repositories;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.dao.repository.jdbc.JdbcRepository;
+import org.b3log.solo.model.Pagination;
 import org.b3log.solo.util.Callstacks;
 import org.json.JSONArray;
 import org.json.JSONObject;

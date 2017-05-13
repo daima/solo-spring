@@ -27,61 +27,6 @@
 		</license>
 	</licenses>
 
-	<developers>
-		<developer>
-			<id>DL88250@gmail.com</id>
-			<name>Liang Ding</name>
-			<email>DL88250@gmail.com</email>
-			<url>http://88250.b3log.org</url>
-			<roles>
-				<role>Lead</role>
-				<role>Initial Committer</role>
-			</roles>
-			<organization>B3log</organization>
-			<organizationUrl>http://b3log.org</organizationUrl>
-			<timezone>+8</timezone>
-		</developer>
-
-		<developer>
-			<id>LLY219@gmail.com</id>
-			<name>Liyuan Li</name>
-			<email>LLY219@gmail.com</email>
-			<url>http://vanessa.b3log.org</url>
-			<roles>
-				<role>Committer</role>
-			</roles>
-			<organization>B3log</organization>
-			<organizationUrl>http://b3log.org</organizationUrl>
-			<timezone>+8</timezone>
-		</developer>
-
-		<developer>
-			<id>wmainlove@gmail.com</id>
-			<name>Liceng Yao</name>
-			<email>wmainlove@gmail.com</email>
-			<url>http://love.b3log.org</url>
-			<roles>
-				<role>Committer</role>
-			</roles>
-			<organization>B3log</organization>
-			<organizationUrl>http://b3log.org</organizationUrl>
-			<timezone>+8</timezone>
-		</developer>
-
-		<developer>
-			<id>dongxu.wang@acm.org</id>
-			<name>Dongxu Wang</name>
-			<email>dongxu.wang@acm.org</email>
-			<url>http://dx.b3log.org</url>
-			<roles>
-				<role>Committer</role>
-			</roles>
-			<organization>B3log</organization>
-			<organizationUrl>http://b3log.org</organizationUrl>
-			<timezone>+8</timezone>
-		</developer>
-	</developers>
-
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/b3log/solo/issues</url>
@@ -130,6 +75,20 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -300,11 +259,6 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20160810</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>

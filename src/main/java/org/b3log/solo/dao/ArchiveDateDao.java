@@ -19,13 +19,13 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.repository.FilterOperator;
-import org.b3log.solo.frame.repository.PropertyFilter;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.SortDirection;
+import org.b3log.solo.dao.repository.FilterOperator;
+import org.b3log.solo.dao.repository.PropertyFilter;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.util.CollectionUtils;
 import org.json.JSONArray;
@@ -76,7 +76,7 @@ public class ArchiveDateDao extends AbstractBlogDao {
 	}
 
 	public List<JSONObject> getArchiveDates() throws RepositoryException {
-		final org.b3log.solo.frame.repository.Query query = new Query()
+		final org.b3log.solo.dao.repository.Query query = new Query()
 				.addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
 		final JSONObject result = get(query);
 

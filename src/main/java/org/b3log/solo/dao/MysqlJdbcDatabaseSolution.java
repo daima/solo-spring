@@ -18,16 +18,16 @@ package org.b3log.solo.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.frame.repository.jdbc.AbstractJdbcDatabaseSolution;
-import org.b3log.solo.frame.repository.jdbc.mapping.BooleanMapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.DateMapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.IntMapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.LongMapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.Mapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.NumberMapping;
-import org.b3log.solo.frame.repository.jdbc.mapping.StringMapping;
-import org.b3log.solo.frame.repository.jdbc.util.FieldDefinition;
+import org.apache.commons.lang3.StringUtils;
+import org.b3log.solo.dao.repository.jdbc.AbstractJdbcDatabaseSolution;
+import org.b3log.solo.dao.repository.jdbc.mapping.BooleanMapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.DateMapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.IntMapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.LongMapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.Mapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.NumberMapping;
+import org.b3log.solo.dao.repository.jdbc.mapping.StringMapping;
+import org.b3log.solo.dao.repository.jdbc.util.FieldDefinition;
 
 /**
  * DefaultJdbcDatabaseSolution,for extend .

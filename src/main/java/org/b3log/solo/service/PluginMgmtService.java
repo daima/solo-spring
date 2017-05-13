@@ -18,13 +18,13 @@ package org.b3log.solo.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.PluginDao;
-import org.b3log.solo.frame.model.Plugin;
+import org.b3log.solo.dao.repository.Query;
 import org.b3log.solo.frame.plugin.PluginStatus;
-import org.b3log.solo.frame.repository.Query;
+import org.b3log.solo.model.Plugin;
 import org.b3log.solo.module.event.AbstractPlugin;
 import org.b3log.solo.module.plugin.PluginManager;
 import org.b3log.solo.util.CollectionUtils;

@@ -26,14 +26,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.Skins;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;

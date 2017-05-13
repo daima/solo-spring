@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.util.Locales;
@@ -49,6 +49,7 @@ public class LangPropsService {
 	 */
 	private static final Map<Locale, Map<String, String>> LANGS = new HashMap<>();
 
+	
 	public Map<String, String> getAll(final Locale locale) {
 		Map<String, String> ret = LANGS.get(locale);
 
@@ -84,10 +85,12 @@ public class LangPropsService {
 		return ret;
 	}
 
+	
 	public String get(final String key) {
 		return get(Keys.LANGUAGE, key, Locales.getLocale());
 	}
 
+	
 	public String get(final String key, final Locale locale) {
 		return get(Keys.LANGUAGE, key, locale);
 	}

@@ -29,44 +29,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.controller.util.Filler;
 import org.b3log.solo.frame.event.EventException;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
-import org.b3log.solo.frame.servlet.renderer.TextHTMLRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.solo.frame.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Pagination;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.User;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.module.util.Skins;
 import org.b3log.solo.module.util.Thumbnails;
+import org.b3log.solo.renderer.ConsoleRenderer;
+import org.b3log.solo.renderer.JSONRenderer;
+import org.b3log.solo.renderer.TextHTMLRenderer;
+import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.solo.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.solo.service.ArchiveDateQueryService;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Dates;
 import org.b3log.solo.util.Locales;
 import org.b3log.solo.util.Paginator;
 import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Stopwatchs;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -180,7 +180,7 @@ public class ArticleController {
 		renderer.setTemplateName("article-pwd.ftl");
 		final String articleId = request.getParameter("articleId");
 
-		if (Strings.isEmptyOrNull(articleId)) {
+		if (StringUtils.isBlank(articleId)) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
@@ -200,7 +200,7 @@ public class ArticleController {
 		dataModel.put("articleAbstract", article.optString(Article.ARTICLE_ABSTRACT));
 		final String msg = request.getParameter(Keys.MSG);
 
-		if (!Strings.isEmptyOrNull(msg)) {
+		if (!StringUtils.isBlank(msg)) {
 			dataModel.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
 		}
 
@@ -341,7 +341,7 @@ public class ArticleController {
 
 		final String articleId = StringUtils.substringBetween(requestURI, "/article/id/", "/relevant/articles");
 
-		if (Strings.isEmptyOrNull(articleId)) {
+		if (StringUtils.isBlank(articleId)) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
@@ -376,7 +376,7 @@ public class ArticleController {
 		final TextHTMLRenderer renderer = new TextHTMLRenderer();
 		final String articleId = request.getParameter("id");
 
-		if (Strings.isEmptyOrNull(articleId)) {
+		if (StringUtils.isBlank(articleId)) {
 			renderer.render(request, response);
 			return;
 		}
@@ -959,7 +959,7 @@ public class ArticleController {
 			article.put(Common.AUTHOR_ID, authorId);
 			article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
 			final String userAvatar = author.optString(UserExt.USER_AVATAR);
-			if (!Strings.isEmptyOrNull(userAvatar)) {
+			if (!StringUtils.isBlank(userAvatar)) {
 				article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
 			} else {
 				final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
@@ -1290,7 +1290,7 @@ public class ArticleController {
 		dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
 
 		final String userAvatar = author.optString(UserExt.USER_AVATAR);
-		if (!Strings.isEmptyOrNull(userAvatar)) {
+		if (!StringUtils.isBlank(userAvatar)) {
 			dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
 		} else {
 			final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");

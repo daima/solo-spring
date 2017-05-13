@@ -21,11 +21,11 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.RuntimeMode;
-import org.b3log.solo.frame.model.User;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.User;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Stopwatchs;

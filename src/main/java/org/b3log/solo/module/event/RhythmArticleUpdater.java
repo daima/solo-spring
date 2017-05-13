@@ -32,7 +32,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +101,7 @@ public final class RhythmArticleUpdater {
 				throw new EventException("Not found preference");
 			}
 
-			if (!Strings.isEmptyOrNull(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
+			if (!StringUtils.isBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
 				return;
 			}
 

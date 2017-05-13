@@ -55,7 +55,6 @@ public class PluginManager {
 	 * map: &lt;"hosting view name", plugins&gt;
 	 * </p>
 	 */
-	@SuppressWarnings("unchecked")
 	private Map<String, HashSet<AbstractPlugin>> pluginCache = new HashMap<>();
 
 	/**
@@ -240,7 +239,7 @@ public class PluginManager {
 	 * for (int i = 0; i < eventListenerClassArray.length; i++) { final String
 	 * eventListenerClassName = eventListenerClassArray[i];
 	 * 
-	 * if (Strings.isEmptyOrNull(eventListenerClassName)) {
+	 * if (StringUtils.isBlank(eventListenerClassName)) {
 	 * logger.info("No event listener to load for plugin[name={0}]",
 	 * plugin.getName()); return; }
 	 * 

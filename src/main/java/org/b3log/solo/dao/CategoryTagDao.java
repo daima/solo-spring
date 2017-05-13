@@ -16,10 +16,10 @@
 package org.b3log.solo.dao;
 
 import org.b3log.solo.Keys;
-import org.b3log.solo.frame.repository.FilterOperator;
-import org.b3log.solo.frame.repository.PropertyFilter;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
+import org.b3log.solo.dao.repository.FilterOperator;
+import org.b3log.solo.dao.repository.PropertyFilter;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.json.JSONArray;

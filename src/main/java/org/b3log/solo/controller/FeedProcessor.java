@@ -23,36 +23,36 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.CompositeFilter;
-import org.b3log.solo.frame.repository.CompositeFilterOperator;
-import org.b3log.solo.frame.repository.Filter;
-import org.b3log.solo.frame.repository.FilterOperator;
-import org.b3log.solo.frame.repository.PropertyFilter;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.frame.servlet.renderer.AtomRenderer;
-import org.b3log.solo.frame.servlet.renderer.RssRenderer;
+import org.b3log.solo.dao.repository.CompositeFilter;
+import org.b3log.solo.dao.repository.CompositeFilterOperator;
+import org.b3log.solo.dao.repository.Filter;
+import org.b3log.solo.dao.repository.FilterOperator;
+import org.b3log.solo.dao.repository.PropertyFilter;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.User;
 import org.b3log.solo.model.feed.atom.Category;
 import org.b3log.solo.model.feed.atom.Entry;
 import org.b3log.solo.model.feed.atom.Feed;
 import org.b3log.solo.model.feed.rss.Channel;
 import org.b3log.solo.model.feed.rss.Item;
+import org.b3log.solo.renderer.AtomRenderer;
+import org.b3log.solo.renderer.RssRenderer;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Locales;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -179,7 +179,7 @@ public class FeedProcessor {
 
 	private Entry getEntry(final boolean hasMultipleUsers, String authorName, final JSONArray articles,
 			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.frame.service.ServiceException {
+			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.getJSONObject(i);
 		final Entry ret = new Entry();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -222,7 +222,7 @@ public class FeedProcessor {
 		final AtomRenderer renderer = new AtomRenderer();
 		final String queryString = request.getQueryString();
 
-		if (Strings.isEmptyOrNull(queryString)) {
+		if (StringUtils.isBlank(queryString)) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
@@ -279,7 +279,7 @@ public class FeedProcessor {
 																		// the
 																		// unpublished
 																		// article
-						&& Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
+						&& StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
 																									// article
 																									// with
 																									// password
@@ -316,7 +316,7 @@ public class FeedProcessor {
 
 	private Entry getEntryForArticle(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
 			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.frame.service.ServiceException {
+			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.get(i);
 		final Entry ret = new Entry();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -419,7 +419,7 @@ public class FeedProcessor {
 
 	private Item getItem(final JSONArray articles, final boolean hasMultipleUsers, String authorName,
 			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.frame.service.ServiceException {
+			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.getJSONObject(i);
 		final Item ret = new Item();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -464,7 +464,7 @@ public class FeedProcessor {
 		final RssRenderer renderer = new RssRenderer();
 		final String queryString = request.getQueryString();
 
-		if (Strings.isEmptyOrNull(queryString)) {
+		if (StringUtils.isBlank(queryString)) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
@@ -526,7 +526,7 @@ public class FeedProcessor {
 																		// the
 																		// unpublished
 																		// article
-						&& Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
+						&& StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
 																									// article
 																									// with
 																									// password
@@ -563,7 +563,7 @@ public class FeedProcessor {
 
 	private Item getItemForArticles(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
 			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.frame.service.ServiceException {
+			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.get(i);
 		final Item ret = new Item();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));

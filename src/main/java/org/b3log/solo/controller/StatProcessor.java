@@ -18,7 +18,7 @@ package org.b3log.solo.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.b3log.solo.frame.servlet.renderer.DoNothingRenderer;
+import org.b3log.solo.renderer.DoNothingRenderer;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

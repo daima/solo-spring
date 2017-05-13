@@ -25,20 +25,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.HTTPResponse;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
 import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.PropsUtil;
 import org.b3log.solo.util.Requests;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +140,7 @@ public class ChanceProcessor {
 
 			final String time = request.getParameter("time");
 
-			if (Strings.isEmptyOrNull(time)) {
+			if (StringUtils.isBlank(time)) {
 				ret.put(Keys.STATUS_CODE, false);
 
 				return;

@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * Entry.

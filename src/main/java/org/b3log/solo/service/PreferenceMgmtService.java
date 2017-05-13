@@ -29,7 +29,6 @@ import javax.servlet.ServletContext;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.module.util.Skins;
@@ -202,7 +201,6 @@ public class PreferenceMgmtService {
 	 *             service exception
 	 */
 	public void updatePreference(final JSONObject preference) throws ServiceException {
-		@SuppressWarnings("unchecked")
 		final Iterator<String> keys = preference.keys();
 
 		while (keys.hasNext()) {

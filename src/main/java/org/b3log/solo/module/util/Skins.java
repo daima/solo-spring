@@ -31,12 +31,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.LangPropsService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.util.Locales;
 import org.b3log.solo.util.Stopwatchs;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.freemarker.Templates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -216,7 +216,7 @@ public final class Skins {
 			return "default";
 		}
 
-		if (!Strings.isEmptyOrNull(specifiedSkin)) {
+		if (!StringUtils.isBlank(specifiedSkin)) {
 			final Set<String> skinDirNames = Skins.getSkinDirNames();
 
 			if (skinDirNames.contains(specifiedSkin)) {

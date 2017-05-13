@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.slf4j.Logger;
@@ -104,7 +105,7 @@ public final class Locales {
 			String language = "zh";
 			String country = "CN";
 
-			if (!Strings.isEmptyOrNull(languageHeader)) {
+			if (!StringUtils.isBlank(languageHeader)) {
 				language = getLanguage(languageHeader);
 				country = getCountry(languageHeader);
 			}

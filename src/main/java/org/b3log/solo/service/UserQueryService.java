@@ -22,14 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.user.GeneralUser;
-import org.b3log.solo.frame.user.UserService;
-import org.b3log.solo.frame.user.UserServiceFactory;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.model.GeneralUser;
+import org.b3log.solo.model.Pagination;
+import org.b3log.solo.model.User;
 import org.b3log.solo.util.Paginator;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +54,8 @@ public class UserQueryService {
 	/**
 	 * User service.
 	 */
-	private UserService userService = UserServiceFactory.getUserService();
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * User repository.

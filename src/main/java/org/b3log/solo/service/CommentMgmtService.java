@@ -21,19 +21,18 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.CommentDao;
 import org.b3log.solo.dao.PageDao;
 import org.b3log.solo.dao.UserDao;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.frame.event.Event;
-import org.b3log.solo.frame.mail.MailService;
-import org.b3log.solo.frame.mail.MailServiceFactory;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.frame.urlfetch.HTTPRequest;
 import org.b3log.solo.frame.urlfetch.HTTPResponse;
 import org.b3log.solo.frame.urlfetch.URLFetchService;
@@ -41,6 +40,7 @@ import org.b3log.solo.frame.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.MailMessage;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.UserExt;
@@ -52,7 +52,6 @@ import org.b3log.solo.module.util.Emotions;
 import org.b3log.solo.module.util.Markdowns;
 import org.b3log.solo.module.util.Thumbnails;
 import org.b3log.solo.util.Ids;
-import org.b3log.solo.util.Strings;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -159,10 +158,8 @@ public class CommentMgmtService {
 	 */
 	private static final int MAX_COMMENT_CONTENT_LENGTH = 500;
 
-	/**
-	 * Mail service.
-	 */
-	private MailService mailService = MailServiceFactory.getMailService();
+	@Autowired
+	private MailService mailService;
 
 	/**
 	 * Comment mail HTML body.
@@ -223,13 +220,13 @@ public class CommentMgmtService {
 		boolean isArticle = true;
 		String title = articleOrPage.optString(Article.ARTICLE_TITLE);
 
-		if (Strings.isEmptyOrNull(title)) {
+		if (StringUtils.isBlank(title)) {
 			title = articleOrPage.getString(Page.PAGE_TITLE);
 			isArticle = false;
 		}
 
 		final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-		final MailService.Message message = new MailService.Message();
+		final MailMessage message = new MailMessage();
 
 		message.setFrom(adminEmail);
 		message.addRecipient(adminEmail);
@@ -344,8 +341,8 @@ public class CommentMgmtService {
 			}
 
 			final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
-
-			if (!Strings.isEmail(commentEmail)) {
+			
+			if (!EmailValidator.getInstance().isValid(commentEmail)) {
 				logger.warn("Comment email is invalid[{0}]", commentEmail);
 				ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
@@ -354,7 +351,7 @@ public class CommentMgmtService {
 
 			final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
-			if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
+			if (!UrlValidator.getInstance().isValid(commentURL) || StringUtils.contains(commentURL, "<")) {
 				logger.warn("Comment URL is invalid[{0}]", commentURL);
 				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
@@ -477,7 +474,7 @@ public class CommentMgmtService {
 					preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
 			ret.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
 
-			if (!Strings.isEmptyOrNull(originalCommentId)) {
+			if (!StringUtils.isBlank(originalCommentId)) {
 				originalComment = commentDao.get(originalCommentId);
 				if (null != originalComment) {
 					comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
@@ -629,7 +626,7 @@ public class CommentMgmtService {
 			ret.put(Comment.COMMENT_CONTENT, commentContent);
 			ret.put(Comment.COMMENT_URL, commentURL);
 
-			if (!Strings.isEmptyOrNull(originalCommentId)) {
+			if (!StringUtils.isBlank(originalCommentId)) {
 				originalComment = commentDao.get(originalCommentId);
 				if (null != originalComment) {
 					comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
@@ -838,7 +835,7 @@ public class CommentMgmtService {
 		final JSONObject user = userDao.getByEmail(commentEmail);
 		if (null != user) {
 			final String avatar = user.optString(UserExt.USER_AVATAR);
-			if (!Strings.isEmptyOrNull(avatar)) {
+			if (!StringUtils.isBlank(avatar)) {
 				comment.put(Comment.COMMENT_THUMBNAIL_URL, avatar);
 
 				return;

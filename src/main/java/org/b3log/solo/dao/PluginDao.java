@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.dao;
 
-import org.b3log.solo.frame.model.Plugin;
+import org.b3log.solo.model.Plugin;
 import org.springframework.stereotype.Repository;
 
 /**

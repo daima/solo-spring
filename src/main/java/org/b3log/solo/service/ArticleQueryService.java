@@ -51,26 +51,25 @@ import org.b3log.solo.dao.CategoryTagDao;
 import org.b3log.solo.dao.TagArticleDao;
 import org.b3log.solo.dao.TagDao;
 import org.b3log.solo.dao.UserDao;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.Role;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.repository.FilterOperator;
-import org.b3log.solo.frame.repository.PropertyFilter;
-import org.b3log.solo.frame.repository.Query;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.repository.SortDirection;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.FilterOperator;
+import org.b3log.solo.dao.repository.PropertyFilter;
+import org.b3log.solo.dao.repository.Query;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.dao.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Pagination;
+import org.b3log.solo.model.Role;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.Emotions;
 import org.b3log.solo.module.util.Markdowns;
 import org.b3log.solo.util.CollectionUtils;
 import org.b3log.solo.util.Paginator;
 import org.b3log.solo.util.Stopwatchs;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -257,7 +256,7 @@ public class ArticleQueryService {
 	 *             exception
 	 */
 	public boolean canAccessArticle(final String articleId, final HttpServletRequest request) throws Exception {
-		if (Strings.isEmptyOrNull(articleId)) {
+		if (StringUtils.isBlank(articleId)) {
 			return false;
 		}
 
@@ -291,7 +290,7 @@ public class ArticleQueryService {
 	public boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
 		final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
-		if (Strings.isEmptyOrNull(articleViewPwd)) {
+		if (StringUtils.isBlank(articleViewPwd)) {
 			return false;
 		}
 
@@ -1115,7 +1114,7 @@ public class ArticleQueryService {
 	 *             service exception
 	 */
 	public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
-		if (Strings.isEmptyOrNull(articleId)) {
+		if (StringUtils.isBlank(articleId)) {
 			return null;
 		}
 
@@ -1185,7 +1184,7 @@ public class ArticleQueryService {
 
 			String abstractContent = article.optString(ARTICLE_ABSTRACT);
 
-			if (!Strings.isEmptyOrNull(abstractContent)) {
+			if (!StringUtils.isBlank(abstractContent)) {
 				Stopwatchs.start("Abstract");
 				abstractContent = Emotions.convert(abstractContent);
 				abstractContent = Markdowns.toHTML(abstractContent);

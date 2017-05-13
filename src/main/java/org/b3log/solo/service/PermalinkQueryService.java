@@ -21,8 +21,10 @@ import java.util.regex.Pattern;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.util.Strings;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +123,7 @@ public class PermalinkQueryService {
 	 * @return {@code true} if invalid, returns {@code false} otherwise
 	 */
 	public static boolean invalidArticlePermalinkFormat(final String permalink) {
-		if (Strings.isEmptyOrNull(permalink)) {
+		if (StringUtils.isBlank(permalink)) {
 			return true;
 		}
 
@@ -140,7 +142,7 @@ public class PermalinkQueryService {
 	 * @return {@code true} if invalid, returns {@code false} otherwise
 	 */
 	public static boolean invalidPagePermalinkFormat(final String permalink) {
-		if (Strings.isEmptyOrNull(permalink)) {
+		if (StringUtils.isBlank(permalink)) {
 			return true;
 		}
 
@@ -159,15 +161,14 @@ public class PermalinkQueryService {
 	 * @return {@code true} if invalid, returns {@code false} otherwise
 	 */
 	private static boolean invalidUserDefinedPermalinkFormat(final String permalink) {
-		if (Strings.isEmptyOrNull(permalink)) {
+		if (StringUtils.isBlank(permalink)) {
 			return true;
 		}
 
 		if (isReservedLink(permalink)) {
 			return true;
 		}
-
-		if (Strings.isNumeric(permalink.substring(1))) {
+		if (NumberUtils.isDigits(permalink.substring(1))) {
 			// See issue 120
 			// (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4) for
 			// more details
@@ -186,7 +187,8 @@ public class PermalinkQueryService {
 			}
 		}
 
-		return !Strings.isURL(Latkes.getServer() + permalink);
+		
+		return !UrlValidator.getInstance().isValid(Latkes.getServer() + permalink);
 	}
 
 	/**

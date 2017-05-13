@@ -22,10 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.controller.renderer.ConsoleRenderer;
-import org.b3log.solo.frame.model.Plugin;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
+import org.b3log.solo.model.Plugin;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.ConsoleRenderer;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;

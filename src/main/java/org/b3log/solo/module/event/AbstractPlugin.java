@@ -31,15 +31,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.model.Plugin;
 import org.b3log.solo.frame.plugin.PluginStatus;
 import org.b3log.solo.frame.plugin.PluginType;
-import org.b3log.solo.frame.user.UserServiceFactory;
+import org.b3log.solo.model.Plugin;
 import org.b3log.solo.module.plugin.PluginManager;
-import org.b3log.solo.util.Strings;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -76,7 +74,7 @@ import freemarker.template.Template;
  */
 @Component
 public abstract class AbstractPlugin implements Serializable {
-	private static Logger logger = LoggerFactory.getLogger(UserServiceFactory.class);
+	private static Logger logger = LoggerFactory.getLogger(AbstractPlugin.class);
 
 	/**
 	 * Default serial version id.
@@ -201,7 +199,6 @@ public abstract class AbstractPlugin implements Serializable {
 	public void readLangs() {
 		final ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
 
-		@SuppressWarnings("unchecked")
 		final Set<String> resourcePaths = servletContext.getResourcePaths("/plugins/" + dirName);
 
 		for (final String resourcePath : resourcePaths) {
@@ -338,10 +335,10 @@ public abstract class AbstractPlugin implements Serializable {
 
 		final StringBuilder keyBuilder = new StringBuilder(language);
 
-		if (!Strings.isEmptyOrNull(country)) {
+		if (!StringUtils.isBlank(country)) {
 			keyBuilder.append("_").append(country);
 		}
-		if (!Strings.isEmptyOrNull(variant)) {
+		if (!StringUtils.isBlank(variant)) {
 			keyBuilder.append("_").append(variant);
 		}
 

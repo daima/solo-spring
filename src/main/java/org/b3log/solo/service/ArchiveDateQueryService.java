@@ -18,8 +18,7 @@ package org.b3log.solo.service;
 import java.util.List;
 
 import org.b3log.solo.dao.ArchiveDateDao;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.ArchiveDate;
 import org.json.JSONObject;
 import org.slf4j.Logger;

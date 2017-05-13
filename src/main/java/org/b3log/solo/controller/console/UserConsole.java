@@ -20,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.model.Role;
-import org.b3log.solo.frame.model.User;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Role;
+import org.b3log.solo.model.User;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
@@ -151,7 +151,7 @@ public class UserConsole {
 	 *            "", "userEmail": "", "userPassword": "", "userURL": "", //
 	 *            optional, uses 'servePath' instead if not specified
 	 *            "userRole": "", // optional, uses
-	 *            {@value org.b3log.solo.frame.model.Role#DEFAULT_ROLE} instead
+	 *            {@value org.b3log.solo.model.Role#DEFAULT_ROLE} instead
 	 *            if not specified "userAvatar": "" // optional
 	 * @param response
 	 *            the specified http servlet response

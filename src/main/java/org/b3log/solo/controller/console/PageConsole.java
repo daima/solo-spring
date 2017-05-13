@@ -20,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.frame.service.ServiceException;
-import org.b3log.solo.frame.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.module.util.QueryResults;
+import org.b3log.solo.renderer.JSONRenderer;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
+import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Requests;
 import org.json.JSONArray;

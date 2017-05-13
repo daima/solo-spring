@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.b3log.solo.dao.PluginDao;
-import org.b3log.solo.frame.model.Pagination;
-import org.b3log.solo.frame.model.Plugin;
-import org.b3log.solo.frame.repository.RepositoryException;
-import org.b3log.solo.frame.service.ServiceException;
+import org.b3log.solo.dao.repository.RepositoryException;
+import org.b3log.solo.model.Pagination;
+import org.b3log.solo.model.Plugin;
 import org.b3log.solo.module.event.AbstractPlugin;
 import org.b3log.solo.module.plugin.PluginManager;
 import org.b3log.solo.util.Paginator;

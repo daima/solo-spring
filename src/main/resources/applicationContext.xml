@@ -17,7 +17,7 @@
 	<!-- 启用注解 -->
 	<context:annotation-config />
 	<context:component-scan
-		base-package="org.b3log.solo.dao,org.b3log.solo.module.filter.PermalinkFilter,org.b3log.solo.frame.repository.jdbc,org.b3log.solo.frame,org.b3log.solo.service,org.b3log.solo.module,org.b3log.solo.controller" />
+		base-package="org.b3log.solo.module,org.b3log.solo.dao,org.b3log.solo.service,org.b3log.solo.filter,org.b3log.solo.controller" />
 	<mvc:annotation-driven />
 	<mvc:interceptors>
 		<!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->

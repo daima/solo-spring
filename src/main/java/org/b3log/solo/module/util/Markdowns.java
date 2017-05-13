@@ -15,8 +15,8 @@
  */
 package org.b3log.solo.module.util;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public final class Markdowns {
 	 *         text is "" or {@code null}, returns "Markdown error" if exception
 	 */
 	public static String toHTML(final String markdownText) {
-		if (Strings.isEmptyOrNull(markdownText)) {
+		if (StringUtils.isBlank(markdownText)) {
 			return "";
 		}
 

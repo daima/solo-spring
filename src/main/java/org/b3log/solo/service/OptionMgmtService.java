@@ -17,9 +17,8 @@ package org.b3log.solo.service;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.dao.OptionDao;
-import org.b3log.solo.frame.service.ServiceException;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,7 @@ public class OptionMgmtService {
 		try {
 			String id = option.optString(Keys.OBJECT_ID);
 
-			if (Strings.isEmptyOrNull(id)) {
+			if (StringUtils.isBlank(id)) {
 				id = optionRepository.add(option);
 			} else {
 				final JSONObject old = optionRepository.get(id);

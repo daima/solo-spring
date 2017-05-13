@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
+import org.b3log.solo.SoloConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -120,7 +121,7 @@ public final class StaticResources {
 			final NodeList includes = root.getElementsByTagName("include");
 
 			final StringBuilder logBuilder = new StringBuilder("Reading static files: [")
-					.append(Strings.LINE_SEPARATOR);
+					.append(SoloConstant.LINE_SEPARATOR);
 
 			for (int i = 0; i < includes.getLength(); i++) {
 				final Element include = (Element) includes.item(i);
@@ -132,7 +133,7 @@ public final class StaticResources {
 				if (i < includes.getLength() - 1) {
 					logBuilder.append(",");
 				}
-				logBuilder.append(Strings.LINE_SEPARATOR);
+				logBuilder.append(SoloConstant.LINE_SEPARATOR);
 			}
 
 			logBuilder.append("]");
@@ -145,7 +146,7 @@ public final class StaticResources {
 			throw new RuntimeException(e);
 		}
 
-		final StringBuilder logBuilder = new StringBuilder("Static files: [").append(Strings.LINE_SEPARATOR);
+		final StringBuilder logBuilder = new StringBuilder("Static files: [").append(SoloConstant.LINE_SEPARATOR);
 		final Iterator<String> iterator = STATIC_RESOURCE_PATHS.iterator();
 
 		while (iterator.hasNext()) {
@@ -155,7 +156,7 @@ public final class StaticResources {
 			if (iterator.hasNext()) {
 				logBuilder.append(',');
 			}
-			logBuilder.append(Strings.LINE_SEPARATOR);
+			logBuilder.append(SoloConstant.LINE_SEPARATOR);
 		}
 		logBuilder.append("], ").append('[').append(STATIC_RESOURCE_PATHS.size()).append("] path patterns");
 
