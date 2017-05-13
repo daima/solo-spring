@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.controller.console;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,8 +38,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Plugin console request processing.
@@ -119,7 +123,7 @@ public class PageConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/page/", method = RequestMethod.PUT)
-	public void updatePage(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void updatePage(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -128,7 +132,7 @@ public class PageConsole {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject ret = new JSONObject();
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 			pageMgmtService.updatePage(requestJSONObject);
 
@@ -238,7 +242,8 @@ public class PageConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/page/", method = RequestMethod.POST)
-	public void addPage(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void addPage(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body)
+			throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -248,7 +253,8 @@ public class PageConsole {
 		final JSONObject ret = new JSONObject();
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final String pageId = pageMgmtService.addPage(requestJSONObject);
 
@@ -300,7 +306,7 @@ public class PageConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/page/order/", method = RequestMethod.PUT)
-	public void changeOrder(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -309,7 +315,7 @@ public class PageConsole {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject ret = new JSONObject();
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 			final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
 			final String direction = requestJSONObject.getString(Common.DIRECTION);
 

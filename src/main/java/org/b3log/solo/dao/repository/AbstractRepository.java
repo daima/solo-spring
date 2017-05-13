@@ -188,8 +188,8 @@ public abstract class AbstractRepository implements Repository {
 		try {
 			return repository.select(statement, params);
 		} catch (final RepositoryException e) {
-			logger.warn("SQL exception[msg={}, repository={}, statement={}]", e.getMessage(),
-					repository.getTableName(), statement);
+			logger.warn("SQL exception[msg={}, repository={}, statement={}]", e.getMessage(), repository.getTableName(),
+					statement);
 
 			return Collections.emptyList();
 		}

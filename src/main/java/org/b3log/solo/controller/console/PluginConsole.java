@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.controller.console;
 
+import java.net.URLDecoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Plugin console request processing.
@@ -96,10 +99,10 @@ public class PluginConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/plugin/status/", method = RequestMethod.PUT)
-	public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 
 		final JSONRenderer renderer = new JSONRenderer();
-		final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+		body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 		final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
 		final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
@@ -194,9 +197,10 @@ public class PluginConsole {
 	 */
 	@RequestMapping(value = "/console/plugin/toSetting", method = RequestMethod.POST)
 	public void toSetting(final HttpServletRequest request, final HttpServletResponse response,
-			final ConsoleRenderer renderer) throws Exception {
+			final ConsoleRenderer renderer, @RequestBody String body) throws Exception {
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 			final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
 
 			final String setting = pluginQueryService.getPluginSetting(pluginId);
@@ -236,8 +240,9 @@ public class PluginConsole {
 	 */
 	@RequestMapping(value = "/console/plugin/updateSetting", method = RequestMethod.POST)
 	public void updateSetting(final HttpServletRequest request, final HttpServletResponse response,
-			final JSONRenderer renderer) throws Exception {
-		final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			final JSONRenderer renderer, @RequestBody String body) throws Exception {
+		body = URLDecoder.decode(body, "UTF-8");
+		final JSONObject requestJSONObject = new JSONObject(body);
 		final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
 		final String settings = requestJSONObject.getString(Plugin.PLUGIN_SETTING);
 

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.controller;
 
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -40,13 +41,13 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Locales;
-import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Sessions;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -152,7 +153,8 @@ public class InitProcessor {
 	 *             exception
 	 */
 	@RequestMapping(value = "/init", method = RequestMethod.POST)
-	public void initSolo(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void initSolo(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body)
+			throws Exception {
 		if (initService.isInited()) {
 			response.sendRedirect("/");
 			return;
@@ -163,14 +165,15 @@ public class InitProcessor {
 		renderer.setJSONObject(ret);
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final String userName = requestJSONObject.optString(User.USER_NAME);
 			final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
 			final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
-			if (StringUtils.isBlank(userName) || StringUtils.isBlank(userEmail)
-					|| StringUtils.isBlank(userPassword) || !EmailValidator.getInstance().isValid(userEmail)) {
+			if (StringUtils.isBlank(userName) || StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPassword)
+					|| !EmailValidator.getInstance().isValid(userEmail)) {
 				ret.put(Keys.MSG, "Init failed, please check your input");
 				renderer.render(request, response);
 				return;

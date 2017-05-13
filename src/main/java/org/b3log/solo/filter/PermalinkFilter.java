@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.filter;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
-import org.b3log.solo.SoloConstant;
 import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
 import org.b3log.solo.dao.repository.RepositoryException;
@@ -42,7 +40,6 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.ServiceException;
-import org.b3log.solo.util.freemarker.Templates;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

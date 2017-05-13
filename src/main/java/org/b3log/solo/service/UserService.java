@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -32,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-
 /**
  * Local user service.
  *
@@ -43,66 +41,62 @@ import org.springframework.stereotype.Service;
 @Service
 public final class UserService {
 
-    /**
-     * Logger.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+	/**
+	 * Logger.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public GeneralUser getCurrentUser(final HttpServletRequest request) {
-        final JSONObject currentUser = Sessions.currentUser(request);
+	public GeneralUser getCurrentUser(final HttpServletRequest request) {
+		final JSONObject currentUser = Sessions.currentUser(request);
 
-        if (null == currentUser) {
-            return null;
-        }
+		if (null == currentUser) {
+			return null;
+		}
 
-        final GeneralUser ret = new GeneralUser();
+		final GeneralUser ret = new GeneralUser();
 
-        ret.setEmail(currentUser.optString(User.USER_EMAIL));
-        ret.setId(currentUser.optString(Keys.OBJECT_ID));
-        ret.setNickname(currentUser.optString(User.USER_NAME));
+		ret.setEmail(currentUser.optString(User.USER_EMAIL));
+		ret.setId(currentUser.optString(Keys.OBJECT_ID));
+		ret.setNickname(currentUser.optString(User.USER_NAME));
 
-        return ret;
-    }
+		return ret;
+	}
 
-   
-    public boolean isUserLoggedIn(final HttpServletRequest request) {
-        return null != Sessions.currentUser(request);
-    }
+	public boolean isUserLoggedIn(final HttpServletRequest request) {
+		return null != Sessions.currentUser(request);
+	}
 
-   
-    public boolean isUserAdmin(final HttpServletRequest request) {
-        final JSONObject currentUser = Sessions.currentUser(request);
+	public boolean isUserAdmin(final HttpServletRequest request) {
+		final JSONObject currentUser = Sessions.currentUser(request);
 
-        if (null == currentUser) {
-            return false;
-        }
+		if (null == currentUser) {
+			return false;
+		}
 
-        return Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE));
-    }
+		return Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE));
+	}
 
-   
-    public String createLoginURL(final String destinationURL) {
-        String to = Latkes.getServePath();
+	public String createLoginURL(final String destinationURL) {
+		String to = Latkes.getServePath();
 
-        try {
-            to = URLEncoder.encode(to + destinationURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-        	logger.error("URL encode[string={}]", destinationURL);
-        }
+		try {
+			to = URLEncoder.encode(to + destinationURL, "UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			logger.error("URL encode[string={}]", destinationURL);
+		}
 
-        return Latkes.getContextPath() + "/login?goto=" + to;
-    }
+		return Latkes.getContextPath() + "/login?goto=" + to;
+	}
 
-   
-    public String createLogoutURL(final String destinationURL) {
-        String to = Latkes.getServePath();
+	public String createLogoutURL(final String destinationURL) {
+		String to = Latkes.getServePath();
 
-        try {
-            to = URLEncoder.encode(to + destinationURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            logger.error("URL encode[string={}]", destinationURL);
-        }
+		try {
+			to = URLEncoder.encode(to + destinationURL, "UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			logger.error("URL encode[string={}]", destinationURL);
+		}
 
-        return Latkes.getContextPath() + "/logout?goto=" + to;
-    }
+		return Latkes.getContextPath() + "/logout?goto=" + to;
+	}
 }

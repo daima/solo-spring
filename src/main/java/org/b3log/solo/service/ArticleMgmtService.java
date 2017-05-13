@@ -1052,9 +1052,8 @@ public class ArticleMgmtService {
 				tag.put(Keys.OBJECT_ID, tagId);
 			} else {
 				tagId = tag.optString(Keys.OBJECT_ID);
-				logger.trace("Found a existing tag[title={}, id={}] in article[title={}]",
-						tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-						article.optString(Article.ARTICLE_TITLE));
+				logger.trace("Found a existing tag[title={}, id={}] in article[title={}]", tag.optString(Tag.TAG_TITLE),
+						tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
 				final JSONObject tagTmp = new JSONObject();
 
 				tagTmp.put(Keys.OBJECT_ID, tagId);

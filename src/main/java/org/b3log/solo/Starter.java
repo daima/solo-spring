@@ -184,8 +184,8 @@ public final class Starter {
 		final String contextPath = Latkes.getContextPath();
 
 		try {
-			Desktop.getDesktop().browse(new URI(
-					serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/"));
+			Desktop.getDesktop()
+					.browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/"));
 		} catch (final Throwable e) {
 			// Ignored
 		}

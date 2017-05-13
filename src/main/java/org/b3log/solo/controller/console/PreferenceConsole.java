@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.controller.console;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +35,6 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.ServiceException;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Requests;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -42,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Preference console request processing.
@@ -172,8 +174,7 @@ public class PreferenceConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/reply/notification/template", method = RequestMethod.PUT)
-	public void updateReplyNotificationTemplate(final HttpServletRequest request, final HttpServletResponse response)
-			throws Exception {
+	public void updateReplyNotificationTemplate(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isLoggedIn(request, response)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -181,7 +182,7 @@ public class PreferenceConsole {
 
 		final JSONRenderer renderer = new JSONRenderer();
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject("replyNotificationTemplate");
 
@@ -421,8 +422,7 @@ public class PreferenceConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = PREFERENCE_URI_PREFIX, method = RequestMethod.PUT)
-	public void updatePreference(final HttpServletRequest request, final HttpServletResponse response)
-			throws Exception {
+	public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -431,7 +431,7 @@ public class PreferenceConsole {
 		final JSONRenderer renderer = new JSONRenderer();
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject preference = requestJSONObject.getJSONObject(Option.CATEGORY_C_PREFERENCE);
 
@@ -547,7 +547,7 @@ public class PreferenceConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = PREFERENCE_URI_PREFIX + "qiniu", method = RequestMethod.PUT)
-	public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -556,7 +556,7 @@ public class PreferenceConsole {
 		final JSONRenderer renderer = new JSONRenderer();
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 			final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY).trim();
 			final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY).trim();

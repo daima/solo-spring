@@ -341,7 +341,7 @@ public class CommentMgmtService {
 			}
 
 			final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
-			
+
 			if (!EmailValidator.getInstance().isValid(commentEmail)) {
 				logger.warn("Comment email is invalid[{}]", commentEmail);
 				ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));

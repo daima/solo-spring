@@ -134,6 +134,7 @@ public class PropsUtil {
 			logger.error("Can't load %s, please ensure it in classpath", fileName, e);
 		}
 	}
+
 	/**
 	 * 加载ClassPath下的属性文件到内存中
 	 * 

@@ -187,7 +187,6 @@ public class PermalinkQueryService {
 			}
 		}
 
-		
 		return !UrlValidator.getInstance().isValid(Latkes.getServer() + permalink);
 	}
 

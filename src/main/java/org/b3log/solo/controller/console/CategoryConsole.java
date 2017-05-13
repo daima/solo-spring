@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.controller.console;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,8 +44,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Category console request processing.
@@ -115,7 +118,7 @@ public class CategoryConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/category/order/", method = RequestMethod.PUT)
-	public void changeOrder(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -124,7 +127,7 @@ public class CategoryConsole {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject ret = new JSONObject();
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 			final String categoryId = requestJSONObject.getString(Keys.OBJECT_ID);
 			final String direction = requestJSONObject.getString(Common.DIRECTION);
 
@@ -287,7 +290,7 @@ public class CategoryConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/category/", method = RequestMethod.PUT)
-	public void updateCategory(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -299,7 +302,7 @@ public class CategoryConsole {
 		renderer.setJSONObject(ret);
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 
 			String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
 			tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
@@ -419,7 +422,8 @@ public class CategoryConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/category/", method = RequestMethod.POST)
-	public void addCategory(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void addCategory(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestBody String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -431,7 +435,8 @@ public class CategoryConsole {
 		renderer.setJSONObject(ret);
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 
 			String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
 			tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");

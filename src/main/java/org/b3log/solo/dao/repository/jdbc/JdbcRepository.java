@@ -136,11 +136,12 @@ public abstract class JdbcRepository implements Repository {
 
 	@Override
 	public String add(final JSONObject jsonObject) throws RepositoryException {
-		/*final JdbcTransaction currentTransaction = TX.get();
-
-		if (null == currentTransaction) {
-			throw new RepositoryException("Invoking add() outside a transaction");
-		}*/
+		/*
+		 * final JdbcTransaction currentTransaction = TX.get();
+		 * 
+		 * if (null == currentTransaction) { throw new
+		 * RepositoryException("Invoking add() outside a transaction"); }
+		 */
 
 		final Connection connection = getConnection();
 		final List<Object> paramList = new ArrayList<>();
@@ -390,11 +391,12 @@ public abstract class JdbcRepository implements Repository {
 			return;
 		}
 
-		/*final JdbcTransaction currentTransaction = TX.get();
-
-		if (null == currentTransaction) {
-			throw new RepositoryException("Invoking remove() outside a transaction");
-		}*/
+		/*
+		 * final JdbcTransaction currentTransaction = TX.get();
+		 * 
+		 * if (null == currentTransaction) { throw new
+		 * RepositoryException("Invoking remove() outside a transaction"); }
+		 */
 
 		final StringBuilder sql = new StringBuilder();
 		final Connection connection = getConnection();
@@ -865,9 +867,9 @@ public abstract class JdbcRepository implements Repository {
 	 * ret = TX.get();
 	 * 
 	 * if (null != ret) { logger.debug(
-	 * "There is a transaction[isActive={}] in current thread",
-	 * ret.isActive()); if (ret.isActive()) { return TX.get(); // Using 'the
-	 * current transaction' } }
+	 * "There is a transaction[isActive={}] in current thread", ret.isActive());
+	 * if (ret.isActive()) { return TX.get(); // Using 'the current transaction'
+	 * } }
 	 * 
 	 * JdbcTransaction jdbcTransaction = null;
 	 * 

@@ -193,7 +193,6 @@ public class PluginManager {
 
 		plugin = plugin.replace("/", "");
 
-		
 		final File file = Latkes.getWebFile("/plugins/" + plugin + "/plugin.properties");
 
 		PropsUtil.loadFromInputStream(new FileInputStream(file));

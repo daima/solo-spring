@@ -17,11 +17,13 @@ package org.b3log.solo.module.plugin.broadcast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.concurrent.Future;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
 import org.b3log.solo.Latkes;
 import org.b3log.solo.SoloConstant;
@@ -37,13 +39,12 @@ import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.PropsUtil;
-import org.b3log.solo.util.Requests;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -272,7 +273,8 @@ public class ChanceProcessor {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/console/plugins/b3log-broadcast", method = RequestMethod.POST)
-	public void submitBroadcast(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void submitBroadcast(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestBody String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -286,7 +288,8 @@ public class ChanceProcessor {
 		renderer.setJSONObject(ret);
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
 			final JSONObject preference = preferenceQueryService.getPreference();

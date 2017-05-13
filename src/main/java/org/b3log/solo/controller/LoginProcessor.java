@@ -16,6 +16,7 @@
 package org.b3log.solo.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -47,7 +48,6 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.service.UserService;
 import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.MD5;
-import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.Sessions;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -179,7 +180,7 @@ public class LoginProcessor {
 	 *            the specified context
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(final HttpServletRequest request, final HttpServletResponse response) {
+	public void login(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body) {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject jsonObject = new JSONObject();
 
@@ -191,7 +192,8 @@ public class LoginProcessor {
 
 			jsonObject.put(Keys.MSG, loginFailLabel);
 
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 			final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 			final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 
@@ -293,7 +295,7 @@ public class LoginProcessor {
 	 *            the specified context
 	 */
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
-	public void forgot(final HttpServletRequest request, final HttpServletResponse response) {
+	public void forgot(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body) {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject jsonObject = new JSONObject();
 
@@ -303,7 +305,8 @@ public class LoginProcessor {
 			jsonObject.put("succeed", false);
 			jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 			final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
 			if (StringUtils.isBlank(userEmail)) {
@@ -346,14 +349,14 @@ public class LoginProcessor {
 	 *            the specified context
 	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public void reset(final HttpServletRequest request, final HttpServletResponse response) {
+	public void reset(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body) {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject jsonObject = new JSONObject();
 		renderer.setJSONObject(jsonObject);
 
 		try {
-			final JSONObject requestJSONObject;
-			requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 			final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 			final String newPwd = requestJSONObject.getString("newPwd");
 			final JSONObject user = userQueryService.getUserByEmail(userEmail);

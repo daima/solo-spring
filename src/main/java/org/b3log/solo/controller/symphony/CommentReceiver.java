@@ -17,6 +17,7 @@ package org.b3log.solo.controller.symphony;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +45,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Comment receiver (from B3log Symphony).
@@ -139,7 +142,7 @@ public class CommentReceiver {
 	 *             exception
 	 */
 	@RequestMapping(value = "/apis/symphony/comment", method = RequestMethod.PUT)
-	public void addComment(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void addComment(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject ret = new JSONObject();
 		renderer.setJSONObject(ret);
@@ -147,7 +150,7 @@ public class CommentReceiver {
 		// final Transaction transaction = commentDao.beginTransaction();
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 			final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
 			final JSONObject preference = preferenceQueryService.getPreference();
 			final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);

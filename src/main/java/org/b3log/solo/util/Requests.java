@@ -476,7 +476,7 @@ public final class Requests {
 	 * @throws IOException
 	 *             io exception
 	 */
-	public static JSONObject parseRequestJSONObject(final HttpServletRequest request,
+	/*public static JSONObject parseRequestJSONObject(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 
@@ -513,7 +513,7 @@ public final class Requests {
 
 			return new JSONObject();
 		}
-	}
+	}*/
 
 	/**
 	 * Private default constructor.

@@ -178,8 +178,7 @@ public class FeedProcessor {
 	}
 
 	private Entry getEntry(final boolean hasMultipleUsers, String authorName, final JSONArray articles,
-			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
+			final boolean isFullContent, int i) throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.getJSONObject(i);
 		final Entry ret = new Entry();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -280,9 +279,9 @@ public class FeedProcessor {
 																		// unpublished
 																		// article
 						&& StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
-																									// article
-																									// with
-																									// password
+																								// article
+																								// with
+																								// password
 					articles.add(article);
 				}
 			}
@@ -315,8 +314,7 @@ public class FeedProcessor {
 	}
 
 	private Entry getEntryForArticle(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
+			final boolean isFullContent, int i) throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.get(i);
 		final Entry ret = new Entry();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -418,8 +416,7 @@ public class FeedProcessor {
 	}
 
 	private Item getItem(final JSONArray articles, final boolean hasMultipleUsers, String authorName,
-			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
+			final boolean isFullContent, int i) throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.getJSONObject(i);
 		final Item ret = new Item();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -527,9 +524,9 @@ public class FeedProcessor {
 																		// unpublished
 																		// article
 						&& StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips
-																									// article
-																									// with
-																									// password
+																								// article
+																								// with
+																								// password
 					articles.add(article);
 				}
 			}
@@ -562,8 +559,7 @@ public class FeedProcessor {
 	}
 
 	private Item getItemForArticles(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-			final boolean isFullContent, int i)
-			throws org.json.JSONException, org.b3log.solo.service.ServiceException {
+			final boolean isFullContent, int i) throws org.json.JSONException, org.b3log.solo.service.ServiceException {
 		final JSONObject article = articles.get(i);
 		final Item ret = new Item();
 		final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));

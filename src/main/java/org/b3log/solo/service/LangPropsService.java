@@ -49,7 +49,6 @@ public class LangPropsService {
 	 */
 	private static final Map<Locale, Map<String, String>> LANGS = new HashMap<>();
 
-	
 	public Map<String, String> getAll(final Locale locale) {
 		Map<String, String> ret = LANGS.get(locale);
 
@@ -85,12 +84,10 @@ public class LangPropsService {
 		return ret;
 	}
 
-	
 	public String get(final String key) {
 		return get(Keys.LANGUAGE, key, Locales.getLocale());
 	}
 
-	
 	public String get(final String key, final Locale locale) {
 		return get(Keys.LANGUAGE, key, locale);
 	}

@@ -97,8 +97,8 @@ public final class AddArticleGoogleBlogSearchPinger {
 					+ "&url=" + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL="
 					+ URLEncoder.encode(articlePermalink, "UTF-8");
 
-			logger.debug("Request Google Blog Search Service API[{}] while adding an " + "article[title="
-					+ articleTitle + "]", spec);
+			logger.debug("Request Google Blog Search Service API[{}] while adding an " + "article[title=" + articleTitle
+					+ "]", spec);
 			final HTTPRequest request = new HTTPRequest();
 
 			request.setURL(new URL(spec));

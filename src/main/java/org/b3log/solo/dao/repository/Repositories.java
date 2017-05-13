@@ -224,9 +224,8 @@ public final class Repositories {
 			 * ("boolean".equals(type) && !(value instanceof Boolean))) {
 			 * LOGGER.log(Level.WARNING,
 			 * "A json object to persist to repository[name={}] has " +
-			 * "a wrong value type[definedType={}, currentType={}] with key["
-			 * + key + "]", new Object[]{repositoryName, type,
-			 * value.getClass()});
+			 * "a wrong value type[definedType={}, currentType={}] with key[" +
+			 * key + "]", new Object[]{repositoryName, type, value.getClass()});
 			 * 
 			 * return true; }
 			 */
@@ -266,7 +265,8 @@ public final class Repositories {
 		for (int i = 0; i < repositories.length(); i++) {
 			final JSONObject repository = repositories.optJSONObject(i);
 
-			if (repositoryName.equals(repository.optString("name")) || (tableNamePrefix + repositoryName).equals(repository.optString("name"))) {
+			if (repositoryName.equals(repository.optString("name"))
+					|| (tableNamePrefix + repositoryName).equals(repository.optString("name"))) {
 				return repository.optJSONArray("keys");
 			}
 		}

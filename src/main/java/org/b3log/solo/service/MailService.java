@@ -45,7 +45,6 @@ import org.springframework.stereotype.Service;
 public final class MailService {
 	private static Logger logger = LoggerFactory.getLogger(MailService.class);
 
-	
 	public void send(final MailMessage message) throws IOException {
 		// TODO: zezhou jiang, throws ioexception while send fails
 
@@ -58,6 +57,7 @@ public final class MailService {
 		}).start();
 	}
 }
+
 class MailSender {
 
 	/**

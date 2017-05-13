@@ -17,6 +17,7 @@ package org.b3log.solo.controller;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,13 +40,13 @@ import org.b3log.solo.service.LangPropsService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Requests;
 import org.b3log.solo.util.freemarker.Templates;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -128,9 +129,10 @@ public class CommentProcessor {
 	 *             io exception
 	 */
 	@RequestMapping(value = "/add-page-comment.do", method = RequestMethod.POST)
-	public void addPageComment(final HttpServletRequest request, final HttpServletResponse response)
-			throws ServletException, IOException {
-		final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+	public void addPageComment(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestBody String body) throws ServletException, IOException {
+		body = URLDecoder.decode(body, "UTF-8");
+		final JSONObject requestJSONObject = new JSONObject(body);
 		requestJSONObject.put(Common.TYPE, Page.PAGE);
 
 		fillCommenter(requestJSONObject, request, response);
@@ -237,9 +239,10 @@ public class CommentProcessor {
 	 *             io exception
 	 */
 	@RequestMapping(value = "/add-article-comment.do", method = RequestMethod.POST)
-	public void addArticleComment(final HttpServletRequest request, final HttpServletResponse response)
-			throws ServletException, IOException {
-		final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+	public void addArticleComment(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestBody String body) throws ServletException, IOException {
+		body = URLDecoder.decode(body, "UTF-8");
+		final JSONObject requestJSONObject = new JSONObject(body);
 		requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
 		fillCommenter(requestJSONObject, request, response);

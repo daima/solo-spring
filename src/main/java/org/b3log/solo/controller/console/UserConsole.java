@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.controller.console;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,8 +38,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * User console request processing.
@@ -105,7 +109,7 @@ public class UserConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/user/", method = RequestMethod.PUT)
-	public void updateUser(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void updateUser(final HttpServletRequest request, final HttpServletResponse response, @RequestParam String body) throws Exception {
 		if (!userQueryService.isAdminLoggedIn(request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -115,7 +119,7 @@ public class UserConsole {
 		final JSONObject ret = new JSONObject();
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");final JSONObject requestJSONObject = new JSONObject(body);
 			userMgmtService.updateUser(requestJSONObject);
 			ret.put(Keys.STATUS_CODE, true);
 			ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
@@ -151,8 +155,8 @@ public class UserConsole {
 	 *            "", "userEmail": "", "userPassword": "", "userURL": "", //
 	 *            optional, uses 'servePath' instead if not specified
 	 *            "userRole": "", // optional, uses
-	 *            {@value org.b3log.solo.model.Role#DEFAULT_ROLE} instead
-	 *            if not specified "userAvatar": "" // optional
+	 *            {@value org.b3log.solo.model.Role#DEFAULT_ROLE} instead if not
+	 *            specified "userAvatar": "" // optional
 	 * @param response
 	 *            the specified http servlet response
 	 * @param context
@@ -161,13 +165,15 @@ public class UserConsole {
 	 *             exception
 	 */
 	@RequestMapping(value = "/console/user/", method = RequestMethod.POST)
-	public void addUser(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public void addUser(final HttpServletRequest request, final HttpServletResponse response, @RequestBody String body)
+			throws Exception {
 		final JSONRenderer renderer = new JSONRenderer();
 		final JSONObject ret = new JSONObject();
 		renderer.setJSONObject(ret);
 
 		try {
-			final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+			body = URLDecoder.decode(body, "UTF-8");
+			final JSONObject requestJSONObject = new JSONObject(body);
 
 			if (userQueryService.isAdminLoggedIn(request)) { // if the
 																// administrator
