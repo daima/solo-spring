@@ -15,15 +15,11 @@
  */
 package org.b3log.solo.util.freemarker;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 
-import org.b3log.solo.Keys;
-import org.b3log.solo.SoloConstant;
-import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoader;
@@ -57,14 +53,6 @@ public final class Templates {
 	public static final Configuration MOBILE_CFG = new Configuration();
 
 	static {
-		/*ServletContext context = ContextLoader.getCurrentWebApplicationContext().getServletContext();
-		String path = context.getRealPath("") + "/view/skins/9IPHP/";
-		try {
-			MAIN_CFG.setDirectoryForTemplateLoading(new File(path));
-			MOBILE_CFG.setDirectoryForTemplateLoading(new File(path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 		MAIN_CFG.setDefaultEncoding("UTF-8");
 		MOBILE_CFG.setDefaultEncoding("UTF-8");
 	}
@@ -141,9 +129,9 @@ public final class Templates {
 	 */
 	public static Template getTemplate(final String templateDirName, final String templateName) {
 		try {
-			String path = SoloConstant.TMPLATE_PATH + "/skins/" + templateDirName;
-			MAIN_CFG.setDirectoryForTemplateLoading(new File(path));
-			MOBILE_CFG.setDirectoryForTemplateLoading(new File(path));
+			ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
+			MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + templateDirName);
+			MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + templateDirName);
 			try {
 				if ("mobile".equals(templateDirName)) {
 					return MOBILE_CFG.getTemplate(templateName);

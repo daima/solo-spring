@@ -108,12 +108,9 @@ public final class Skins {
 				final String language = Locales.getLanguage(localeString);
 				final String country = Locales.getCountry(localeString);
 
-				String path = SoloConstant.TMPLATE_PATH + "/skins/" + currentSkinDirName + "/lang/lang_" + language
-						+ '_' + country + ".properties";
-
-				// final InputStream inputStream =
-				// servletContext.getResourceAsStream(path);
-				final InputStream inputStream = new FileInputStream(new File(path));
+				ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
+				String path = "/skins/" + currentSkinDirName + "/lang/lang_" + language + '_' + country + ".properties";
+				final InputStream inputStream = servletContext.getResourceAsStream(path);
 
 				final Properties props = new Properties();
 

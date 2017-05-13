@@ -26,6 +26,7 @@ import org.b3log.solo.SoloConstant;
 import org.b3log.solo.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.ContextLoader;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -56,14 +57,9 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
 		TEMPLATE_CFG = new Configuration();
 		TEMPLATE_CFG.setDefaultEncoding("UTF-8");
 
-		try {
-			TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(SoloConstant.TMPLATE_PATH));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
+		TEMPLATE_CFG.setServletContextForTemplateLoading(servletContext, "/view");
 
-		// TEMPLATE_CFG.setServletContextForTemplateLoading(servletContext,
-		// "/");
 		TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		TEMPLATE_CFG.setLogTemplateExceptions(false);
 	}
