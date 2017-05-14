@@ -170,6 +170,7 @@
                         <option value="tinyMCE">TinyMCE</option>
                         <option value="CodeMirror-Markdown">CodeMirror(Markdown)</option>
                         <option value="KindEditor">KindEditor</option>
+                        <option value="UEditor">UEditor</option>
                     </select>
                 </td>
             </tr>

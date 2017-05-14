@@ -140,12 +140,16 @@
         <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
         <script src="${servePath}/js/lib/KindEditor/kindeditor-min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
+        <script src="${servePath}/js/lib/ueditor/ueditor.config.js"></script>
+        <script src="${servePath}/js/lib/ueditor/ueditor.all.min.js"></script>
+        <script src="${servePath}/js/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
         <script src="${staticServePath}/js/admin/editor.js"></script>
         <script src="${staticServePath}/js/admin/editorTinyMCE.js"></script>
         <script src="${staticServePath}/js/admin/editorKindEditor.js"></script>
         <script src="${staticServePath}/js/admin/editorCodeMirror.js"></script>
+        <script src="${staticServePath}/js/admin/editorUEditor.js"></script>
         <script src="${staticServePath}/js/admin/tablePaginate.js"></script>
         <script src="${staticServePath}/js/admin/article.js"></script>
         <script src="${staticServePath}/js/admin/comment.js"></script>

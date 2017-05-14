@@ -610,7 +610,7 @@ public class ArticleConsole {
 		final JSONObject ret = new JSONObject();
 
 		try {
-			body = URLDecoder.decode(body, "UTF-8");
+			body = URLDecoder.decode(replacer(body), "UTF-8");
 			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
@@ -639,7 +639,16 @@ public class ArticleConsole {
 		}
 		renderer.render(request, response);
 	}
-
+	public String replacer(String data) {  
+		  try {  
+		     data = data.replaceAll("%(?![0-9a-fA-F]{2})", "%25");  
+		     data = data.replaceAll("\\+", "%2B");  
+		     data = URLDecoder.decode(data, "utf-8");  
+		  } catch (Exception e) {  
+		     e.printStackTrace();  
+		  }  
+		  return data;  
+		}
 	/**
 	 * Adds an article with the specified request.
 	 *

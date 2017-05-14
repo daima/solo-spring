@@ -35,7 +35,7 @@ admin.editors = {};
  */
 var SoloEditor = function (conf) {
     this._defaults = {
-        type: "tinyMCE",
+        type: "UEditor",
         kind: "",
         id: "",
         language: ""
@@ -66,7 +66,6 @@ $.extend(SoloEditor.prototype, {
             conf.codeMirrorLanguage = types[1];
             conf.type = types[0];
         }
-
         admin.editors[conf.type].init(conf);
     },
     /*

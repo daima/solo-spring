@@ -185,7 +185,7 @@ public final class Starter {
 
 		try {
 			Desktop.getDesktop()
-					.browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/"));
+					.browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/admin-index.do#article/article"));
 		} catch (final Throwable e) {
 			// Ignored
 		}
