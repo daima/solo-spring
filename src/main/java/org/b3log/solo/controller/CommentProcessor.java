@@ -261,7 +261,7 @@ public class CommentProcessor {
 		final HttpSession session = request.getSession(false);
 		if (null == session) {
 			jsonObject.put(Keys.STATUS_CODE, false);
-			jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+			jsonObject.put(Keys.MSG, langPropsService.get("invalidSessionLabel"));
 			renderer.render(request, response);
 			return;
 		}
