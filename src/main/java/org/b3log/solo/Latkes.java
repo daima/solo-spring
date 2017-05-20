@@ -245,7 +245,7 @@ public final class Latkes {
 	 */
 	public static String getServerPort() {
 		if (null == serverPort) {
-			serverPort = PropsUtil.getProperty("serverPort");
+			serverPort = PropsUtil.getProperty("listen_port");
 		}
 
 		return serverPort;
@@ -341,7 +341,7 @@ public final class Latkes {
 	 */
 	public static String getStaticServerPort() {
 		if (null == staticServerPort) {
-			staticServerPort = PropsUtil.getProperty("staticServerPort");
+			staticServerPort = PropsUtil.getProperty("listen_port");
 
 			if (null == staticServerPort) {
 				staticServerPort = getServerPort();

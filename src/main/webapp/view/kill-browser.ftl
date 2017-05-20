@@ -12,7 +12,7 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body>
         <div class="wrapper">
@@ -30,7 +30,7 @@
                         <button onclick="closeIframeForever();">${closeForeverLabel}</button>
                         <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log.org" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/images/favicon.png"/>
                         </a>
                     </div>
                     <span class="clear"></span>

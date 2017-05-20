@@ -5,7 +5,7 @@
         <meta name="robots" content="none" />
         <title>${blogTitle} - 404 Not Found!</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body>
         <div class="wrapper">

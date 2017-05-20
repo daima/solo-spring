@@ -185,7 +185,7 @@ public final class Keys {
 		/**
 		 * Key of start time millis.
 		 */
-		public static final String START_TIME_MILLIS = "startTimeMillis";
+//		public static final String START_TIME_MILLIS = "startTimeMillis";
 
 		/**
 		 * Key of request URI.
@@ -225,7 +225,7 @@ public final class Keys {
 		/**
 		 * Key of server port.
 		 */
-		public static final String SERVER_PORT = "serverPort";
+		public static final String SERVER_PORT = "listen_port";
 
 		/**
 		 * Key of server.
