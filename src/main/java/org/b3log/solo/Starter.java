@@ -24,7 +24,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.b3log.solo.util.PropsUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;

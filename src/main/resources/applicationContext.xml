@@ -27,8 +27,9 @@
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/skins/**" location="/skins/" />
+	<mvc:default-servlet-handler />
 	<mvc:interceptors>
-		<!-- <mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/favicon.ico" />
 			<mvc:exclude-mapping path="/images/favicon.png" />
@@ -108,7 +109,7 @@
 			<mvc:exclude-mapping path="/README.txt" />
 			<mvc:exclude-mapping path="/LICENSE.txt" />
 			<bean class="org.b3log.solo.filter.CommonInterceptor" />
-		</mvc:interceptor> -->
+		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/articles/**" />
 			<mvc:mapping path="/pages/**" />
