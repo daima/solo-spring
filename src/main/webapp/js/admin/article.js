@@ -223,6 +223,7 @@ admin.article = {
             $.ajax({
                 url: latkeConfig.servePath + "/console/article/",
                 type: "POST",
+                contentType:"application/json",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {

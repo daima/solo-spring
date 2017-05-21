@@ -610,7 +610,7 @@ public class ArticleConsole {
 		final JSONObject ret = new JSONObject();
 
 		try {
-			body = URLDecoder.decode(replacer(body), "UTF-8");
+//			body = URLDecoder.decode(replacer(body), "UTF-8");
 			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
@@ -703,7 +703,7 @@ public class ArticleConsole {
 		final JSONObject ret = new JSONObject();
 
 		try {
-			body = URLDecoder.decode(body, "UTF-8");
+//			body = URLDecoder.decode(body, "UTF-8");
 			final JSONObject requestJSONObject = new JSONObject(body);
 
 			final JSONObject currentUser = userQueryService.getCurrentUser(request);

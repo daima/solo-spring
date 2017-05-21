@@ -15,13 +15,9 @@ import org.b3log.solo.dao.ArticleDao;
 import org.b3log.solo.dao.PageDao;
 import org.b3log.solo.dao.repository.RepositoryException;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.module.util.Skins;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.ServiceException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,31 +36,11 @@ public class PermalinkInterceptor implements HandlerInterceptor {
 	private PageDao pageDao;
 	@Autowired
 	private ArticleQueryService articleQueryService;
-	@Autowired
-	private PreferenceQueryService preferenceQueryService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		try {
-			JSONObject preference = preferenceQueryService.getPreference();
-			// https://github.com/b3log/solo/issues/12060
-			String specifiedSkin = Skins.getSkinDirName(request);
-			if (null != specifiedSkin) {
-				if ("default".equals(specifiedSkin)) {
-					specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
-				}
-			} else {
-				specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
-			}
-			request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
-		} catch (ServiceException e1) {
-			e1.printStackTrace();
-		}
-		final String requestURI = request.getRequestURI();
-
-		logger.info("Request URI[{}]", requestURI);
-
+		String requestURI = request.getRequestURI();
 		final String contextPath = Latkes.getContextPath();
 		final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 

@@ -166,7 +166,7 @@ public final class Latkes {
 	 * it.
 	 * </p>
 	 */
-	private static org.h2.tools.Server h2;
+//	private static org.h2.tools.Server h2;
 
 	/**
 	 * Gets static resource (JS, CSS files) version.
@@ -707,8 +707,8 @@ public final class Latkes {
 				final String newTCPServer = PropsUtil.getString("newTCPServer");
 
 				if ("true".equals(newTCPServer)) {
-					h2.stop();
-					h2.shutdown();
+//					h2.stop();
+//					h2.shutdown();
 
 					logger.info("Closed H2 TCP server");
 				}
