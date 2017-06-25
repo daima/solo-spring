@@ -10,6 +10,7 @@
 <meta name="copyright" content="B3log" />
 <meta http-equiv="Window-target" content="_top" />
 <link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/css/base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css?${staticResourceVersion}" charset="utf-8" />
 <link href="${servePath}/blog-articles-rss.do" title="RSS" type="application/rss+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="${servePath}/images/favicon.png" />
 ${htmlHead}

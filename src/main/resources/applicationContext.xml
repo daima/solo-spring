@@ -27,13 +27,33 @@
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/skins/**" location="/skins/" />
+	<mvc:resources mapping="/plugins/**.css" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.css" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.js" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.js" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.png" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.png" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.jpg" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.jpg" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.swf" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.swf" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.gif" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.gif" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.html" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.html" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**.htm" location="/plugins/" />
+	<mvc:resources mapping="/plugins/**/*.htm" location="/plugins/" />
+
+	<mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
+	<mvc:resources mapping="/images/favicon.png" location="/images/favicon.png" />
+	<mvc:resources mapping="/robots.txt" location="/robots.txt" />
+	<mvc:resources mapping="/CHANGE_LOGS.html" location="/CHANGE_LOGS.html" />
+	<mvc:resources mapping="/README.txt" location="/README.txt" />
+	<mvc:resources mapping="/LICENSE.txt" location="/LICENSE.txt" />
 	<mvc:default-servlet-handler />
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/favicon.ico" />
-			<mvc:exclude-mapping path="/images/favicon.png" />
-			<mvc:exclude-mapping path="/robots.txt" />
 
 			<mvc:exclude-mapping path="/js/**.js" />
 			<mvc:exclude-mapping path="/js/**/*.js" />
@@ -104,15 +124,95 @@
 			<mvc:exclude-mapping path="/plugins/**/*.html" />
 			<mvc:exclude-mapping path="/plugins/**.htm" />
 			<mvc:exclude-mapping path="/plugins/**/*.htm" />
-
+			
+			<mvc:exclude-mapping path="/favicon.ico" />
+			<mvc:exclude-mapping path="/images/favicon.png" />
+			<mvc:exclude-mapping path="/robots.txt" />
 			<mvc:exclude-mapping path="/CHANGE_LOGS.html" />
 			<mvc:exclude-mapping path="/README.txt" />
 			<mvc:exclude-mapping path="/LICENSE.txt" />
 			<bean class="org.b3log.solo.filter.CommonInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
-			<mvc:mapping path="/articles/**" />
-			<mvc:mapping path="/pages/**" />
+			<mvc:mapping path="/**" />
+
+			<mvc:exclude-mapping path="/js/**.js" />
+			<mvc:exclude-mapping path="/js/**/*.js" />
+			<mvc:exclude-mapping path="/js/**.css" />
+			<mvc:exclude-mapping path="/js/**/*.css" />
+			<mvc:exclude-mapping path="/js/**.htm" />
+			<mvc:exclude-mapping path="/js/**/*.htm" />
+			<mvc:exclude-mapping path="/js/**.html" />
+			<mvc:exclude-mapping path="/js/**/*.html" />
+			<mvc:exclude-mapping path="/js/**.gif" />
+			<mvc:exclude-mapping path="/js/**/*.gif" />
+			<mvc:exclude-mapping path="/js/**.png" />
+			<mvc:exclude-mapping path="/js/**/*.png" />
+			<mvc:exclude-mapping path="/js/**.jpg" />
+			<mvc:exclude-mapping path="/js/**/*.jpg" />
+			<mvc:exclude-mapping path="/js/**/*.swf" />
+			<mvc:exclude-mapping path="/js/**/*.eot" />
+			<mvc:exclude-mapping path="/js/**/*.svg" />
+			<mvc:exclude-mapping path="/js/**/*.ttf" />
+			<mvc:exclude-mapping path="/js/**/*.woff" />
+
+			<mvc:exclude-mapping path="/skins/**.css" />
+			<mvc:exclude-mapping path="/skins/**.css.map" />
+			<mvc:exclude-mapping path="/skins/**/*.css" />
+			<mvc:exclude-mapping path="/skins/**/*.css.map" />
+			<mvc:exclude-mapping path="/skins/**.js" />
+			<mvc:exclude-mapping path="/skins/**/*.js" />
+			<mvc:exclude-mapping path="/skins/**.png" />
+			<mvc:exclude-mapping path="/skins/**/*.png" />
+			<mvc:exclude-mapping path="/skins/**.jpg" />
+			<mvc:exclude-mapping path="/skins/**/*.jpg" />
+			<mvc:exclude-mapping path="/skins/**.swf" />
+			<mvc:exclude-mapping path="/skins/**/*.swf" />
+			<mvc:exclude-mapping path="/skins/**.gif" />
+			<mvc:exclude-mapping path="/skins/**/*.gif" />
+			<mvc:exclude-mapping path="/skins/**/*.eot" />
+			<mvc:exclude-mapping path="/skins/**/*.svg" />
+			<mvc:exclude-mapping path="/skins/**/*.ttf" />
+			<mvc:exclude-mapping path="/skins/**/*.woff" />
+
+			<mvc:exclude-mapping path="/css/**.css" />
+			<mvc:exclude-mapping path="/css/**/*.css" />
+			<mvc:exclude-mapping path="/css/fonts/*.eot" />
+			<mvc:exclude-mapping path="/css/fonts/*.svg" />
+			<mvc:exclude-mapping path="/css/fonts/*.ttf" />
+			<mvc:exclude-mapping path="/css/fonts/*.woff" />
+
+			<mvc:exclude-mapping path="/images/**.png" />
+			<mvc:exclude-mapping path="/images/**/*.png" />
+			<mvc:exclude-mapping path="/images/**.jpg" />
+			<mvc:exclude-mapping path="/images/**/*.jpg" />
+			<mvc:exclude-mapping path="/images/**.gif" />
+			<mvc:exclude-mapping path="/images/**/*.gif" />
+
+			<mvc:exclude-mapping path="/plugins/**.css" />
+			<mvc:exclude-mapping path="/plugins/**/*.css" />
+			<mvc:exclude-mapping path="/plugins/**.js" />
+			<mvc:exclude-mapping path="/plugins/**/*.js" />
+			<mvc:exclude-mapping path="/plugins/**.png" />
+			<mvc:exclude-mapping path="/plugins/**/*.png" />
+			<mvc:exclude-mapping path="/plugins/**.jpg" />
+			<mvc:exclude-mapping path="/plugins/**/*.jpg" />
+			<mvc:exclude-mapping path="/plugins/**.swf" />
+			<mvc:exclude-mapping path="/plugins/**/*.swf" />
+			<mvc:exclude-mapping path="/plugins/**.gif" />
+			<mvc:exclude-mapping path="/plugins/**/*.gif" />
+			<mvc:exclude-mapping path="/plugins/**.html" />
+			<mvc:exclude-mapping path="/plugins/**/*.html" />
+			<mvc:exclude-mapping path="/plugins/**.htm" />
+			<mvc:exclude-mapping path="/plugins/**/*.htm" />
+			
+			<mvc:exclude-mapping path="/favicon.ico" />
+			<mvc:exclude-mapping path="/images/favicon.png" />
+			<mvc:exclude-mapping path="/robots.txt" />
+			<mvc:exclude-mapping path="/CHANGE_LOGS.html" />
+			<mvc:exclude-mapping path="/README.txt" />
+			<mvc:exclude-mapping path="/LICENSE.txt" />
+			
 			<bean class="org.b3log.solo.filter.PermalinkInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>

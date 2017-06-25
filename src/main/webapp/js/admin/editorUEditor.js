@@ -32,7 +32,9 @@ admin.editors.UEditor = {
         if (language === "zh") {
             language = "zh-cn";
         }
+       
         var ue = UE.getEditor(conf.id);
+        this[conf.id] = ue;
     },
     /*
      * @description 获取编辑器值
@@ -40,7 +42,7 @@ admin.editors.UEditor = {
      * @returns {string} 编辑器值
      */
     getContent: function (id) {
-        var content = UE.getEditor(id).getContent();
+        var content = this[id].getContent();
         return content;
     },
     /*
@@ -49,13 +51,15 @@ admin.editors.UEditor = {
      * @param {string} content 设置编辑器值
      */
     setContent: function (id, content) {
-    	UE.getEditor(id).setContent(content,true);
+    	var ue = this[id];
+    	this[id].setContent(content);
+    	var html = ue.getContent();
     },
     /*
      * @description 移除编辑器
      * @param {string} id 编辑器 id
      */
     remove: function (id) {
-    	UE.getEditor(id).destroy();
+    	this[id].destroy();
     }
 };

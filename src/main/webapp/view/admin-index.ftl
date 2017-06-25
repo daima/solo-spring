@@ -8,6 +8,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -142,6 +143,7 @@
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <script src="${servePath}/js/lib/ueditor/ueditor.config.js"></script>
         <script src="${servePath}/js/lib/ueditor/ueditor.all.min.js"></script>
+        <script src="${servePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCore.js?${staticResourceVersion}" charset="utf-8"></script>
         <script src="${servePath}/js/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
@@ -173,6 +175,7 @@
         ${plugins}
         <script >
             admin.inited();
+            SyntaxHighlighter.all();
         </script>
     </body>
 </html>
