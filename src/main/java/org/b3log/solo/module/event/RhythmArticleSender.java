@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,11 +44,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * This listener is responsible for sending article to B3log Rhythm.
  *
  * <p>
- * The B3log Rhythm article update interface: http://rhythm.b3log.org/article
+ * 
  * (POST).
  * </p>
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author ArmstrongCN
  * @version 1.0.2.8, Nov 20, 2015
  * @since 0.3.1

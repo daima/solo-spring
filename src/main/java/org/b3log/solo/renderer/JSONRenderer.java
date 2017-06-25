@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * <a href="http://json.org">JSON</a> HTTP response renderer.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.2.1.1, Mar 5, 2017
  */
 public final class JSONRenderer extends AbstractHTTPResponseRenderer {

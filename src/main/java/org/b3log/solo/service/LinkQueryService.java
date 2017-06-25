@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 /**
  * Link query service.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.0.0.2, Oct 31, 2011
  * @since 0.4.0
  */

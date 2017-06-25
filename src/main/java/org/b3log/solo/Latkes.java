@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.springframework.web.context.ContextLoader;
 /**
  * Latke framework configuration utility facade.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 2.6.8.13, Sep 18, 2016
  * @see #initRuntimeEnv()
  * @see #shutdown()

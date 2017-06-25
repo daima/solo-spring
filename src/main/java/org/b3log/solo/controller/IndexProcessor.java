@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ import freemarker.template.Template;
 /**
  * Index processor.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @version 1.2.2.6, Dec 27, 2015
  * @since 0.3.1
@@ -258,7 +258,7 @@ public class IndexProcessor {
 	/**
 	 * Kill browser (kill-browser.ftl) HTTP response renderer.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.0, Sep 18, 2011
 	 * @since 0.3.1
 	 */

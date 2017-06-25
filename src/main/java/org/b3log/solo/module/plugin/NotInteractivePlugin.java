@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.b3log.solo.module.event.AbstractPlugin;
  * The default plugin for which do not need interact with the server end.
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.2.0.0, May 31, 2014
  */
 @SuppressWarnings("serial")

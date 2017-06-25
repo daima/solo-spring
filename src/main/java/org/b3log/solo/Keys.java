@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * This class defines framework (non-functional) keys.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.0.2.8, Mar 14, 2014
  */
 public final class Keys {
@@ -162,7 +162,7 @@ public final class Keys {
 	/**
 	 * This class defines HTTP request keys.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.1, May 17, 2012
 	 */
 	public static final class HttpRequest {
@@ -207,7 +207,7 @@ public final class Keys {
 	/**
 	 * This class defines server keys.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.0, May 4, 2012
 	 */
 	public static final class Server {
@@ -282,7 +282,7 @@ public final class Keys {
 	/**
 	 * This class defines runtime keys.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.0, Sep 6, 2012
 	 */
 	public static final class Runtime {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Request utilities.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
  * @version 1.1.3.2, Jan 6, 2017
  * @see #PAGINATION_PATH_PATTERN

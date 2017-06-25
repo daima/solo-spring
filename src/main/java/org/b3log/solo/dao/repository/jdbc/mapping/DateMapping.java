@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.b3log.solo.dao.repository.jdbc.util.FieldDefinition;
  * Maps Java {@link java.util.Date} type to SQL DATETIME type.
  * </p>
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.0.0.0, Feb 29, 2012
  */
 public final class DateMapping implements Mapping {

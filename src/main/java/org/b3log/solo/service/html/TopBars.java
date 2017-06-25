@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import freemarker.template.TemplateException;
 /**
  * Top bar utilities.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.0.1.5, Apr 10, 2013
  * @since 0.3.5
