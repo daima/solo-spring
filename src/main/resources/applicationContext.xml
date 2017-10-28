@@ -26,6 +26,7 @@
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
 	<mvc:resources mapping="/skins/**" location="/skins/" />
 	<mvc:resources mapping="/plugins/**.css" location="/plugins/" />
 	<mvc:resources mapping="/plugins/**/*.css" location="/plugins/" />
@@ -107,6 +108,8 @@
 			<mvc:exclude-mapping path="/images/**/*.jpg" />
 			<mvc:exclude-mapping path="/images/**.gif" />
 			<mvc:exclude-mapping path="/images/**/*.gif" />
+			
+			<mvc:exclude-mapping path="/upload/**" />
 
 			<mvc:exclude-mapping path="/plugins/**.css" />
 			<mvc:exclude-mapping path="/plugins/**/*.css" />
@@ -188,6 +191,8 @@
 			<mvc:exclude-mapping path="/images/**/*.jpg" />
 			<mvc:exclude-mapping path="/images/**.gif" />
 			<mvc:exclude-mapping path="/images/**/*.gif" />
+			
+			<mvc:exclude-mapping path="/upload/**" />
 
 			<mvc:exclude-mapping path="/plugins/**.css" />
 			<mvc:exclude-mapping path="/plugins/**/*.css" />
@@ -212,6 +217,7 @@
 			<mvc:exclude-mapping path="/CHANGE_LOGS.html" />
 			<mvc:exclude-mapping path="/README.txt" />
 			<mvc:exclude-mapping path="/LICENSE.txt" />
+			<mvc:exclude-mapping path="/captcha.do" />
 			
 			<bean class="org.b3log.solo.filter.PermalinkInterceptor" />
 		</mvc:interceptor>

@@ -78,11 +78,8 @@
 			<version>1.9.8</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-		<!-- <dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>commons-codec</groupId> <artifactId>commons-codec</artifactId> 
+			<version>1.10</version> </dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
 		<dependency>
@@ -158,16 +155,10 @@
 		</dependency>
 
 		<!-- spring start -->
-		<!-- <dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-			<version>${spring.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-aop</artifactId> 
+			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
+			<artifactId>spring-aspects</artifactId> <version>${spring.version}</version> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
@@ -188,11 +179,8 @@
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${spring.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-expression</artifactId> 
+			<version>${spring.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -281,11 +269,8 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>com.qiniu</groupId>
-			<artifactId>qiniu-java-sdk</artifactId>
-			<version>${qiniu.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.qiniu</groupId> <artifactId>qiniu-java-sdk</artifactId> 
+			<version>${qiniu.version}</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -322,6 +307,9 @@
 				<excludes>
 					<exclude>etc/</exclude>
 				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/${env}</directory>
 			</resource>
 		</resources>
 
@@ -386,49 +374,21 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<version>${maven-license-plugin.version}</version>
-				<configuration>
-					<header>src/main/resources/etc/header.txt</header>
-					<quiet>false</quiet>
-					<failIfMissing>true</failIfMissing>
-					<aggregate>true</aggregate>
-					<strictCheck>true</strictCheck>
-					<includes>
-						<include>**/src/*/java/**/*.java</include>
-						<include>**/src/*/webapp/js/*.js</include>
-						<include>**/src/*/webapp/css/*.css</include>
-						<include>**/src/*/webapp/skins/*/js/*.js</include>
-						<include>**/src/*/webapp/skins/*/css/*.css</include>
-						<include>**/src/*/webapp/skins/**/*.properties</include>
-						<include>**/src/*/webapp/plugins/*/js/*.js</include>
-						<include>**/src/*/webapp/plugins/*/css/*.css</include>
-						<include>**/src/*/webapp/plugins/*/*.properties</include>
-						<include>**/src/*/webapp/js/admin/*.js</include>
-						<include>**/src/*/resources/*.properties</include>
-						<include>**/src/*/webapp/WEB-INF/*.xml</include>
-					</includes>
-					<excludes>
-						<exclude>**/src/main/java/**/package-info.java</exclude>
-						<exclude>**/src/*/webapp/js/lib/*.js</exclude>
-						<exclude>**/src/main/java/com/**/*.java</exclude>
-					</excludes>
-
-					<useDefaultExcludes>true</useDefaultExcludes>
-					<mapping>
-						<java>SLASHSTAR_STYLE</java>
-					</mapping>
-					<useDefaultMapping>true</useDefaultMapping>
-					<properties>
-						<year>2010-2017</year>
-					</properties>
-					<encoding>UTF-8</encoding>
-				</configuration>
-				<executions>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <groupId>com.mycila.maven-license-plugin</groupId> <artifactId>maven-license-plugin</artifactId> 
+				<version>${maven-license-plugin.version}</version> <configuration> <header>src/main/resources/etc/header.txt</header> 
+				<quiet>false</quiet> <failIfMissing>true</failIfMissing> <aggregate>true</aggregate> 
+				<strictCheck>true</strictCheck> <includes> <include>**/src/*/java/**/*.java</include> 
+				<include>**/src/*/webapp/js/*.js</include> <include>**/src/*/webapp/css/*.css</include> 
+				<include>**/src/*/webapp/skins/*/js/*.js</include> <include>**/src/*/webapp/skins/*/css/*.css</include> 
+				<include>**/src/*/webapp/skins/**/*.properties</include> <include>**/src/*/webapp/plugins/*/js/*.js</include> 
+				<include>**/src/*/webapp/plugins/*/css/*.css</include> <include>**/src/*/webapp/plugins/*/*.properties</include> 
+				<include>**/src/*/webapp/js/admin/*.js</include> <include>**/src/*/resources/*.properties</include> 
+				<include>**/src/*/webapp/WEB-INF/*.xml</include> </includes> <excludes> <exclude>**/src/main/java/**/package-info.java</exclude> 
+				<exclude>**/src/*/webapp/js/lib/*.js</exclude> <exclude>**/src/main/java/com/**/*.java</exclude> 
+				</excludes> <useDefaultExcludes>true</useDefaultExcludes> <mapping> <java>SLASHSTAR_STYLE</java> 
+				</mapping> <useDefaultMapping>true</useDefaultMapping> <properties> <year>2010-2017</year> 
+				</properties> <encoding>UTF-8</encoding> </configuration> <executions> </executions> 
+				</plugin> -->
 
 			<plugin>
 				<groupId>org.b3log</groupId>
@@ -496,30 +456,34 @@
 
 		<finalName>solo</finalName>
 	</build>
+	<repositories>
+		<repository>
+			<id>aliyun</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<profiles>
-		<profile>
-			<id>ci</id>
-		</profile>
-
 		<profile>
 			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<repositories>
-				<repository>
-					<id>aliyun</id>
-					<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-				</repository>
-			</repositories>
-
-			<pluginRepositories>
-				<pluginRepository>
-					<id>aliyun</id>
-					<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-				</pluginRepository>
-			</pluginRepositories>
+			<properties>
+				<env>dev</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+			</properties>
 		</profile>
 	</profiles>
 

@@ -350,13 +350,14 @@ public class CommentMgmtService {
 			}
 
 			final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
+			logger.info("{},{}",UrlValidator.getInstance().isValid(commentURL), commentURL);
 
-			if (!UrlValidator.getInstance().isValid(commentURL) || StringUtils.contains(commentURL, "<")) {
-				logger.warn("Comment URL is invalid[{}]", commentURL);
-				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
-
-				return ret;
-			}
+//			if (!commentURL.startsWith(Latkes.getServer()) || commentURL.contains("<")) {
+//				logger.warn("Comment URL is invalid[{}]", commentURL);
+//				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
+//
+//				return ret;
+//			}
 
 			String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 

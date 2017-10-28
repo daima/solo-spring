@@ -92,7 +92,8 @@ public class InitService {
 	 */
 	@Autowired
 	private StatisticDao statisticDao;
-
+	@Autowired
+	private StatisticMgmtService statisticMgmtService;
 	/**
 	 * Option repository.
 	 */
@@ -397,11 +398,15 @@ public class InitService {
 			// Step 3: Inc blog article and comment count statictis
 			final JSONObject statistic = statisticDao.get(Statistic.STATISTIC);
 
-			statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 1);
-			statisticDao.update(Statistic.STATISTIC, statistic);
+//			statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 1);
+//			statisticDao.update(Statistic.STATISTIC, statistic);
+			statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogArticleCount();
+            statisticMgmtService.incPublishedBlogArticleCount();
 			// Step 4: Add archive date-article relations
 			archiveDate(article);
 			// Step 5: Add article
