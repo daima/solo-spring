@@ -8,14 +8,15 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css?${staticResourceVersion}" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css?${staticResourceVersion}" charset="utf-8" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>
         <div class="tip tip-msg"><span id="tipMsg"></span></div>
         <div id="allPanel">
             <div id="top">
-                <a href="http://b3log.org" target="_blank" class="hover">
+                <a href="http://cxy7.com" target="_blank" class="hover">
                     Solo
                 </a>
                
@@ -133,7 +134,7 @@
             </div>
             <div class="clear"></div>
             <div class="footer">
-                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
+                Powered by <a href="http://cxy7.com" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
@@ -142,6 +143,7 @@
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <script src="${servePath}/js/lib/ueditor/ueditor.config.js"></script>
         <script src="${servePath}/js/lib/ueditor/ueditor.all.min.js"></script>
+        <script src="${servePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCore.js?${staticResourceVersion}" charset="utf-8"></script>
         <script src="${servePath}/js/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
@@ -173,6 +175,7 @@
         ${plugins}
         <script >
             admin.inited();
+            SyntaxHighlighter.all();
         </script>
     </body>
 </html>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,6 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.service.html.Filler;
 import org.b3log.solo.util.Execs;
 import org.b3log.solo.util.PropsUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +65,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.qiniu.util.Auth;
-
 import jodd.io.ZipUtil;
 
 /**
  * Admin console render processing.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.3.2.11, Mar 31, 2017
  * @since 0.4.1
  */
@@ -162,22 +159,22 @@ public class AdminConsole {
 			dataModel.put(Option.ID_C_QINIU_DOMAIN, "");
 			dataModel.put("qiniuUploadToken", "");
 
-			if (null != qiniu && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY))
-					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_SECRET_KEY))
-					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_BUCKET))
-					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_DOMAIN))) {
-				try {
-					final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
-							qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
-
-					final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null,
-							3600 * 6, null);
-					dataModel.put("qiniuUploadToken", uploadToken);
-					dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
-				} catch (final Exception e) {
-					logger.error("Qiniu settings error", e);
-				}
-			}
+//			if (null != qiniu && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY))
+//					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_SECRET_KEY))
+//					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_BUCKET))
+//					&& StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_DOMAIN))) {
+//				try {
+//					final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
+//							qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
+//
+//					final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null,
+//							3600 * 6, null);
+//					dataModel.put("qiniuUploadToken", uploadToken);
+//					dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
+//				} catch (final Exception e) {
+//					logger.error("Qiniu settings error", e);
+//				}
+//			}
 
 			final JSONObject preference = preferenceQueryService.getPreference();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Local URL fetch service.
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.1.1.4, Jan 23, 2017
  */
 public final class LocalURLFetchService implements URLFetchService {
@@ -80,7 +80,7 @@ public final class LocalURLFetchService implements URLFetchService {
 	/**
 	 * URL fetch task.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.0, Jan 23, 2017
 	 */
 	private static class FetchTask extends FutureTask<HTTPResponse> {

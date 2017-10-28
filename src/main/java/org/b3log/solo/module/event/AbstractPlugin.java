@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ import freemarker.template.Template;
  * Pattern</a> for more implementation details.
  * </p>
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.3.2.1, May 31, 2014
  * @see PluginManager

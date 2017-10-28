@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.Keys;
+import org.b3log.solo.Latkes;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Pagination;
@@ -47,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -55,7 +57,7 @@ import freemarker.template.Template;
 /**
  * Index processor.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @version 1.2.2.6, Dec 27, 2015
  * @since 0.3.1
@@ -93,7 +95,10 @@ public class IndexProcessor {
 	 */
 	@Autowired
 	private StatisticMgmtService statisticMgmtService;
-
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public void showIndex1(final HttpServletRequest request, final HttpServletResponse response) {
+//		showIndex("1", request, response);
+//	}
 	/**
 	 * Shows index with the specified context.
 	 *
@@ -104,7 +109,7 @@ public class IndexProcessor {
 	 * @param response
 	 *            the specified HTTP servlet response
 	 */
-	@RequestMapping(value = { "/\\d*", "" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/page/{pageNum}", "/", "/\\d*", "" }, method = RequestMethod.GET)
 	public void showIndex(final HttpServletRequest request, final HttpServletResponse response) {
 		final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 		renderer.setTemplateName("index.ftl");
@@ -145,7 +150,7 @@ public class IndexProcessor {
 			final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
 			dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
 
-			dataModel.put(Common.PATH, "");
+			dataModel.put(Common.PATH, Latkes.getStaticPath() + "/page");
 
 			statisticMgmtService.incBlogViewCount(request, response);
 
@@ -258,7 +263,7 @@ public class IndexProcessor {
 	/**
 	 * Kill browser (kill-browser.ftl) HTTP response renderer.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 1.0.0.0, Sep 18, 2011
 	 * @since 0.3.1
 	 */

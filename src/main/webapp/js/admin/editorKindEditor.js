@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * @description 修改点：plugins/image/image.js 注释 173-176
  *                     plugins/media/media.js 注释 26 & 28
  *
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * 
  * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {

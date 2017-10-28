@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * A cron job is a scheduled task, it will invoke {@link #url a URL} via an HTTP
  * GET request, at a given time of day.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 2.0.1.0, Dec 23, 2015
  */
 public final class Cron extends TimerTask {

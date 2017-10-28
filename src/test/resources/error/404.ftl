@@ -5,7 +5,7 @@
         <meta name="robots" content="none" />
         <title>${blogTitle} - 404 Not Found!</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body>
         <div class="wrapper">
@@ -18,7 +18,7 @@
         <div class="footerWrapper">
             <div class="footer">
                 &copy; ${year}
-                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a>, ver ${version}
+                Powered by <a href="http://cxy7.com" target="_blank">B3log 开源</a>, ver ${version}
             </div>
         </div>
     </body>

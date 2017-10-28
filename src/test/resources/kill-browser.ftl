@@ -12,14 +12,14 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body>
         <div class="wrapper">
             <div class="wrap">
                 <div class="content" style="top:-6px">
                     <div class="logo">
-                        <a href="http://b3log.org" target="_blank">
+                        <a href="http://cxy7.com" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
@@ -29,8 +29,8 @@
                          &nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">${closeLabel}</button> &nbsp; &nbsp; 
                         <button onclick="closeIframeForever();">${closeForeverLabel}</button>
                         <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
-                        <a href="http://b3log.org" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
+                        <a href="http://cxy7.com" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/images/favicon.png"/>
                         </a>
                     </div>
                     <span class="clear"></span>

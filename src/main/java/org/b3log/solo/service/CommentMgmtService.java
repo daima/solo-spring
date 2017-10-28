@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ import org.springframework.stereotype.Service;
 /**
  * Comment management service.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.3.2.10, Feb 18, 2017
  * @since 0.3.5
  */
@@ -350,13 +350,14 @@ public class CommentMgmtService {
 			}
 
 			final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
+			logger.info("{},{}",UrlValidator.getInstance().isValid(commentURL), commentURL);
 
-			if (!UrlValidator.getInstance().isValid(commentURL) || StringUtils.contains(commentURL, "<")) {
-				logger.warn("Comment URL is invalid[{}]", commentURL);
-				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
-
-				return ret;
-			}
+//			if (!commentURL.startsWith(Latkes.getServer()) || commentURL.contains("<")) {
+//				logger.warn("Comment URL is invalid[{}]", commentURL);
+//				ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
+//
+//				return ret;
+//			}
 
 			String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ import org.springframework.web.context.ContextLoader;
 /**
  * Solo initialization service.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.5.2.11, Nov 8, 2016
  * @since 0.4.0
  */
@@ -92,7 +92,8 @@ public class InitService {
 	 */
 	@Autowired
 	private StatisticDao statisticDao;
-
+	@Autowired
+	private StatisticMgmtService statisticMgmtService;
 	/**
 	 * Option repository.
 	 */
@@ -397,11 +398,15 @@ public class InitService {
 			// Step 3: Inc blog article and comment count statictis
 			final JSONObject statistic = statisticDao.get(Statistic.STATISTIC);
 
-			statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
-			statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 1);
-			statisticDao.update(Statistic.STATISTIC, statistic);
+//			statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
+//			statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 1);
+//			statisticDao.update(Statistic.STATISTIC, statistic);
+			statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogArticleCount();
+            statisticMgmtService.incPublishedBlogArticleCount();
 			// Step 4: Add archive date-article relations
 			archiveDate(article);
 			// Step 5: Add article

@@ -8,14 +8,14 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css?${staticResourceVersion}" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>
         <div class="tip tip-msg"><span id="tipMsg"></span></div>
         <div id="allPanel">
             <div id="top">
-                <a href="http://b3log.org" target="_blank" class="hover">
+                <a href="http://cxy7.com" target="_blank" class="hover">
                     Solo
                 </a>
                
@@ -127,7 +127,7 @@
             </div>
             <div class="clear"></div>
             <div class="footer">
-                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
+                Powered by <a href="http://cxy7.com" target="_blank">B3log 开源</a> • <a href="http://cxy7.com/services/#solo" target="_blank">Solo</a> ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>

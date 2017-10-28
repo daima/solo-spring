@@ -4,16 +4,17 @@
     <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
     <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}  <br/>
 
-    Powered by <a href="http://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
+    Powered by <a href="http://cxy7.com" target="_blank">B3log</a> 开源 &nbsp;
     <span class="ft-warn">&heartsuit;</span>
-    Theme by <a href="https://github.com/9IPHP/9IPHP" target="_blank">9IPHP</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
 </footer>
 <div class="icon-up" onclick="Util.goTop()"></div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/skins/${skinDirName}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCore.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
+	SyntaxHighlighter.all();
     var latkeConfig = {
         "servePath": "${servePath}",
         "staticServePath": "${staticServePath}",

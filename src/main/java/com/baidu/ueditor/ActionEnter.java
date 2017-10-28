@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.b3log.solo.util.PropsUtil;
+
 import com.baidu.ueditor.define.ActionMap;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.State;
@@ -22,6 +24,7 @@ public class ActionEnter {
 	private ConfigManager configManager = null;
 
 	public ActionEnter(HttpServletRequest request, String rootPath) {
+//		rootPath = PropsUtil.getString("ueditor.upload.rootPath", "/data/upload");
 		this.request = request;
 		this.rootPath = rootPath;
 		this.actionType = request.getParameter("action");

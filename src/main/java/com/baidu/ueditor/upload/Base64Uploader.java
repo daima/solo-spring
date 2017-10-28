@@ -1,11 +1,13 @@
 package com.baidu.ueditor.upload;
 
+import java.util.Map;
+
+import org.springframework.util.Base64Utils;
+
 import com.baidu.ueditor.PathFormat;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
-import java.util.Map;
-import org.apache.commons.codec.binary.Base64;
 
 public final class Base64Uploader {
 	public static State save(String content, Map<String, Object> conf) {
@@ -36,7 +38,7 @@ public final class Base64Uploader {
 	}
 
 	private static byte[] decode(String content) {
-		return Base64.decodeBase64(content);
+		return Base64Utils.decodeFromString(content);
 	}
 
 	private static boolean validSize(byte[] data, long length) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,7 @@
  */
 package org.b3log.solo;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.net.URI;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -26,7 +24,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.b3log.solo.util.PropsUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
@@ -45,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * org.b3log.solo.Starter</li>
  * </ul>
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.1.0.7, Dec 23, 2015
  * @since 1.2.0
  */
@@ -130,10 +128,10 @@ public final class Starter {
 			return;
 		}
 
-		String portArg = commandLine.getOptionValue("listen_port");
-		if (!NumberUtils.isDigits(portArg)) {
-			portArg = "8080";
-		}
+//		String portArg = commandLine.getOptionValue("listen_port");
+//		if (!NumberUtils.isDigits(portArg)) {
+//			portArg = "80";
+//		}
 
 		String serverScheme = commandLine.getOptionValue("server_scheme");
 		Latkes.setServerScheme(serverScheme);
@@ -159,7 +157,8 @@ public final class Starter {
 			webappDirLocation = "."; // production environment
 		}
 
-		final int port = Integer.valueOf(portArg);
+//		final int port = Integer.valueOf(portArg);
+		int port = PropsUtil.getInteger("listen_port");
 
 		final Server server = new Server(port);
 		final WebAppContext root = new WebAppContext();
@@ -183,12 +182,12 @@ public final class Starter {
 
 		final String contextPath = Latkes.getContextPath();
 
-		try {
-			Desktop.getDesktop()
-					.browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/admin-index.do#article/article"));
-		} catch (final Throwable e) {
-			// Ignored
-		}
+//		try {
+//			Desktop.getDesktop()
+//					.browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath + "/admin-index.do#article/article"));
+//		} catch (final Throwable e) {
+//			// Ignored
+//		}
 
 		server.join();
 	}

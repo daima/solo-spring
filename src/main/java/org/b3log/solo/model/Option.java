@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class defines option model relevant keys.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.3.0.4, Feb 17, 2017
  * @since 0.6.0
  */
@@ -301,7 +301,7 @@ public final class Option {
 	/**
 	 * Default preference.
 	 *
-	 * @author <a href="http://88250.b3log.org">Liang Ding</a>
+	 * @author <a href="http://cxy7.com">XyCai</a>
 	 * @version 2.1.0.9, Nov 23, 2015
 	 * @since 0.3.1
 	 */

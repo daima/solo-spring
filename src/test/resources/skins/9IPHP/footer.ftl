@@ -2,11 +2,10 @@
     &copy; ${year}
     ${footerContent}
     <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
-    <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}  <br/>
+    <a href="http://cxy7.com/services/#solo" target="_blank">Solo</a> ${version}  <br/>
 
-    Powered by <a href="http://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
+    Powered by <a href="http://cxy7.com" target="_blank">B3log</a> 开源 &nbsp;
     <span class="ft-warn">&heartsuit;</span>
-    Theme by <a href="https://github.com/9IPHP/9IPHP" target="_blank">9IPHP</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
 </footer>
 <div class="icon-up" onclick="Util.goTop()"></div>
 

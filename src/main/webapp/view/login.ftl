@@ -13,14 +13,14 @@
         <meta name="robots" content="noindex, follow" />
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
     </head>
     <body>
         <div class="wrapper">
             <div class="wrap">
                 <div class="content">
                     <div class="logo">
-                        <a href="http://b3log.org" target="_blank">
+                        <a href="http://cxy7.com" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
@@ -40,8 +40,8 @@
                             <button onclick='login();'>${loginLabel}</button>
                             <span id="tip">${resetMsg}</span>
                         </div>
-                        <a href="http://b3log.org" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
+                        <a href="http://cxy7.com" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/images/favicon.png"/>
                         </a>
                     </div>
                     <span class="clear"></span>
@@ -50,7 +50,7 @@
             <div class="footerWrapper">
                 <div class="footer">
                     &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
-                    Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
+                    Powered by <a href="http://cxy7.com" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
                 </div>
             </div>
         </div>       

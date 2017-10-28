@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 /**
  * @fileoverview article for admin
  *
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * 
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 1.4.5.7, Jan 21, 2017
  */
 admin.article = {
@@ -223,6 +223,7 @@ admin.article = {
             $.ajax({
                 url: latkeConfig.servePath + "/console/article/",
                 type: "POST",
+                contentType:"application/json",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {

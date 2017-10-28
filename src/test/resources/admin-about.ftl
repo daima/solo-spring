@@ -35,7 +35,7 @@
     </div>
     <div class="module-body padding12">
         <div class="about-logo">
-            <a href="http://b3log.org" target="_blank">
+            <a href="http://cxy7.com" target="_blank">
                 <img src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
             </a>
         </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="module-body padding12 about-developer">
         <div class="about-logo">
-            <!--            <a href="http://b3log.org" target="_blank">
+            <!--            <a href="http://cxy7.com" target="_blank">
                             <img src="${staticServePath}/images/developers.jpg" alt="Solo" title="Solo" />
                         </a>-->
             <div style="width: 156px; height: 56px;"></div>
@@ -58,26 +58,6 @@
                 <div class="about-margin contributor-title">${contributorsLabel}</div>
             </div>
             <div class="left" style="width: 73%">
-                <div class="developer-body">
-                    <ul>
-                        <li><a target="_blank" href="http://88250.b3log.org">D</a></li>
-                        <li><a target="_blank" href="http://vanessa.b3log.org">V</a></li>
-                        <li><a target="_blank" href="mailto:wmainlove@gmail.com">mainlove</a></li>
-                        <li><a target="_blank" href="http://people.apache.org/%7Edongxu">DX</a></li>
-                        <li><a target="_blank" href="http://mizhichashao.com">大叔</a></li>
-                        <li><a target="_blank" href="http://www.jiangzezhou.com">javen.jiang</a></li>
-                    </ul>
-                </div>
-                <div class="contributor-body">
-                    <ul>
-                        <li><a target="_blank" href="http://www.ansen.org">An Shen</a></li>
-                        <li><a target="_blank" href="http://www.bestck.net">Chevo</a></li>
-                        <li><a target="_blank" href="https://github.com/paul-luo">破生</a></li>
-                        <li><a target="_blank" href="http://xxk.b3log.org">宋诗献</a></li>
-                        <li><a target="_blank" href="http://www.mynah.org">Lamb</a></li>
-                        <li><a target="_blank" href="https://github.com/xiaomogui">大姨夫</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
         <span class="clear" />

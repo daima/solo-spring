@@ -2,21 +2,6 @@
 
 ![Solo](https://cloud.githubusercontent.com/assets/873584/23685877/634dcda4-03e1-11e7-95e1-30c9e435eb7e.jpg)
 
-* [简介](#%E7%AE%80%E4%BB%8B)
-* [功能](#%E5%8A%9F%E8%83%BD)
-* [安装](#%E5%AE%89%E8%A3%85)
-* [技术](#%E6%8A%80%E6%9C%AF)
-* [文档](#%E6%96%87%E6%A1%A3)
-* [版本历史](#%E7%89%88%E6%9C%AC%E5%8E%86%E5%8F%B2)
-* [贡献](#%E8%B4%A1%E7%8C%AE)
-* [Terms](#terms)
-* [鸣谢](#%E9%B8%A3%E8%B0%A2)
-* [界面截图](#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE)
-  * [后台](#%E5%90%8E%E5%8F%B0)
-  * [编辑器](#%E7%BC%96%E8%BE%91%E5%99%A8)
-  * [内置的皮肤](#%E5%86%85%E7%BD%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
-  * [社区贡献的皮肤](#%E7%A4%BE%E5%8C%BA%E8%B4%A1%E7%8C%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
-
 [![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
 ## 简介
@@ -63,7 +48,7 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 
 **更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。**
 
-另外，如果你想用 Solo 但又不想自己维护服务器，那可以尝试购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。
+另外，如果你想用 Solo 但又不想自己维护服务器，那可以尝试购买我们搭建好的 Solo 直接[使用](http://cxy7.com/services/#solo)。
 
 ## 技术
 
@@ -101,7 +86,7 @@ Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https:/
 ## Terms
 
 * This software is open sourced under the Apache License 2.0
-* You can not get rid of the "Powered by [B3log 开源](http://b3log.org)" from any page, even which you made
+* You can not get rid of the "Powered by [B3log 开源](http://cxy7.com)" from any page, even which you made
 * If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
 * Copyright &copy; b3log.org, all rights reserved
 

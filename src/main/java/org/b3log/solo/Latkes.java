@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2016, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.springframework.web.context.ContextLoader;
 /**
  * Latke framework configuration utility facade.
  *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://cxy7.com">XyCai</a>
  * @version 2.6.8.13, Sep 18, 2016
  * @see #initRuntimeEnv()
  * @see #shutdown()
@@ -166,7 +166,7 @@ public final class Latkes {
 	 * it.
 	 * </p>
 	 */
-	private static org.h2.tools.Server h2;
+//	private static org.h2.tools.Server h2;
 
 	/**
 	 * Gets static resource (JS, CSS files) version.
@@ -245,7 +245,7 @@ public final class Latkes {
 	 */
 	public static String getServerPort() {
 		if (null == serverPort) {
-			serverPort = PropsUtil.getProperty("serverPort");
+			serverPort = PropsUtil.getProperty("listen_port");
 		}
 
 		return serverPort;
@@ -341,7 +341,7 @@ public final class Latkes {
 	 */
 	public static String getStaticServerPort() {
 		if (null == staticServerPort) {
-			staticServerPort = PropsUtil.getProperty("staticServerPort");
+			staticServerPort = PropsUtil.getProperty("listen_port");
 
 			if (null == staticServerPort) {
 				staticServerPort = getServerPort();
@@ -707,8 +707,8 @@ public final class Latkes {
 				final String newTCPServer = PropsUtil.getString("newTCPServer");
 
 				if ("true".equals(newTCPServer)) {
-					h2.stop();
-					h2.shutdown();
+//					h2.stop();
+//					h2.shutdown();
 
 					logger.info("Closed H2 TCP server");
 				}

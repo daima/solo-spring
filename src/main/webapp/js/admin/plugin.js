@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ * Copyright (c) 2017, cxy7.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 /**
  *  plugin manager for admin
  *
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * 
  * @version 1.0.0.7, Mar 28, 2012
  */
 var plugins = {};
