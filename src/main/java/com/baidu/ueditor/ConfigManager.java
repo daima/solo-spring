@@ -13,24 +13,20 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ConfigManager {
+	private static Logger logger = LoggerFactory.getLogger(ConfigManager.class);
 	private final String rootPath;
 	private final String originalPath;
-	private final String contextPath;
-	private static final String configFileName = "config.json";
-	private String parentPath = null;
 	private JSONObject jsonConfig = null;
 
-	private static final String SCRAWL_FILE_NAME = "scrawl";
-
-	private static final String REMOTE_FILE_NAME = "remote";
 
 	private ConfigManager(String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
 		rootPath = rootPath.replace("\\", "/");
 
 		this.rootPath = rootPath;
-		this.contextPath = contextPath;
 
 		if (contextPath.length() > 0) {
 			this.originalPath = (this.rootPath + uri.substring(contextPath.length()));
@@ -45,6 +41,7 @@ public final class ConfigManager {
 		try {
 			return new ConfigManager(rootPath, contextPath, uri);
 		} catch (Exception e) {
+			logger.error("初始化ConfigManager失败！", e);
 		}
 		return null;
 	}
@@ -58,7 +55,7 @@ public final class ConfigManager {
 	}
 
 	public Map<String, Object> getConfig(int type) {
-		Map<String, Object> conf = new HashMap();
+		Map<String, Object> conf = new HashMap<>();
 		String savePath = null;
 
 		switch (type) {
@@ -116,6 +113,8 @@ public final class ConfigManager {
 
 		conf.put("savePath", savePath);
 		conf.put("rootPath", this.rootPath);
+		conf.put("isWatermark", this.jsonConfig.getBoolean("isWatermark"));
+		conf.put("watermarkImgPath", this.jsonConfig.getString("watermarkImgPath"));
 
 		return conf;
 	}
@@ -127,14 +126,13 @@ public final class ConfigManager {
 			file = new File(file.getAbsolutePath());
 		}
 
-		this.parentPath = file.getParent();
-
 		String configContent = readFile(getConfigPath());
 		try {
 			JSONObject jsonConfig = new JSONObject(configContent);
 			this.jsonConfig = jsonConfig;
 		} catch (Exception e) {
 			this.jsonConfig = null;
+			logger.error("解析jsonConfig失败！", e);
 		}
 	}
 

@@ -44,7 +44,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 		String ip = request.getRemoteAddr();
 		int port = request.getRemotePort();
 
-		logger.info("ip:{}, port:{}, request uri:{}", ip, port, requestURI);
+		logger.debug("ip:{}, port:{}, request uri:{}", ip, port, requestURI);
 		return true;
 	}
 

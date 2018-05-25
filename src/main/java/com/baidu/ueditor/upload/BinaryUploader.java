@@ -1,19 +1,21 @@
 package com.baidu.ueditor.upload;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +28,20 @@ import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
+
 public class BinaryUploader {
 	private static Logger logger = LoggerFactory.getLogger(BinaryUploader.class);
-
+	
+	private static Set<String> imageNames = new HashSet<String>();
 	public static final State save(HttpServletRequest request, Map<String, Object> conf) {
+		String rootPath = (String) conf.get("rootPath");
+		if (imageNames.isEmpty()) {
+			String[] arr = (String[])conf.get("allowFiles");
+			for (String str : arr)
+				imageNames.add(str.substring(str.indexOf('.') + 1));
+		}
 		boolean isAjaxUpload = request.getHeader("X_Requested_With") != null;
 
 		if (!ServletFileUpload.isMultipartContent(request)) {
@@ -65,6 +77,9 @@ public class BinaryUploader {
 				savePath = savePath + suffix;
 
 				long maxSize = ((Long) conf.get("maxSize")).longValue();
+				if (file.getSize() > maxSize) {
+					return new BaseState(false, 1);
+				}
 
 				if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
 					return new BaseState(false, 8);
@@ -72,7 +87,7 @@ public class BinaryUploader {
 
 				savePath = PathFormat.parse(savePath, originFileName);
 
-				String physicalPath = (String) conf.get("rootPath") + savePath;
+				String physicalPath = rootPath + savePath;
 
 				physicalFile = new File(physicalPath);
 				if (!physicalFile.getParentFile().exists()) {
@@ -83,8 +98,19 @@ public class BinaryUploader {
 					file.transferTo(physicalFile);
 					// root.put("md5", DigestUtils.md5Hex(new
 					// FileInputStream(localFile)));
+					
+					if ((boolean)conf.get("isWatermark")) {
+						String watermarkPath = rootPath + conf.get("watermarkImgPath");
+						//判断是否为图片文件
+						String name = physicalFile.getName().toLowerCase();
+						String type = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
+						if (imageNames.contains(type)) {
+							FileUtils.copyFile(physicalFile, new File(physicalPath + ".bak"));	//backup
+							addWatermark(physicalFile, type, watermarkPath);
+						}
+					}
 				} catch (IllegalStateException | IOException e) {
-					logger.warn("写文件失败!{}", physicalFile);
+					logger.warn("写文件失败!{}", physicalFile, e);
 					continue;
 				}
 				storageState = new BaseState(true, AppInfo.SUCCESS);
@@ -122,6 +148,20 @@ public class BinaryUploader {
 		// storageState.putInfo("original", originFileName + suffix);
 		// }
 		return storageState != null ? storageState : new BaseState(false, 4);
+	}
+	
+	private static void addWatermark(File image, String type, String watermarkPath) throws IOException {
+		BufferedImage bi = ImageIO.read(image);
+		BufferedImage waterMarkBufferedImage = Thumbnails
+				.of(watermarkPath)
+				.size(bi.getWidth() / 2, bi.getHeight() / 2)
+				.asBufferedImage();
+		
+		bi = Thumbnails.of(bi)
+				.scale(1.0f)
+				.watermark(Positions.CENTER, waterMarkBufferedImage, 0.5f)
+				.asBufferedImage();
+		ImageIO.write(bi, type, image);
 	}
 
 	private static boolean validType(String type, String[] allowTypes) {

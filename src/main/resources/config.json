@@ -1,7 +1,5 @@
-/* 前后端通信相关的配置,注释只允许使用多行方式 */
 {
-    /* 上传图片配置项 */
-    "imageActionName": "uploadimage", /* 执行上传图片的action名称 */
+    "imageActionName": "uploadimage", /* 前后端通信相关的配置,注释只允许使用多行方式 上传图片配置项 执行上传图片的action名称 */
     "imageFieldName": "upfile", /* 提交的图片表单名称 */
     "imageMaxSize": 2048000, /* 上传大小限制，单位B */
     "imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], /* 上传图片格式显示 */
@@ -89,6 +87,8 @@
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
         ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
-    ] /* 列出的文件类型 */
-
+    ], /* 列出的文件类型 */
+	"isWatermark":true,/* 是否启用水印 */
+	"watermarkText":"CXY7.COM",/* 水印文字，如果这个为空则认为是图片水印，文字和图片必须有一个不为空 */
+	"watermarkImgPath":"/images/watermark.png"/* 水印图片的地址 */
 }
