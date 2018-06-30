@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
@@ -33,28 +34,26 @@ import net.coobird.thumbnailator.geometry.Positions;
 
 public class BinaryUploader {
 	private static Logger logger = LoggerFactory.getLogger(BinaryUploader.class);
-	
-	private static Set<String> imageNames = new HashSet<String>();
-	public static final State save(HttpServletRequest request, Map<String, Object> conf) {
+	public static final State save(HttpServletRequest request,
+			Map<String, Object> conf) {
 		String rootPath = (String) conf.get("rootPath");
-		if (imageNames.isEmpty()) {
-			String[] arr = (String[])conf.get("allowFiles");
-			for (String str : arr)
-				imageNames.add(str.substring(str.indexOf('.') + 1));
-		}
-		boolean isAjaxUpload = request.getHeader("X_Requested_With") != null;
+		
+		FileItemStream fileStream = null;
+		boolean isAjaxUpload = request.getHeader( "X_Requested_With" ) != null;
 
 		if (!ServletFileUpload.isMultipartContent(request)) {
-			return new BaseState(false, 5);
+			return new BaseState(false, AppInfo.NOT_MULTIPART_CONTENT);
 		}
-		State storageState = null;
 
-		ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
+		ServletFileUpload upload = new ServletFileUpload(
+				new DiskFileItemFactory());
 
-		if (isAjaxUpload) {
-			upload.setHeaderEncoding("UTF-8");
-		}
-		File physicalFile = null;
+        if ( isAjaxUpload ) {
+            upload.setHeaderEncoding( "UTF-8" );
+        }
+        
+        File physicalFile = null;
+        State storageState = null;
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
 		// 判断 request 是否有文件上传,即多部分请求
@@ -98,13 +97,20 @@ public class BinaryUploader {
 					file.transferTo(physicalFile);
 					// root.put("md5", DigestUtils.md5Hex(new
 					// FileInputStream(localFile)));
-					
-					if ((boolean)conf.get("isWatermark")) {
-						String watermarkPath = rootPath + conf.get("watermarkImgPath");
-						//判断是否为图片文件
+					// 给图片增加水印
+					if ((boolean)conf.getOrDefault("isWatermark", false)) {
 						String name = physicalFile.getName().toLowerCase();
-						String type = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
-						if (imageNames.contains(type)) {
+						String[] arr = (String[])conf.get("imageAllowFiles");
+						boolean isImage = false;	// 判断是否是图片格式
+						for (String str : arr) {
+							if (name.endsWith(str)) {
+								isImage = true;
+								break;
+							}
+						}
+						if (isImage) {
+							String watermarkPath = rootPath + conf.get("watermarkImgPath");
+							String type = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
 							FileUtils.copyFile(physicalFile, new File(physicalPath + ".bak"));	//backup
 							addWatermark(physicalFile, type, watermarkPath);
 						}
@@ -123,33 +129,62 @@ public class BinaryUploader {
 			}
 
 		}
-		// FileItemIterator iterator = upload.getItemIterator(request);
-		//
-		// while (iterator.hasNext()) {
-		// fileStream = iterator.next();
-		//
-		// if (!fileStream.isFormField())
-		// break;
-		// fileStream = null;
-		// }
-		//
-		// if (fileStream == null) {
-		// return new BaseState(false, 7);
-		// }
 
-		// InputStream is = fileStream.openStream();
-		// State storageState = StorageManager.saveFileByInputStream(is,
-		// physicalPath, maxSize);
-		// is.close();
-		//
-		// if (storageState.isSuccess()) {
-		// storageState.putInfo("url", PathFormat.format(savePath));
-		// storageState.putInfo("type", suffix);
-		// storageState.putInfo("original", originFileName + suffix);
-		// }
+//		try {
+//			FileItemIterator iterator = upload.getItemIterator(request);
+//
+//			while (iterator.hasNext()) {
+//				fileStream = iterator.next();
+//
+//				if (!fileStream.isFormField())
+//					break;
+//				fileStream = null;
+//			}
+//
+//			if (fileStream == null) {
+//				return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
+//			}
+//
+//			String savePath = (String) conf.get("savePath");
+//			String originFileName = fileStream.getName();
+//			String suffix = FileType.getSuffixByFilename(originFileName);
+//
+//			originFileName = originFileName.substring(0,
+//					originFileName.length() - suffix.length());
+//			savePath = savePath + suffix;
+//
+//			long maxSize = ((Long) conf.get("maxSize")).longValue();
+//
+//			if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
+//				return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
+//			}
+//
+//			savePath = PathFormat.parse(savePath, originFileName);
+//
+//			//modified by Ternence
+//            String rootPath = ConfigManager.getRootPath(request,conf);
+//            String physicalPath = rootPath + savePath;
+//            
+//
+//			InputStream is = fileStream.openStream();
+//			State storageState = StorageManager.saveFileByInputStream(is,
+//					physicalPath, maxSize);
+//			is.close();
+//
+//			if (storageState.isSuccess()) {
+//				storageState.putInfo("url", PathFormat.format(savePath));
+//				storageState.putInfo("type", suffix);
+//				storageState.putInfo("original", originFileName + suffix);
+//			}
+//
+//			return storageState;
+//		} catch (FileUploadException e) {
+//			return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
+//		} catch (IOException e) {
+//		}
+//		return new BaseState(false, AppInfo.IO_ERROR);
 		return storageState != null ? storageState : new BaseState(false, 4);
 	}
-	
 	private static void addWatermark(File image, String type, String watermarkPath) throws IOException {
 		BufferedImage bi = ImageIO.read(image);
 		BufferedImage waterMarkBufferedImage = Thumbnails

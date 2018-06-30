@@ -13,5 +13,23 @@
 <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css?${staticResourceVersion}" charset="utf-8" />
 <link href="${servePath}/blog-articles-rss.do" title="RSS" type="application/rss+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="${servePath}/images/favicon.png" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6087e5b434240945087f3d9a03b15e55";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-99760936-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-99760936-1');
+</script>
 ${htmlHead}
 </#macro>

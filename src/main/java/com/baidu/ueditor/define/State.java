@@ -1,11 +1,18 @@
 package com.baidu.ueditor.define;
 
-public abstract interface State {
-	public abstract boolean isSuccess();
+/**
+ * 处理状态接口
+ * @author hancong03@baidu.com
+ *
+ */
+public interface State {
+	
+	public boolean isSuccess ();
+	
+	public void putInfo( String name, String val );
+	
+	public void putInfo ( String name, long val );
+	
+	public String toJSONString ();
 
-	public abstract void putInfo(String paramString1, String paramString2);
-
-	public abstract void putInfo(String paramString, long paramLong);
-
-	public abstract String toJSONString();
 }
